@@ -27,8 +27,6 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {loading ? (
-        <p className="text-center text-gray-500 pt-10">
           Завантаження відгуків...
         </p>
       ) : reviews.length > 0 ? (

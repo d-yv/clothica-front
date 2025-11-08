@@ -1,16 +1,41 @@
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-roboto), sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-inter), sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
-  background-color: #f8f9fa;
+  background-color: #f3f9ed;
+  color: #000;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--font-nunito-sans), sans-serif;
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 a {
   text-decoration: none;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
