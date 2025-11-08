@@ -1,0 +1,157 @@
+.modal {
+    position: fixed;
+    inset: 0;
+    background: #d7eabc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+    transform: translateX(100%);
+    transition: 0.4s ease;
+    z-index: 9999;
+}
+
+.open {
+    transform: translateX(0);
+}
+
+.modalHeader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+}
+
+.logo {
+    fill: currentColor;
+    fill: black;
+}
+
+.rightSide {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.headervector {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 100px;
+    padding: 6px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.cartBtn {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 0;
+    background: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dot {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 12px;
+    height: 12px;
+    background: #ff2323;
+    border-radius: 50%;
+}
+
+.specialBtn {
+    display: none;
+}
+
+.open .specialBtn {
+    display: flex;
+}
+
+
+
+@media (min-width: 768px) {
+    .modal {
+        display: none;
+
+    }
+
+    .specialBtn {
+        display: none;
+    }
+}
+
+.mobileMenuList {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 40px 20px 24px;
+    width: 100%;
+    max-width: 375px;
+}
+
+.mobileMenuA {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #000;
+    text-decoration: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.headerAuth {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 85%;
+    margin-top: 40px;
+
+}
+
+.btnEntrance,
+.btnRegistration,
+.btnOfice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 100px;
+    height: 36px;
+    cursor: pointer;
+
+}
+
+.btnEntrance.light {
+    background: #dbeac7;
+    color: #000;
+}
+
+.btnRegistration {
+    background: #c5e1a5;
+    color: #000;
+}
+
+.btnOfice {
+    background: #c5e1a5;
+}
