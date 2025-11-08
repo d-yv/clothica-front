@@ -1,0 +1,187 @@
+.siteHeader {
+    background: #d6eac0;
+
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.headercontainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    height: 72px;
+    background: #d6eac0;
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 18px;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.mainNav {
+    display: none;
+}
+
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.headerActionsDiv {
+    display: none;
+}
+
+.btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.btnOutline {
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: transparent;
+}
+
+.btnOutline:hover {
+    background: var(--btn-bg-hover);
+}
+
+.btnFilled {
+    background: var(--btn-bg);
+    color: var(--text-color);
+}
+
+.btnFilled:hover {
+    background: var(--btn-bg-hover);
+}
+
+.btngeneral {
+    color: #000;
+}
+
+.btnEntrance {
+    color: #000;
+}
+
+.btnRegistration {
+    color: #000;
+}
+
+.cart {
+    position: relative;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 10px;
+    padding: 1px 4px;
+}
+
+.headercart {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 0;
+    background: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.menuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 100px;
+    padding: 6px;
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.headerButtonVhid {
+    display: none;
+}
+
+.headerButtonRegistration {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .menuBtn {
+        display: none;
+    }
+
+    .mainNav {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .headerButtonVhid {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 8px;
+        border-radius: 100px;
+        padding: 4px 10px;
+        width: 54px;
+        height: 32px;
+        color: #000;
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    .headerButtonRegistration {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 8px;
+        border-radius: 100px;
+        padding: 4px 10px;
+        width: 109px;
+        height: 32px;
+        background: #c5e1a5;
+        color: #000;
+    }
+
+    .headerActionsDiv {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 16px;
+    }
+}
