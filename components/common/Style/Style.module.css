@@ -1,0 +1,129 @@
+.style {
+  padding: 32px 20px;
+  background: #f3f9ed;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.title {
+  max-width: 100%;
+  font-weight: 400;
+  font-size: 36px; 
+  line-height: 1.2;
+  color: #000;
+  text-align: left;
+  margin: 0 0 40px 0;
+}
+
+.advantagesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.advantageItem {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer; /* Hover эффект по ТЗ */
+  transition: transform 0.2s ease; /* Анимация по ТЗ */
+}
+
+.advantageItem:hover {
+  transform: translateY(-2px); /* Hover эффект */
+}
+
+.iconContainer {
+  width: 56px; 
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.advantageTitle {
+  font-weight: 400;
+  font-size: 24px; 
+  line-height: 1.3;
+  color: #000;
+  margin: 0;
+}
+
+.advantageDescription {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  margin: 0;
+}
+
+
+@media (min-width: 375px) {
+  .style {
+    padding: 32px 20px;
+  }
+
+  .container {
+  max-width: 335px;
+}
+
+.title {
+  width: 335px;
+}
+}
+
+
+@media (min-width: 768px) {
+  .style {
+    padding: 32px;
+  }
+
+  .container {
+    max-width: 704px;
+  }
+
+  .title {
+    width: 704px;
+}
+
+
+  .advantagesList {
+    flex-direction: row;
+    gap: 32px;
+  }
+
+  .advantageItem {
+    flex: 1;
+    text-align: left;
+  }
+
+
+
+@media (min-width: 1440px) {
+  .style {
+    padding: 48px 64px;
+  }
+
+  .container {
+    max-width: 1312px; 
+  }
+
+  .title {
+    font-size: 48px;
+    margin-bottom: 48px;
+    width: 768px; 
+  }
+}
+}
