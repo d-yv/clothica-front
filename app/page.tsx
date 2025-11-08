@@ -13,7 +13,7 @@ export default function Page() {
         const res = await fetch("http://localhost:3030/api/feedbacks");
         if (!res.ok) throw new Error("Помилка запиту");
         const data = await res.json();
-        console.log("Отримані відгуки:", data); // Для перевірки
+        console.log("Отримані відгуки:", data);
         setReviews(data);
       } catch (err) {
         console.error("Помилка при отриманні відгуків:", err);
@@ -27,6 +27,8 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-gray-50">
+      {loading ? (
+        <p className="text-center text-gray-500 pt-10">
           Завантаження відгуків...
         </p>
       ) : reviews.length > 0 ? (
