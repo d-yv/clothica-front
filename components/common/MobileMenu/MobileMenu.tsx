@@ -34,15 +34,15 @@ export default function MobileMenu({ isAuth, onClose }: MobileMenuProps) {
 
             <nav className={styles.mobileMenuList}>
                 <Link href="/" className={styles.mobileMenuA}>Головна</Link>
-                <Link href="/popular-goods" className={styles.mobileMenuA}>Товари</Link>
-                <Link href="/categories" className={styles.mobileMenuA}>Категорії</Link>
+                <Link href="/components/common/PopularGoods" className={styles.mobileMenuA}>Товари</Link>
+                <Link href="/components/common/PopularCategories" className={styles.mobileMenuA}>Категорії</Link>
             </nav>
 
             <div className={styles.headerAuth}>
                 {!isAuth ? (
                     <>
-                        <Link href="/login" className={`${styles.btnEntrance} ${styles.light}`}>Вхід</Link>
-                        <Link href="/register" className={styles.btnRegistration}>Реєстрація</Link>
+                        <Link href="/components/forms/LoginForm" className={`${styles.btnEntrance} ${styles.light}`}>Вхід</Link>
+                        <Link href="/components/forms/RegistrationForm" className={styles.btnRegistration}>Реєстрація</Link>
                     </>
                 ) : (
                     <Link href="/cabinet" className={styles.btnOfice}>Кабінет</Link>

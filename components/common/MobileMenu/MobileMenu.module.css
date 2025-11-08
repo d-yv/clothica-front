@@ -144,10 +144,12 @@
 
 .btnEntrance.light {
     background: #dbeac7;
+    color: #000;
 }
 
 .btnRegistration {
     background: #c5e1a5;
+    color: #000;
 }
 
 .btnOfice {

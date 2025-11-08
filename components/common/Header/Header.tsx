@@ -7,7 +7,7 @@ import styles from './Header.module.css';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -20,16 +20,16 @@ export default function Header() {
 
         <nav className={styles.mainNav}>
           <Link href="/" className={styles.btnEntrance}>Головна</Link>
-          <Link href="/popular-goods" className={styles.btnEntrance}>Товари</Link>
-          <Link href="/categories" className={styles.btnRegistration}>Категорії</Link>
+          <Link href="/components/common/PopularGoods" className={styles.btnEntrance}>Товари</Link>
+          <Link href="/components/common/PopularCategories" className={styles.btnRegistration}>Категорії</Link>
         </nav>
 
         <div className={styles.headerActions}>
           <div className={styles.headerActionsDiv}>
             {!isAuth && (
               <>
-                <Link href="/login" className={styles.headerButtonVhid}>Вхід</Link>
-                <Link href="/register" className={styles.headerButtonRegistration}>Реєстрація</Link>
+                <Link href="/components/forms/LoginForm" className={styles.headerButtonVhid}>Вхід</Link>
+                <Link href="/components/forms/RegistrationForm" className={styles.headerButtonRegistration}>Реєстрація</Link>
               </>
             )}
             {isAuth && (
