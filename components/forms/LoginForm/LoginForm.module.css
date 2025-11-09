@@ -1,0 +1,128 @@
+.container {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 8px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+}
+
+.input {
+  padding: 8px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  background-color: #f9fcf6;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #c5e1a5;
+  box-shadow: 0 0 0 2px rgba(197, 225, 165, 0.1);
+}
+
+.inputError {
+  border-color: #9d0000;
+}
+
+.button {
+  background-color: #c5e1a5;
+  border: 1px solid #c5e1a5;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 36px;
+  font-family: inherit;
+}
+
+.button:hover {
+  border: 1px solid #4e5a42;
+  background-color: #9db484;
+  transform: translateY(-1px);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  border: 1px solid #c5e1a5;
+  background-color: #c5e1a5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.4;
+}
+
+.errorText {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #9d0000;
+  margin-top: 4px;
+  min-height: 18px;
+}
+
+
+/* Адаптивная верстка: 375px+ */
+@media (min-width: 375px) {
+.container {
+  max-width: 335px;
+}
+
+.input {
+  max-width: 335px;
+}
+
+.button {
+  max-width: 335px;
+}
+}
+/* Tablet: 768px+ */
+@media (min-width: 768px) {
+.container {
+  max-width: 480px;
+}
+
+.input {
+  max-width: 480px;
+}
+
+.button {
+max-width: 480px;
+}
+}
+
+/* Desktop: 1440px+ */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 480px;
+  }
+}
