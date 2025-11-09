@@ -1,43 +1,20 @@
-"use client";
+import GoodInfo from "@/components/common/GoodInfo/GoodInfo";
+import Hero from "@/components/common/Hero/Hero";
+import ReviewsList from "@/components/common/ReviewsList/ReviewsList";
+import Style from "@/components/common/Style/Style";
+// import PopularCategories from "@/components/common/PopularCategories/PopularCategories";
+// import PopularGoods from "@/components/common/PopularGoods/PopularGoods";
+// import ReviewsList from "@/components/common/ReviewsList/ReviewsList";
 
-import { useEffect, useState } from "react";
-import ReviewsList from "../components/common/ReviewsList/page";
-
-export default function Page() {
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const res = await fetch("http://localhost:3030/api/feedbacks");
-        if (!res.ok) throw new Error("Помилка запиту");
-        const data = await res.json();
-        console.log("Отримані відгуки:", data);
-        setReviews(data);
-      } catch (err) {
-        console.error("Помилка при отриманні відгуків:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchReviews();
-  }, []);
-
+export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50">
-      {loading ? (
-        <p className="text-center text-gray-500 pt-10">
-          Завантаження відгуків...
-        </p>
-      ) : reviews.length > 0 ? (
-        <ReviewsList reviews={reviews} />
-      ) : (
-        <p className="text-center text-gray-500 pt-10">
-          Немає відгуків для відображення
-        </p>
-      )}
+    <main>
+      <Hero />
+
+      <Style />
+      {/* <PopularCategories /> */}
+      <GoodInfo />
+      {/* <ReviewsList /> */}
     </main>
   );
 }

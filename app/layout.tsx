@@ -4,6 +4,8 @@ import "modern-normalize/modern-normalize.css";
 import "./globals.css";
 import Header from "../components/common/Header/Header";
 import Footer from "../components/common/Footer/Footer";
+import GoodInfo from "@/components/common/GoodInfo/GoodInfo";
+import ReviewsList from "@/components/common/ReviewsList/ReviewsList";
 
 const inter = Inter({
   subsets: ["cyrillic"],
@@ -20,12 +22,10 @@ const nunito = Nunito_Sans({
 
 export const metadata: Metadata = {
   title: "Clothica-shop",
-  description:
-    "Designer fashion for everyone.",
+  description: "Designer fashion for everyone.",
   openGraph: {
     title: "Clothica-shop",
-    description:
-      "Designer fashion for everyone.",
+    description: "Designer fashion for everyone.",
     images: [
       {
         url: "https://ac.goit.global/fullstack/react/og-meta.jpg/",
@@ -42,13 +42,11 @@ export default function RootLayout({
   children,
   modal,
 }: Readonly<{
-  children: React.ReactNode
-  modal: React.ReactNode
+  children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-
-
       {/* <body className={`${inter.variable} ${nunito.variable} `}>
         <TanStackProvider>
           <AuthProvider>
@@ -61,7 +59,6 @@ export default function RootLayout({
           </AuthProvider>
         </TanStackProvider>
       </body> */}
-
 
       <body className={`${inter.variable} ${nunito.variable} `}>
         <Header />
