@@ -23,7 +23,7 @@ export default function MobileMenu({ isAuth, onClose }: MobileMenuProps) {
                         </svg>
                     </button>
 
-                    <Link href="/">
+                    <Link href="/components/forms/CreateOrderForm">
                         <button className={`${styles.cartBtn} ${styles.specialBtn}`}>
                             <svg className={styles.headericon} width="20" height="20">
                                 <use href="/styles.icon.svg#icon-shopping_cart" />
