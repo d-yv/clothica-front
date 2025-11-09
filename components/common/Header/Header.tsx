@@ -3,11 +3,16 @@
 import Link from "next/link";
 import { useState } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
-import styles from './Header.module.css';
+import styles from "./Header.module.css";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuth] = useState(false);
+
+
+  const authToken =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+  const isAuth = !!authToken;
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -32,6 +37,7 @@ export default function Header() {
                 <Link href="/components/forms/RegistrationForm" className={styles.headerButtonRegistration}>Реєстрація</Link>
               </>
             )}
+
             {isAuth && (
               <Link href="/cabinet" className={styles.headerButtonCabinet}>Кабінет</Link>
             )}
@@ -43,16 +49,20 @@ export default function Header() {
             </svg>
           </button>
 
-          <button className={`${styles.headercart} ${styles.specialBtn}`}>
-            <svg className={styles.headeri} width="20" height="20">
-              <use href="/styles.icon.svg#icon-shopping_cart" />
-            </svg>
-            <span className={styles.dot}></span>
-          </button>
+          <Link href="/">
+            <button className={`${styles.headercart} ${styles.specialBtn}`}>
+              <svg className={styles.headeri} width="20" height="20">
+                <use href="/styles.icon.svg#icon-shopping_cart" />
+              </svg>
+              <span className={styles.dot}></span>
+            </button>
+          </Link>
         </div>
       </div>
 
-      {isMenuOpen && <MobileMenu isAuth={isAuth} onClose={() => setIsMenuOpen(false)} />}
+      {isMenuOpen && (
+        <MobileMenu isAuth={isAuth} onClose={() => setIsMenuOpen(false)} />
+      )}
     </header>
   );
 }
