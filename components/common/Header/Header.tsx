@@ -7,7 +7,7 @@ import styles from './Header.module.css';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuth] = useState(false);
+  const [isAuth] = useState(true);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 

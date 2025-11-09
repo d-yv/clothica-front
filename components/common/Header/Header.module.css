@@ -177,6 +177,20 @@
         color: #000;
     }
 
+    .headerButtonCabinet {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 8px;
+        border-radius: 100px;
+        padding: 4px 10px;
+        width: 54px;
+        height: 32px;
+        color: #000;
+        background: rgba(0, 0, 0, 0.05);
+    }
+
     .headerActionsDiv {
         display: flex;
         align-items: center;
