@@ -12,31 +12,46 @@ import "swiper/css/pagination";
 
 import styles from "./GoodInfo.module.css";
 
-// URL бекенду
+// 🔗 URL бекенду
 export const BACKEND_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || "https://clothica-back.onrender.com";
 
-// axios клієнт
+// ⚙️ axios клієнт
 export const api = axios.create({
   baseURL: BACKEND_URL,
+  timeout: 15000,
 });
 
-//Тип товару
+// 🔤 Тип товару — згідно з реальною структурою
 export interface Good {
   _id: string;
-  title: string;
-  price?: number;
-  currency?: string;
+  name: string;
   category?: string;
   image?: string;
+  price?: {
+    value: number;
+    currency: string;
+  };
+  feedbacks?: string[];
   likes?: number;
-  reviewsCount?: number;
 }
 
-//Запит усіх товарів
+// 📦 Отримати всі товари (масив гарантовано)
 export const getGoods = async (): Promise<Good[]> => {
-  const res = await api.get("api/goods");
-  return res.data;
+  try {
+    const res = await api.get("/goods");
+    const data = res.data;
+
+    if (Array.isArray(data)) return data as Good[];
+    if (data && typeof data === "object" && Array.isArray(data.goods))
+      return data.goods as Good[];
+
+    console.warn("⚠️ Неочікуваний формат відповіді бекенду:", data);
+    return [];
+  } catch (err) {
+    console.error("❌ Помилка при запиті товарів:", err);
+    return [];
+  }
 };
 
 export const GoodInfo: React.FC = () => {
@@ -50,26 +65,30 @@ export const GoodInfo: React.FC = () => {
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
 
-  //Завантаження товарів
+  // 🧠 завантаження товарів
   useEffect(() => {
     let mounted = true;
 
     (async () => {
       try {
         const data = await getGoods();
-        // if (!mounted) return;
-        // // максимум 10 товарів
-        // let goodsToShow = data.slice(0, 10);
-        // while (goodsToShow.length < 10 && data.length > 0) {
-        //   const toAdd = 10 - goodsToShow.length;
-        //   goodsToShow = [...goodsToShow, ...data.slice(0, toAdd)];
-        // }
-        // setGoods(goodsToShow);
+        if (!mounted) return;
+
+        const goodsArray = Array.isArray(data) ? data : [];
+
+        // максимум 10 товарів
+        let goodsToShow = goodsArray.slice(0, 10);
+        while (goodsToShow.length < 10 && goodsArray.length > 0) {
+          const toAdd = 10 - goodsToShow.length;
+          goodsToShow = [...goodsToShow, ...goodsArray.slice(0, toAdd)];
+        }
+
+        setGoods(goodsToShow);
       } catch (err) {
         if (!mounted) return;
-        const errorMessage =
+        const message =
           err instanceof Error ? err.message : "Помилка завантаження";
-        setError(errorMessage);
+        setError(message);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -109,7 +128,6 @@ export const GoodInfo: React.FC = () => {
           ‹
         </button>
 
-        {/* Swiper */}
         <Swiper
           modules={[Navigation, Pagination, Keyboard]}
           onSwiper={setSwiper}
@@ -133,12 +151,8 @@ export const GoodInfo: React.FC = () => {
               <div className={styles.card}>
                 <div className={styles.imageWrapper}>
                   <img
-                    src={
-                      good.image?.startsWith("http")
-                        ? good.image
-                        : `${BACKEND_URL}/${good.image}`
-                    }
-                    alt={good.title}
+                    src={good.image || "/placeholder.jpg"}
+                    alt={good.name}
                     className={styles.image}
                   />
                 </div>
@@ -147,17 +161,16 @@ export const GoodInfo: React.FC = () => {
                   <p className={styles.category}>
                     {good.category || "Без категорії"}
                   </p>
-                  <h3 className={styles.name}>{good.title}</h3>
+                  <h3 className={styles.name}>{good.name}</h3>
                   <p className={styles.price}>
                     {good.price
-                      ? `${good.price} ${good.currency || "UAH"}`
+                      ? `${good.price.value} ${good.price.currency}`
                       : "Ціну уточнюйте"}
                   </p>
                 </div>
 
                 <div className={styles.meta}>
-                  <span>❤️ {good.likes || 0}</span>
-                  <span>⭐ {good.reviewsCount || 0}</span>
+                  <span>⭐ {good.feedbacks?.length ?? 0}</span>
                 </div>
 
                 <a href={`/goods/${good._id}`} className={styles.detailsBtn}>
