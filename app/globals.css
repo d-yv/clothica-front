@@ -39,3 +39,32 @@ button {
 *::after {
   box-sizing: border-box;
 }
+
+
+.container {
+  width: 100%;
+  min-width: 320px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 375px) {
+  .container {
+    max-width: 375px;
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding: 0 32px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+    padding: 0 64px;
+  }
+}
