@@ -25,7 +25,7 @@ export default function MobileMenu({ isAuth, onClose }: MobileMenuProps) {
 
                     <Link href="/components/forms/CreateOrderForm">
                         <button className={`${styles.cartBtn} ${styles.specialBtn}`}>
-                            <svg className={styles.headericon} width="20" height="20">
+                            <svg className={styles.headericon} width="24" height="24">
                                 <use href="/styles.icon.svg#icon-shopping_cart" />
                             </svg>
                             <span className={styles.dot}></span>
@@ -43,8 +43,8 @@ export default function MobileMenu({ isAuth, onClose }: MobileMenuProps) {
             <div className={styles.headerAuth}>
                 {!isAuth ? (
                     <>
-                        <Link href="/components/forms/LoginForm" className={`${styles.btnEntrance} ${styles.light}`}>Вхід</Link>
-                        <Link href="/components/forms/RegistrationForm" className={styles.btnRegistration}>Реєстрація</Link>
+                        <Link href="/auth/login" className={`${styles.btnEntrance} ${styles.light}`}>Вхід</Link>
+                        <Link href="/auth/register" className={styles.btnRegistration}>Реєстрація</Link>
                     </>
                 ) : (
                     <Link href="/cabinet" className={styles.btnOfice}>Кабінет</Link>

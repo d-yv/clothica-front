@@ -19,10 +19,11 @@ export default function Header() {
   return (
     <header className={styles.siteHeader}>
       <div className={styles.headercontainer}>
-        <svg className={styles.logo} width="100" height="20">
-          <use href="/styles.icon.svg#icon-Clothica-1" />
-        </svg>
-
+        <a href="/" target="_blank" rel="noopener noreferrer">
+          <svg className={styles.logo} width="100" height="20">
+            <use href="/styles.icon.svg#icon-Clothica-1" />
+          </svg>
+        </a>
         <nav className={styles.mainNav}>
           <Link href="/" className={styles.btnEntrance}>Головна</Link>
           <Link href="/components/common/PopularGoods" className={styles.btnEntrance}>Товари</Link>
@@ -33,8 +34,8 @@ export default function Header() {
           <div className={styles.headerActionsDiv}>
             {!isAuth && (
               <>
-                <Link href="/components/forms/LoginForm" className={styles.headerButtonVhid}>Вхід</Link>
-                <Link href="/components/forms/RegistrationForm" className={styles.headerButtonRegistration}>Реєстрація</Link>
+                <Link href="/auth/login" className={styles.headerButtonVhid}>Вхід</Link>
+                <Link href="/auth/register" className={styles.headerButtonRegistration}>Реєстрація</Link>
               </>
             )}
 
@@ -51,7 +52,7 @@ export default function Header() {
 
           <Link href="/components/forms/CreateOrderForm">
             <button className={`${styles.headercart} ${styles.specialBtn}`}>
-              <svg className={styles.headeri} width="20" height="20">
+              <svg className={styles.headeri} width="24" height="24">
                 <use href="/styles.icon.svg#icon-shopping_cart" />
               </svg>
               <span className={styles.dot}></span>
