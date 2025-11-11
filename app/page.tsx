@@ -2,7 +2,7 @@ import GoodInfo from "@/components/common/GoodInfo/GoodInfo";
 import Hero from "@/components/common/Hero/Hero";
 //import ReviewsList from "@/components/common/ReviewsList/ReviewsList";
 import Style from "@/components/common/Style/Style";
-import CategoriesList from "@/components/common/CategoriesList/CategoriesList";
+import LastReviews from "@/components/common/LastReviews/LastReviews"
 // import PopularCategories from "@/components/common/PopularCategories/PopularCategories";
 // import PopularGoods from "@/components/common/PopularGoods/PopularGoods";
 // import ReviewsList from "@/components/common/ReviewsList/ReviewsList";
@@ -12,11 +12,9 @@ export default function Home() {
     <main>
       <Hero />
       <Style />
-      <CategoriesList />
       {/* <PopularCategories /> */}
       <GoodInfo />
-      
-      {/* <ReviewsList /> */}
+      {<LastReviews />}
     </main>
   );
 }
