@@ -1,18 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import styles from "./Header.module.css";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
 
+  useEffect(() => {
 
-  const authToken =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const updateAuth = () => {
+      const token = localStorage.getItem("token");
+      setIsAuth(Boolean(token));
+    };
 
-  const isAuth = !!authToken;
+    Promise.resolve().then(updateAuth);
+  }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -21,9 +26,11 @@ export default function Header() {
       <div className={styles.headercontainer}>
         <a href="/" target="_blank" rel="noopener noreferrer">
           <svg className={styles.logo} width="100" height="20">
-            <use href="/styles.icon.svg#icon-Clothica-1" />
+            <use href="/styles.icon.svg#icon-Clothica-1
+            " />
           </svg>
         </a>
+
         <nav className={styles.mainNav}>
           <Link href="/" className={styles.btnEntrance}>Головна</Link>
           <Link href="/components/common/PopularGoods" className={styles.btnEntrance}>Товари</Link>
