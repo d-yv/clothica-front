@@ -1,6 +1,6 @@
 import GoodInfo from "@/components/common/GoodInfo/GoodInfo";
 import Hero from "@/components/common/Hero/Hero";
-import ReviewsList from "@/components/common/ReviewsList/ReviewsList";
+//import ReviewsList from "@/components/common/ReviewsList/ReviewsList";
 import Style from "@/components/common/Style/Style";
 import LastReviews from "@/components/common/LastReviews/LastReviews"
 // import PopularCategories from "@/components/common/PopularCategories/PopularCategories";
