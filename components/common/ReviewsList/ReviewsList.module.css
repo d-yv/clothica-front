@@ -1,0 +1,190 @@
+:root {
+    --bg-soft-green: #edf6e6;
+    --text: #111;
+    --muted: #6b7280;
+    --card-bg: #fff;
+    --border: #e5e7eb;
+    --btn: #cfe8a7;
+    --btn-hover: #bfe093;
+}
+
+/* ===== Mobile First (320+): гумова верстка до 375px ===== */
+
+
+.sliderWrap {
+    position: relative;
+}
+
+
+/* Картка */
+.card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.stars {
+    font-size: 18px;
+    color: #000;
+    /* чорні зірочки як у макеті */
+    letter-spacing: 2px;
+}
+
+.quote {
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: #000;
+    margin: 0;
+    padding: 32px 0;
+    ;
+}
+
+.footer {
+    display: grid;
+    gap: 4px;
+}
+
+.author {
+    margin: 0px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #000;
+}
+
+.category {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 1.5;
+    text-decoration-skip-ink: none;
+    color: #000;
+    text-decoration: underline;
+
+}
+
+/* Кнопки навігації — внизу праворуч */
+.navWrap {
+    position: absolute;
+    right: 12px;
+    bottom: 16px;
+    display: flex;
+    gap: 12px;
+    z-index: 5;
+}
+
+.navBtn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 9999px;
+    background: var(--btn);
+    color: #111;
+    font-size: 18px;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+    transition: transform .15s ease, background-color .15s ease, opacity .15s ease;
+}
+
+.navBtn:hover {
+    transform: translateY(-1px);
+    background: var(--btn-hover);
+}
+
+.navBtn:focus {
+    outline: 2px solid #86efac;
+    outline-offset: 2px;
+}
+
+.navBtnDisabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Стани */
+.loadingWrap {
+    min-height: 60vh;
+    display: grid;
+    place-items: center;
+    background: #f9fafb;
+    color: var(--muted);
+}
+
+/* ===== breakpoint: 375px — починається адаптивність мобайлу ===== */
+@media (min-width: 375px) {
+    .container {
+        padding: 64px 20px 96px;
+    }
+
+    .title {
+        font-size: 30px;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        padding: 22px;
+    }
+}
+
+/* ===== breakpoint: 768px (tablet) ===== */
+@media (min-width: 768px) {
+    .container {
+        padding: 72px 24px 104px;
+    }
+
+    .title {
+        font-size: 40px;
+        margin-bottom: 36px;
+    }
+
+    .navWrap {
+        right: 20px;
+        bottom: 24px;
+        gap: 16px;
+    }
+
+    .navBtn {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+
+    .card {
+        padding: 24px;
+    }
+
+    .stars {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .footer {
+        margin-top: 16px;
+    }
+}
+
+/* ===== breakpoint: 1440px (desktop) ===== */
+@media (min-width: 1440px) {
+    .container {
+        padding: 88px 24px 120px;
+        max-width: 1280px;
+        /* центрована велика сітка */
+    }
+
+    .title {
+        font-size: 48px;
+        margin-bottom: 40px;
+    }
+
+    .card {
+        padding: 28px;
+    }
+}
