@@ -1,131 +1,145 @@
 "use client";
-import { useState, useRef } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Keyboard, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import css from "./ReviewsList.module.css";
 
-interface Review {
-  _id: {
-    $oid: string;
-  };
+type Review = {
+  _id: { $oid: string };
   author: string;
   date: string;
   description: string;
   rate: number;
   category: string;
-  productId: {
-    $oid: string;
-  };
-}
+  productId: { $oid: string };
+};
 
-interface ReviewsListProps {
-  reviews: Review[];
-}
-
-const ReviewsList = ({ reviews }: ReviewsListProps) => {
-  const [canSlidePrev, setCanSlidePrev] = useState(false);
-  const [canSlideNext, setCanSlideNext] = useState(true);
-  const [visibleReviewsCount, setVisibleReviewsCount] = useState(3);
+export default function ReviewsSlider() {
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const swiperRef = useRef<any>(null);
+  const prevBtnRef = useRef<HTMLButtonElement | null>(null);
+  const nextBtnRef = useRef<HTMLButtonElement | null>(null);
 
-  // 🟢 Обробник натискання "Наступна" — підвантажує ще 3 картки
-  const handleNextClick = () => {
-    if (visibleReviewsCount < reviews.length) {
-      setVisibleReviewsCount((prev) => Math.min(prev + 3, reviews.length));
-    }
-    // якщо всі відгуки вже показані — дизейбл
-    if (visibleReviewsCount + 3 >= reviews.length) {
-      setCanSlideNext(false);
-    }
-  };
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
 
-  // 🟢 Обробник натискання "Попередня"
-  const handlePrevClick = () => {
-    if (swiperRef.current) swiperRef.current.slidePrev();
-  };
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const base = process.env.NEXT_PUBLIC_BACKEND_URL;
+      try {
+        const res = await fetch(`${base}/api/feedbacks`, { cache: "no-store" });
+        if (!res.ok) throw new Error("Помилка запиту");
+        const data: Review[] = await res.json();
+        setReviews(data);
+      } catch (err) {
+        console.error("Помилка при отриманні відгуків:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReviews();
+  }, []);
+
+  const handlePrevClick = () => swiperRef.current?.slidePrev();
+  const handleNextClick = () => swiperRef.current?.slideNext();
+
+  if (loading) {
+    return (
+      <section className={css.loadingWrap}>
+        <p>Завантаження відгуків…</p>
+      </section>
+    );
+  }
+
+  if (reviews.length === 0) {
+    return (
+      <section className={css.loadingWrap}>
+        <p>Немає відгуків для відображення</p>
+      </section>
+    );
+  }
 
   return (
-    <section className="max-w-6xl mx-auto py-10">
-      <h2 className="text-2xl font-bold mb-6 text-center">Останні відгуки</h2>
-
-      <div className="relative">
-        <Swiper
-          tabIndex={0} // ✅ дозволяє навігацію клавіатурою
-          modules={[Navigation, Keyboard, A11y]}
-          spaceBetween={20}
-          slidesPerView={3}
-          onBeforeInit={(swiper) => {
-            swiperRef.current = swiper;
-          }}
-          keyboard={{ enabled: true }}
-          navigation={{
-            prevEl: ".prev-btn",
-            nextEl: ".next-btn",
-          }}
-          onSlideChange={(swiper) => {
-            setCanSlidePrev(!swiper.isBeginning);
-            setCanSlideNext(!swiper.isEnd);
-          }}
-          breakpoints={{
-            1024: { slidesPerView: 3 },
-            768: { slidesPerView: 2 },
-            0: { slidesPerView: 1 },
-          }}
-        >
-          {reviews.slice(0, visibleReviewsCount).map((review) => (
-            <SwiperSlide key={review._id.$oid}>
-              <div className="border rounded-2xl p-4 shadow-sm bg-white h-full flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center mb-2">
-                    <span className="text-yellow-500 text-lg">
-                      {"★".repeat(Math.round(review.rate))}
-                    </span>
-                    <span className="text-gray-400 ml-1">
-                      {review.rate.toFixed(1)}
-                    </span>
+    <section className={css.section}>
+      <div>
+        <div className={css.sliderWrap}>
+          <Swiper
+            tag="ul"
+            modules={[Navigation, Keyboard, A11y]}
+            spaceBetween={24}
+            slidesPerView={1} /* мобільний — 1 */
+            keyboard={{ enabled: true }}
+            a11y={{ enabled: true }}
+            breakpoints={{
+              768:  { slidesPerView: 2, spaceBetween: 24 }, // планшет — 2
+              1440: { slidesPerView: 3, spaceBetween: 24 }, // десктоп — 3
+            }}
+            onBeforeInit={(swiper) => {
+              swiperRef.current = swiper;
+              swiper.params.navigation = {
+                prevEl: prevBtnRef.current,
+                nextEl: nextBtnRef.current,
+              };
+            }}
+            onAfterInit={(swiper) => {
+              setIsBeginning(swiper.isBeginning);
+              setIsEnd(swiper.isEnd);
+            }}
+            onSlideChange={(swiper) => {
+              setIsBeginning(swiper.isBeginning);
+              setIsEnd(swiper.isEnd);
+            }}
+          >
+            {reviews.map((review) => (
+              <SwiperSlide tag="li" key={review._id.$oid}>
+                <article className={css.card}>
+                  <div>
+                    <div className={css.stars}>
+                      {"★".repeat(Math.max(1, Math.round(review.rate)))}
+                    </div>
+                    <p className={css.quote}>&ldquo;{review.description}&rdquo;</p>
                   </div>
-                  <p className="italic text-gray-700 mb-3">
-                    {review.description}
-                  </p>
-                </div>
-                <div>
-                  <p className="font-semibold">{review.author}</p>
-                  <p className="text-sm text-gray-500">{review.category}</p>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
 
-        {/* Стрілки */}
-        <button
-          onClick={handlePrevClick}
-          disabled={!canSlidePrev}
-          className={`prev-btn absolute -left-6 top-1/2 transform -translate-y-1/2 rounded-full p-2 text-gray-700 transition bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-green-500 ${
-            !canSlidePrev ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          aria-label="Попередній"
-          type="button"
-        >
-          ←
-        </button>
+                  <div className={css.footer}>
+                    <p className={css.author}>{review.author}</p>
+                    <p className={css.category}>{review.category}</p>
+                  </div>
+                </article>
+              </SwiperSlide>
+            ))}
+          </Swiper>
 
-        <button
-          onClick={handleNextClick}
-          disabled={!canSlideNext}
-          className={`next-btn absolute -right-6 top-1/2 transform -translate-y-1/2 rounded-full p-2 text-gray-700 transition bg-gray-200 hover:bg-gray-300 focus:ring-2 focus:ring-green-500 ${
-            !canSlideNext ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          aria-label="Наступний"
-          type="button"
-        >
-          →
-        </button>
+          {/* Стрілки */}
+          <div className={css.navWrap}>
+            <button
+              ref={prevBtnRef}
+              onClick={handlePrevClick}
+              disabled={isBeginning}
+              className={`${css.navBtn} ${isBeginning ? css.navBtnDisabled : ""}`}
+              aria-label="Попередній"
+              type="button"
+            >
+              ←
+            </button>
+
+            <button
+              ref={nextBtnRef}
+              onClick={handleNextClick}
+              disabled={isEnd}
+              className={`${css.navBtn} ${isEnd ? css.navBtnDisabled : ""}`}
+              aria-label="Наступний"
+              type="button"
+            >
+              →
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );
-};
-
-export default ReviewsList;
+}
