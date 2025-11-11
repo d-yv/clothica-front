@@ -210,6 +210,13 @@
         height: 32px;
         color: #000;
         background: rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .headerButtonVhid:hover {
+        background: #9db484;
+        color: #000;
+        cursor: pointer;
     }
 
     .headerButtonRegistration {
@@ -224,6 +231,13 @@
         height: 32px;
         background: #c5e1a5;
         color: #000;
+        transition: all 0.3s ease;
+    }
+
+    .headerButtonRegistration:hover {
+        background: #9db484;
+        color: #000;
+        cursor: pointer;
     }
 
     .headerButtonCabinet {
@@ -231,14 +245,21 @@
         align-items: center;
         justify-content: center;
         flex-direction: row;
-        gap: 16px;
+        gap: 8px;
         color: #000;
         border: 1px solid rgba(255, 255, 255, 0);
         border-radius: 100px;
         padding: 4px 10px;
-        width: 73px;
-        height: 29px;
+        width: 81px;
+        height: 32px;
         background: rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .headerButtonCabinet:hover {
+        background: #9db484;
+        color: #000;
+        cursor: pointer;
     }
 
     .headerActionsDiv {
