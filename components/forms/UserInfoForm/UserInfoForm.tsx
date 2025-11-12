@@ -5,57 +5,86 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styles from './UserInfoForm.module.css';
 
-interface FormData {
+// --- ЗМІНЕНО: Інтерфейс для оновлення користувача (узгоджено з бекендом) ---
+interface UserUpdateData {
   firstName: string;
   lastName: string;
-  phone: string;
+  phone: string; // Залишаємо на фронтенді, хоча бекенд його ігнорує (можливо, додасте пізніше)
   city: string;
-  warehouseNumber: string;
-  comment: string;
+  postOfficeNum: string; // ДОДАНО
 }
-const ValidationSchema = Yup.object().shape({
+
+// Припускаємо, що ви хочете бачити поле "Номер відділення" як "postOfficeNum"
+const UserUpdateValidationSchema = Yup.object().shape({
   firstName: Yup.string().required("Ім'я обов'язкове").min(2, "Занадто коротке ім'я"),
   lastName: Yup.string().required("Прізвище обов'язкове").min(2, "Занадто коротке прізвище"),
   phone: Yup.string()
     .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, 'Невірний формат телефону')
     .required('Номер телефону обов\'язковий'),
   city: Yup.string().required('Місто доставки обов\'язкове'),
-  warehouseNumber: Yup.string().required('Номер відділення обов\'язковий'),
-  comment: Yup.string().optional(),
+  postOfficeNum: Yup.string().required('Номер відділення обов\'язковий'), // НОВЕ ПОЛЕ
 });
 
-export default function UserInfoForm(){
-  const initialValues: FormData = {
-  firstName: '',
-  lastName: '',
-  phone: '',
-  city: '',
-  warehouseNumber: '',
-  comment: '',
+interface UserInfoFormProps {
+    // Якщо ви передаєте поточні дані користувача для попереднього заповнення
+    currentUser?: UserUpdateData; 
+}
+
+export default function UserInfoForm({ currentUser }: UserInfoFormProps){
+  
+  const initialValues: UserUpdateData = currentUser || {
+    firstName: '',
+    lastName: '',
+    phone: '',
+    city: '',
+    postOfficeNum: '', // ДОДАНО
   };
   
-  const handleSubmit = async (values: FormData, { setSubmitting, setStatus, resetForm }: any) => {
-    setStatus({ success: false, message: 'Відправлення даних...' });
-    const API_URL = 'http://localhost:4000/api/orders';
+  // --- ЗМІНЕНО: Логіка handleSubmit для PATCH /api/users/me ---
+  const handleSubmit = async (values: UserUpdateData, { setSubmitting, setStatus }: any) => {
+    setStatus({ success: false, message: 'Збереження змін...' });
+    
+    // --- ЗМІНЕНО: API маршрут для оновлення користувача ---
+    const API_URL = 'http://localhost:4000/api/users/me'; 
+    
+    // --- ВАЖЛИВО: Фільтруємо дані, які надсилаємо. 
+    // Навіть якщо бекенд ігнорує 'phone', ми його надсилаємо, але не надсилаємо зайве. ---
+    const dataToSend = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      city: values.city,
+      phone: values.phone, // Буде проігноровано бекендом, але ми його надсилаємо
+      postOfficeNum: values.postOfficeNum // ДОЗВОЛЕНО бекендом
+    };
 
     try {
       const response = await fetch(API_URL, {
-        method: 'PATH',
+        method: 'PATCH', 
         headers: {
           'Content-Type': 'application/json',
+          // Cookie (accessToken) надсилаються автоматично!
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(dataToSend),
       });
 
-      if (!response.ok) {
-        throw new Error(`Помилка HTTP: ${response.status}`);
+      if (response.status === 401) {
+          throw new Error('Несанкціоновано. Будь ласка, увійдіть знову.');
       }
+      
+      if (!response.ok) {
+        // Якщо це 400, можливо, бекенд не прийняв одне з полів
+        const errorBody = await response.json();
+        throw new Error(`Помилка HTTP: ${response.status}. ${errorBody.message || 'Помилка валідації.'}`);
+      }
+      
       const result = await response.json(); 
-
-      setStatus({ success: true, message: result.message || 'Зміни внесено' });
-      resetForm();
+      
+      setStatus({ success: true, message: result.message || 'Дані успішно оновлено!' }); 
+      
+      // Опціонально: тут можна оновити стан користувача (currentUser) на сторінці Cabinet
+      
     } catch (error) {
-      console.error('Помилка при відправці форми:', error);
+      console.error('Помилка при оновленні профілю:', error);
       setStatus({ 
           success: false, 
           message: `Помилка відправки: ${error instanceof Error ? error.message : 'Невідома помилка'}` 
@@ -66,16 +95,18 @@ export default function UserInfoForm(){
   };
 
   return (
-    <Formik<FormData>
+    <Formik<UserUpdateData>
       initialValues={initialValues}
-      validationSchema={ValidationSchema}
+      validationSchema={UserUpdateValidationSchema}
       onSubmit={handleSubmit}
+      enableReinitialize={true} 
     >
       {({ isSubmitting, status }) => (
         <Form className={styles.formContainer}>
           
           <h3 className={styles.formTitle}>Особиста інформація</h3> 
           
+          {/* Поля залишилися без змін */}
           <div className={styles.formWrapper}>
             <label htmlFor="firstName">Ім'я*</label>
             <Field name="firstName" type="text" className={styles.formInput} />
@@ -100,23 +131,20 @@ export default function UserInfoForm(){
             <ErrorMessage name="city" component="div" className={styles.errorMessage} />
           </div>
 
+          {/* НОВЕ ПОЛЕ: postOfficeNum */}
           <div className={styles.formWrapper}>
-            <label htmlFor="warehouseNumber">Номер відділення*</label>
-            <Field name="warehouseNumber" type="text" className={styles.formInput} />
-            <ErrorMessage name="warehouseNumber" component="div" className={styles.errorMessage} />
+            <label htmlFor="postOfficeNum">Номер відділення*</label>
+            <Field name="postOfficeNum" type="text" className={styles.formInput} />
+            <ErrorMessage name="postOfficeNum" component="div" className={styles.errorMessage} />
           </div>
           
-          <div className={styles.formWrapper}>
-            <label htmlFor="comment">Коментар</label>
-            <Field name="comment" as="textarea" rows={4} className={styles.formInputTextarea} />
-            <ErrorMessage name="comment" component="div" className={styles.errorMessage} />
-          </div>
+          {/* Коментар ВИДАЛЕНО, оскільки він не потрібен для оновлення профілю */}
           
           <button 
             type="submit" 
             disabled={isSubmitting}
             className={styles.submitButton}>
-            {isSubmitting ? 'Обробка...' : 'Оформити замовлення'}
+            {isSubmitting ? 'Обробка...' : 'Зберегти зміни'}
           </button>
 
           {status && status.message && (
