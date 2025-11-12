@@ -105,14 +105,15 @@ export const GoodInfo: React.FC = () => {
   if (error) return <p className={styles.error}>Помилка: {error}</p>;
 
   return (
-    <section className={styles.section} aria-label="Інформація про товари">
-      <div className = "container">
+    <section className={styles.section} aria-label="Інформація про товари" id="goodinfo">
+      <div className="container">
         <div className={styles.header}>
           <h2 className={styles.title}>Популярні товари</h2>
           <a href="/api/goods" className={styles.viewAll}>
             Всі товари
           </a>
         </div>
+
         <div className={styles.sliderWrapper}>
           {/* стрілка назад */}
           <button
@@ -124,8 +125,11 @@ export const GoodInfo: React.FC = () => {
             aria-label="Попередній"
             disabled={isBeginning}
           >
-            ‹
+            <svg className={styles.logo} width="24" height="24">
+              <use href="/styles.icon.svg#icon-arrow-light" />
+            </svg>
           </button>
+
           <Swiper
             modules={[Navigation, Pagination, Keyboard]}
             onSwiper={setSwiper}
@@ -135,6 +139,7 @@ export const GoodInfo: React.FC = () => {
             }}
             keyboard={{ enabled: true, onlyInViewport: true }}
             pagination={{ clickable: true }}
+            autoHeight 
             spaceBetween={20}
             slidesPerView={1}
             breakpoints={{
@@ -147,49 +152,49 @@ export const GoodInfo: React.FC = () => {
             {goods.map((good) => (
               <SwiperSlide key={good._id}>
                 <div className={styles.card}>
-  <div className={styles.imageWrapper}>
-    <img
-      src={good.image || "/placeholder.jpg"}
-      alt={good.name}
-      className={styles.image}
-      width="304"
-    />
-  </div>
+                  <div className={styles.imageWrapper}>
+                    <img
+                      src={good.image || "/placeholder.jpg"}
+                      alt={good.name}
+                      className={styles.image}
+                      width="304"
+                    />
+                  </div>
 
-  <div className={styles.info}>
-    <div className={styles.textBlock}>
-      <h3 className={styles.name}>{good.name}</h3>
-      <div className={styles.meta}>
-        <span>
-          <svg className={styles.icon} width="16" height="16">
-            <use href="/styles.icon.svg#icon-Star-Filled-" />
-          </svg>{" "}
-          {good.feedbacks?.length ?? 0}
-        </span>
-        <span>
-          <svg className={styles.icon} width="16" height="16">
-            <use href="/styles.icon.svg#icon-review" />
-          </svg>{" "}
-          {good.feedbacks?.length ?? 0}
-        </span>
-      </div>
-    </div>
+                  <div className={styles.info}>
+                    <div className={styles.textBlock}>
+                      <h3 className={styles.name}>{good.name}</h3>
+                      <div className={styles.meta}>
+                        <span>
+                          <svg className={styles.icon} width="16" height="16">
+                            <use href="/styles.icon.svg#icon-Star-Filled-" />
+                          </svg>{" "}
+                          {good.feedbacks?.length ?? 0}
+                        </span>
+                        <span>
+                          <svg className={styles.icon} width="16" height="16">
+                            <use href="/styles.icon.svg#icon-review" />
+                          </svg>{" "}
+                          {good.feedbacks?.length ?? 0}
+                        </span>
+                      </div>
+                    </div>
 
-    <p className={styles.price}>
-      {good.price
-        ? `${good.price.value} ${good.price.currency}`
-        : "Ціну уточнюйте"}
-    </p>
-  </div>
+                    <p className={styles.price}>
+                      {good.price
+                        ? `${good.price.value} ${good.price.currency}`
+                        : "Ціну уточнюйте"}
+                    </p>
+                  </div>
 
-  <a href={`/goods/${good._id}`} className={styles.detailsBtn}>
-    Детальніше
-  </a>
-</div>
-
+                  <a href={`/goods/${good._id}`} className={styles.detailsBtn}>
+                    Детальніше
+                  </a>
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
+
           {/* стрілка вперед */}
           <button
             ref={nextRef}
@@ -200,7 +205,9 @@ export const GoodInfo: React.FC = () => {
             aria-label="Наступний"
             disabled={isEnd}
           >
-            ›
+            <svg className={styles.logo} width="24" height="24">
+              <use href="/styles.icon.svg#icon-arrow-right" />
+            </svg>
           </button>
         </div>
       </div>
@@ -209,3 +216,4 @@ export const GoodInfo: React.FC = () => {
 };
 
 export default GoodInfo;
+
