@@ -23,7 +23,7 @@ export default function MobileMenu({ isAuth, onClose }: MobileMenuProps) {
                         </svg>
                     </button>
 
-                    <Link href="/components/forms/CreateOrderForm">
+                    <Link href="/forms/CreateOrderForm">
                         <button className={`${styles.cartBtn} ${styles.specialBtn}`}>
                             <svg className={styles.headericon} width="24" height="24">
                                 <use href="/styles.icon.svg#icon-shopping_cart" />
@@ -36,8 +36,8 @@ export default function MobileMenu({ isAuth, onClose }: MobileMenuProps) {
 
             <nav className={styles.mobileMenuList}>
                 <Link href="/" className={styles.mobileMenuA}>Головна</Link>
-                <Link href="/components/common/PopularGoods" className={styles.mobileMenuA}>Товари</Link>
-                <Link href="/components/common/PopularCategories" className={styles.mobileMenuA}>Категорії</Link>
+                <Link href="/common/PopularGoods" className={styles.mobileMenuA}>Товари</Link>
+                <Link href="/common/PopularCategories" className={styles.mobileMenuA}>Категорії</Link>
             </nav>
 
             <div className={styles.headerAuth}>

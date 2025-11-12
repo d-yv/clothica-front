@@ -12,17 +12,16 @@ import "swiper/css/pagination";
 
 import styles from "./GoodInfo.module.css";
 
-// 🔗 URL бекенду
+// URL bd
 export const BACKEND_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || "https://clothica-back.onrender.com";
 
-// ⚙️ axios клієнт
+// axios
 export const api = axios.create({
   baseURL: BACKEND_URL,
-  timeout: 15000,
 });
 
-// 🔤 Тип товару — згідно з реальною структурою
+// type
 export interface Good {
   _id: string;
   name: string;
@@ -36,10 +35,10 @@ export interface Good {
   likes?: number;
 }
 
-// 📦 Отримати всі товари (масив гарантовано)
+// all
 export const getGoods = async (): Promise<Good[]> => {
   try {
-    const res = await api.get("/goods");
+    const res = await api.get("/api/goods");
     const data = res.data;
 
     if (Array.isArray(data)) return data as Good[];
@@ -65,7 +64,7 @@ export const GoodInfo: React.FC = () => {
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
 
-  // 🧠 завантаження товарів
+  // loading goods
   useEffect(() => {
     let mounted = true;
 
@@ -76,7 +75,7 @@ export const GoodInfo: React.FC = () => {
 
         const goodsArray = Array.isArray(data) ? data : [];
 
-        // максимум 10 товарів
+        // max 10
         let goodsToShow = goodsArray.slice(0, 10);
         while (goodsToShow.length < 10 && goodsArray.length > 0) {
           const toAdd = 10 - goodsToShow.length;
@@ -106,96 +105,115 @@ export const GoodInfo: React.FC = () => {
   if (error) return <p className={styles.error}>Помилка: {error}</p>;
 
   return (
-    <section className={styles.section} aria-label="Інформація про товари">
-      <div className={styles.header}>
-        <h2 className={styles.title}>Популярні товари</h2>
-        <a href="/goods" className={styles.viewAll}>
-          Всі товари
-        </a>
-      </div>
+    <section className={styles.section} aria-label="Інформація про товари" id="goodinfo">
+      <div className="container">
+        <div className={styles.header}>
+          <h2 className={styles.title}>Популярні товари</h2>
+          <a href="/api/goods" className={styles.viewAll}>
+            Всі товари
+          </a>
+        </div>
 
-      <div className={styles.sliderWrapper}>
-        {/* стрілка назад */}
-        <button
-          ref={prevRef}
-          className={`${styles.arrow} ${styles.prev} ${
-            isBeginning ? styles.disabled : ""
-          }`}
-          onClick={handlePrev}
-          aria-label="Попередній"
-          disabled={isBeginning}
-        >
-          ‹
-        </button>
+        <div className={styles.sliderWrapper}>
+          {/* стрілка назад */}
+          <button
+            ref={prevRef}
+            className={`${styles.arrow} ${styles.prev} ${
+              isBeginning ? styles.disabled : ""
+            }`}
+            onClick={handlePrev}
+            aria-label="Попередній"
+            disabled={isBeginning}
+          >
+            <svg className={styles.logo} width="24" height="24">
+              <use href="/styles.icon.svg#icon-arrow-light" />
+            </svg>
+          </button>
 
-        <Swiper
-          modules={[Navigation, Pagination, Keyboard]}
-          onSwiper={setSwiper}
-          onSlideChange={(s) => {
-            setIsBeginning(s.isBeginning);
-            setIsEnd(s.isEnd);
-          }}
-          keyboard={{ enabled: true, onlyInViewport: true }}
-          pagination={{ clickable: true }}
-          spaceBetween={20}
-          slidesPerView={1}
-          breakpoints={{
-            640: { slidesPerView: 2 },
-            1024: { slidesPerView: 2 },
-            1280: { slidesPerView: 4 },
-          }}
-          className={styles.swiper}
-        >
-          {goods.map((good) => (
-            <SwiperSlide key={good._id}>
-              <div className={styles.card}>
-                <div className={styles.imageWrapper}>
-                  <img
-                    src={good.image || "/placeholder.jpg"}
-                    alt={good.name}
-                    className={styles.image}
-                  />
+          <Swiper
+            modules={[Navigation, Pagination, Keyboard]}
+            onSwiper={setSwiper}
+            onSlideChange={(s) => {
+              setIsBeginning(s.isBeginning);
+              setIsEnd(s.isEnd);
+            }}
+            keyboard={{ enabled: true, onlyInViewport: true }}
+            pagination={{ clickable: true }}
+            autoHeight 
+            spaceBetween={20}
+            slidesPerView={1}
+            breakpoints={{
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 2 },
+              1280: { slidesPerView: 4 },
+            }}
+            className={styles.swiper}
+          >
+            {goods.map((good) => (
+              <SwiperSlide key={good._id}>
+                <div className={styles.card}>
+                  <div className={styles.imageWrapper}>
+                    <img
+                      src={good.image || "/placeholder.jpg"}
+                      alt={good.name}
+                      className={styles.image}
+                      width="304"
+                    />
+                  </div>
+
+                  <div className={styles.info}>
+                    <div className={styles.textBlock}>
+                      <h3 className={styles.name}>{good.name}</h3>
+                      <div className={styles.meta}>
+                        <span>
+                          <svg className={styles.icon} width="16" height="16">
+                            <use href="/styles.icon.svg#icon-Star-Filled-" />
+                          </svg>{" "}
+                          {good.feedbacks?.length ?? 0}
+                        </span>
+                        <span>
+                          <svg className={styles.icon} width="16" height="16">
+                            <use href="/styles.icon.svg#icon-review" />
+                          </svg>{" "}
+                          {good.feedbacks?.length ?? 0}
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className={styles.price}>
+                      {good.price
+                        ? `${good.price.value} ${good.price.currency}`
+                        : "Ціну уточнюйте"}
+                    </p>
+                  </div>
+
+                  <a href={`/goods/${good._id}`} className={styles.detailsBtn}>
+                    Детальніше
+                  </a>
                 </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
 
-                <div className={styles.info}>
-                  <p className={styles.category}>
-                    {good.category || "Без категорії"}
-                  </p>
-                  <h3 className={styles.name}>{good.name}</h3>
-                  <p className={styles.price}>
-                    {good.price
-                      ? `${good.price.value} ${good.price.currency}`
-                      : "Ціну уточнюйте"}
-                  </p>
-                </div>
-
-                <div className={styles.meta}>
-                  <span>⭐ {good.feedbacks?.length ?? 0}</span>
-                </div>
-
-                <a href={`/goods/${good._id}`} className={styles.detailsBtn}>
-                  Детальніше
-                </a>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
-        {/* стрілка вперед */}
-        <button
-          ref={nextRef}
-          className={`${styles.arrow} ${styles.next} ${
-            isEnd ? styles.disabled : ""
-          }`}
-          onClick={handleNext}
-          aria-label="Наступний"
-          disabled={isEnd}
-        >
-          ›
-        </button>
+          {/* стрілка вперед */}
+          <button
+            ref={nextRef}
+            className={`${styles.arrow} ${styles.next} ${
+              isEnd ? styles.disabled : ""
+            }`}
+            onClick={handleNext}
+            aria-label="Наступний"
+            disabled={isEnd}
+          >
+            <svg className={styles.logo} width="24" height="24">
+              <use href="/styles.icon.svg#icon-arrow-right" />
+            </svg>
+          </button>
+        </div>
       </div>
     </section>
   );
 };
 
 export default GoodInfo;
+
