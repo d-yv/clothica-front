@@ -13,7 +13,7 @@ export default function Home() {
       <Hero />
       <Style />
       {/* <PopularCategories /> */}
-      <GoodInfo />
+      {/* <GoodInfo /> */}
       {<LastReviews />}
     </main>
   );
