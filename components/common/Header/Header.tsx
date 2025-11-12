@@ -27,11 +27,11 @@ export default function Header() {
   return (
     <header className={styles.siteHeader}>
       <div className={styles.headercontainer}>
-        <a href="/" target="_blank" rel="noopener noreferrer">
+        <Link href="/" rel="noopener noreferrer">
           <svg className={styles.logo} width="100" height="20">
             <use href="/styles.icon.svg#icon-Clothica-1" />
           </svg>
-        </a>
+        </Link>
 
         <nav className={styles.mainNav}>
           <Link href="/" className={styles.btnEntrance}>Головна</Link>
