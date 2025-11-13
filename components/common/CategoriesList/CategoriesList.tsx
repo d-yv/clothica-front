@@ -1,81 +1,135 @@
-'use client'
-import { useState } from "react";
-import css from './CategoriesList.module.css'
+"use client";
 
-const categories = [
-  { 
-    id: 'tshirts', 
-    name: 'Футболки', 
-    image: '/images/tshirts.jpg' 
-  },
-  { 
-    id: 'hoodies', 
-    name: 'Худі та світшоти', 
-    image: '/images/hoodies.jpg' 
-  },
-  { 
-    id: 'jeans', 
-    name: 'Джинси та штани', 
-    image: '/images/jeans.jpg' 
-  },
-  { 
-    id: 'dresses', 
-    name: 'Сукні та спідниці', 
-    image: '/images/dresses.jpg' 
-  },
-  { 
-    id: 'jackets', 
-    name: 'Куртки та верхній одяг', 
-    image: '/images/jackets.jpg' 
-  },
-  { 
-    id: 'homewear', 
-    name: 'Домашній та спортивний одяг', 
-    image: '/images/homewear.jpg' 
-  },
-  { 
-    id: 'tops', 
-    name: 'Топи та майки', 
-    image: '/images/tops.jpg' 
+import { useRef, useState } from "react";
+import { Category } from "@/utils/categories";
+import CategoryCard from "../CategoryCard/CategoryCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Keyboard } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import styles from "./CategoriesList.module.css";
+
+interface Props {
+  categories: Category[];
+  variant?: "slider" | "grid";
+  showMoreButton?: boolean;
+  onShowMore?: () => void;
+  isEnd?: boolean;
+}
+
+export default function CategoriesList({
+  categories,
+  variant = "slider",
+  showMoreButton = false,
+  onShowMore,
+  isEnd,
+}: Props) {
+  const [swiper, setSwiper] = useState<SwiperType | null>(null);
+
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEndSlide, setIsEndSlide] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(3);
+  const prevRef = useRef<HTMLButtonElement | null>(null);
+  const nextRef = useRef<HTMLButtonElement | null>(null);
+  const visibleCategories = categories.slice(0, visibleCount);
+  const handleNext = () => {
+    if (visibleCount < categories.length) {
+      setVisibleCount((prev) => Math.min(prev + 3, categories.length));
+
+      setTimeout(() => {
+        swiper?.slideNext();
+      }, 0);
+    } else {
+      swiper?.slideNext();
+    }
+  };
+
+  const handlePrev = () => {
+    swiper?.slidePrev();
+  };
+
+  if (!categories?.length) {
+    return <p className={styles.empty}>Немає категорій для відображення.</p>;
   }
-];
 
-const CategoriesList = () => {
-    const [showAll, setShowAll] = useState(false);
-    const visibleCategories = showAll ? categories : categories.slice(0, 6);
-
+  // Слайдер
+  if (variant === "slider") {
     return (
-        <section className={css.wrap}>
-        <div className='container'>
-            <div className={css.content}>
-            <h1 className={css.header}>Категорії</h1>
-            <ul className={css.grid}>
-                {visibleCategories.map((category) => (
-                    <li key={category.id} className={css.gridItem}>
-                        <a href={`/category/${category.id}`} className={css.card}>
-                            <div className={css.imageWrapper}>
-                                <img
-                                    src={category.image}
-                                    alt={category.name}
-                                    className={css.image}
-                                />
-                            </div>
-                            <h2 className={css.title}>{category.name}</h2>
-                        </a>
-                    </li>
-                ))}
-            </ul>
+      <div className={styles.wrapper}>
+        <Swiper
+          modules={[Navigation, Keyboard]}
+          onSwiper={setSwiper}
+          onSlideChange={(s) => {
+            setIsBeginning(s.isBeginning);
+            setIsEndSlide(s.isEnd);
+            if (s.isEnd && visibleCount < categories.length) {
+              setVisibleCount((prev) => Math.min(prev + 3, categories.length));
+            }
+          }}
+          keyboard={{ enabled: true, onlyInViewport: true }}
+          simulateTouch={true}
+          allowTouchMove={true}
+          spaceBetween={32}
+          slidesPerView={1}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+          }}
+          className={styles.swiper}
+        >
+          {visibleCategories.map((cat) => (
+            <SwiperSlide key={cat.id}>
+              <CategoryCard category={cat} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-            <div className={css.buttonWrapper}>
-                <button className={css.button}
-                    onClick={() => setShowAll(!showAll)}>
-                    {showAll ? 'Показати менше' : 'Показати більше'}
-                </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    )
-};
+        <div className={styles.allButton}>
+          <button
+            ref={prevRef}
+            className={`${styles.navButton} ${styles.left} ${
+              isBeginning ? styles.disabled : ""
+            }`}
+            onClick={handlePrev}
+            disabled={isBeginning}
+            aria-label="Попередній"
+          >
+            ←
+          </button>
 
-export default CategoriesList;
+          <button
+            ref={nextRef}
+            className={`${styles.navButton} ${styles.right} ${
+              isEndSlide ? styles.disabled : ""
+            }`}
+            onClick={handleNext}
+            disabled={isEndSlide}
+            aria-label="Наступний"
+          >
+            →
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Грід
+  return (
+    <div className={styles.gridWrapper}>
+      <ul className={styles.grid}>
+        {categories.map((cat) => (
+          <li key={cat.id} className={styles.item}>
+            <CategoryCard category={cat} />
+          </li>
+        ))}
+      </ul>
+
+      {showMoreButton && !isEnd && (
+        <button type="button" className={styles.showMore} onClick={onShowMore}>
+          Показати більше
+        </button>
+      )}
+    </div>
+  );
+}

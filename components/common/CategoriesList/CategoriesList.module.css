@@ -1,179 +1,67 @@
-
-.wrap {
-    width: 100%;
-    box-sizing: border-box;
-}
-.content {
-    padding-top: 64px;
-    padding-bottom: 64px;
-}
-.header {
-    font-family: var(--font-nunito-sans), sans-serif;
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 120%;
-    letter-spacing: -0.01em;
-    color: #000;
-    margin-bottom: 24px;
+.wrapper {
+  /* justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+  display: flex; */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  width: 100%;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 32px;
-    margin-bottom: 40px;
-    list-style: none;
+.swiper {
+  width: 100%;
+}
+.allButton {
+  justify-content: flex-end;
+  gap: 16px;
+  display: flex;
+  margin-top: 40px;
 }
 
-.gridItem {
-    width: 100%;
+.navButton {
+  background: #c5e1a5;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s;
+}
+.disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+.navButton:hover {
+  background-color: #eff6ff;
 }
 
-.card {
-    color: inherit;
+@media only screen and (min-width: 768px) {
+  .allButton {
+    position: absolute;
+    top: 20%;
+    left: -25px;
+    right: -25px;
     display: flex;
-    flex-direction: column;
-    border-radius: 16px;
-    background-color: #f5f5f0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 100%;
-    height: 100%;
+    justify-content: space-between;
+  }
+  .navButton {
+    background: #c5e1a5;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s;
+  }
 }
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.imageWrapper {
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-    background-color: #f5f5f0;
-}
-
-.image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.title {
-    font-family: var(--font-inter), sans-serif;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 150%;
-    color: #000;
-    padding: 24px 20px;
-}
-
-.button {
-    border: 1px solid #C5E1A5;
-    border-radius: 100px;
-    padding: 6px 12px;
-    background: #C5E1A5;
-    font-family: var(--font-inter), sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 150%;
-    color: #000;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    height: 36px;
-    width: 100%;
-}
-
-.buttonWrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-.button:hover {
-    background: #9DB484;
-    border-color: #4E5A42;
-}
-
-.button:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(197, 225, 165, 0.4);
-}
-
-.button:active {
-    background: #3B4331;
-    border-color: #C5E1A5;
-    transform: scale(0.98);
-    color: #fff;
-}
-
-.button:disabled {
-    background: #C5E1A5;
-    border-color: #C5E1A5;
-    color: #000;
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-
-@media (min-width: 768px) {
-    .content {
-    padding-top: 64px;  
-    padding-bottom: 64px;  
-}
-    .header {
-        font-size: 40px;
-        margin-bottom: 40px;
-    }
-
-
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 32px;
-        margin-bottom: 40px;
-    }
-
-    .imageWrapper {
-        height: 240px;
-    }
-
-    .title {
-        font-size: 20px;
-    }
-    .button{
-        width: 158px;
-        height: 36px;
-    }
-
-}
-
-
-@media (min-width: 1440px) {
-    .content{
-        padding-top: 112px;
-        padding-bottom: 112px;
-    }
-    .header {
-        font-size: 48px;
-        margin-bottom: 40px;
-    }
-
-    .grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 32px;
-        margin-bottom: 40px;
-    }
-
-    .imageWrapper {
-        height: 277px;
-    }
-
-    .title {
-        font-size: 20px;
-    }
-    .button {
-         width: 158px;
-         height: 36px;
-    }
-   
+@media only screen and (min-width: 1440px) {
 }
