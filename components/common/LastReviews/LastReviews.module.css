@@ -1,0 +1,52 @@
+.lastreviews {
+    padding: 64px 20px;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.title {
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #000;
+    margin-bottom: 40px;
+}
+
+@media (min-width: 375px) {
+    .container {
+        max-width: 335px;
+    }
+
+    .lastreviews {
+        padding: 64px 20px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .lastreviews {
+        padding: 64px 32px;
+    }
+
+    .container {
+        max-width: 704px;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .lastreviews {
+        padding: 112px 64px;
+    }
+
+    .container {
+        max-width: 1312px;
+    }
+
+    .title {
+        font-size: 48px;
+    }
+}

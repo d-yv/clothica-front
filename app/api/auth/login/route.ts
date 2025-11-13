@@ -1,0 +1,58 @@
+//app/api/auth/login/route.ts
+
+import { NextRequest, NextResponse } from 'next/server';
+import { api, ApiError } from '../../api';
+import { parse } from 'cookie';
+import { cookies } from 'next/headers';
+
+export async function POST(req: NextRequest) {
+  console.log('✅ API route /api/auth/login called');
+  
+  try {
+    const body = await req.json();
+    console.log('📦 Received data:', body);
+
+    // Проверяем базовый URL
+    console.log('🔗 Backend URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
+
+    const apiRes = await api.post('auth/login', body);
+    console.log('✅ Backend response status:', apiRes.status);
+
+    const cookieStore = await cookies();
+    const setCookie = apiRes.headers['set-cookie'];
+    
+    if (setCookie) {
+      const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
+      
+      for (const cookieStr of cookieArray) {
+        const parsed = parse(cookieStr);
+        const options = {
+          expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
+          path: parsed.Path,
+          maxAge: Number(parsed['Max-Age']),
+        };
+        
+        if (parsed.accessToken) {
+          cookieStore.set('accessToken', parsed.accessToken, options);
+        }
+        if (parsed.refreshToken) {
+          cookieStore.set('refreshToken', parsed.refreshToken, options);
+        }
+      }
+      
+      return NextResponse.json(apiRes.data);
+    }
+    
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    
+  } catch (error) {
+    console.error('❌ API route error:', error);
+    
+    return NextResponse.json(
+      {
+        error: (error as ApiError).response?.data?.error ?? (error as ApiError).message,
+      },
+      { status: (error as ApiError).status || 500 }
+    );
+  }
+}

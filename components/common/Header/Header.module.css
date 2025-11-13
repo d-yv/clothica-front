@@ -72,8 +72,18 @@
     color: #000;
 }
 
+.btnEntrance:hover {
+    text-decoration: underline;
+
+}
+
 .btnRegistration {
     color: #000;
+}
+
+.btnRegistration:hover {
+    text-decoration: underline;
+
 }
 
 .cart {
@@ -113,8 +123,8 @@
 
 .headercart {
     position: relative;
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     border: 0;
     background: #000;
@@ -131,7 +141,7 @@
     justify-content: center;
     flex-direction: row;
     gap: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+
     border-radius: 100px;
     padding: 6px;
     width: 36px;
@@ -147,14 +157,23 @@
     display: none;
 }
 
+
+
 .dot {
     position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 12px;
+    top: 2px;
+    right: -3px;
+    color: white;
+    border-radius: 100%;
+    padding: 1px 3px;
+    width: 11px;
     height: 12px;
-    background: #ff2323;
-    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 12px;
+    background: #b70000;
 }
 
 @media (min-width: 768px) {
@@ -191,6 +210,13 @@
         height: 32px;
         color: #000;
         background: rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .headerButtonVhid:hover {
+        background: #9db484;
+        color: #000;
+        cursor: pointer;
     }
 
     .headerButtonRegistration {
@@ -205,6 +231,13 @@
         height: 32px;
         background: #c5e1a5;
         color: #000;
+        transition: all 0.3s ease;
+    }
+
+    .headerButtonRegistration:hover {
+        background: #9db484;
+        color: #000;
+        cursor: pointer;
     }
 
     .headerButtonCabinet {
@@ -212,14 +245,21 @@
         align-items: center;
         justify-content: center;
         flex-direction: row;
-        gap: 16px;
+        gap: 8px;
         color: #000;
         border: 1px solid rgba(255, 255, 255, 0);
         border-radius: 100px;
         padding: 4px 10px;
-        width: 73px;
-        height: 29px;
+        width: 81px;
+        height: 32px;
         background: rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .headerButtonCabinet:hover {
+        background: #9db484;
+        color: #000;
+        cursor: pointer;
     }
 
     .headerActionsDiv {

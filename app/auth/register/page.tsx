@@ -1,3 +1,5 @@
+//app/auth/register/page.tsx
+
 import RegistrationForm from '@/components/forms/RegistrationForm/RegistrationForm';
 import Link from 'next/link';
 import styles from './page.module.css';
@@ -9,11 +11,14 @@ export default function RegisterPage() {
         {/* Header with logo only */}
         <div className={styles.header}>
           <div className={styles.logoSection}>
-            <img 
-              src="/images/auth/logo.svg" 
-              alt="Clothica" 
-              className={styles.logo}
-            />
+            {/* Оборачиваем логотип в Link для кликабельности */}
+            <Link href="/"> {/* href="/" - ссылка на главную страницу */}
+              <img 
+                src="/images/auth/logo.svg" 
+                alt="Clothica" 
+                className={styles.logo}
+              />
+            </Link>
           </div>
         </div>
 

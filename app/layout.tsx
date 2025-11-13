@@ -4,8 +4,7 @@ import "modern-normalize/modern-normalize.css";
 import "./globals.css";
 import Header from "../components/common/Header/Header";
 import Footer from "../components/common/Footer/Footer";
-import GoodInfo from "@/components/common/GoodInfo/GoodInfo";
-import ReviewsList from "@/components/common/ReviewsList/ReviewsList";
+
 
 const inter = Inter({
   subsets: ["cyrillic"],
@@ -22,19 +21,19 @@ const nunito = Nunito_Sans({
 
 export const metadata: Metadata = {
   title: "Clothica-shop",
-  description: "Designer fashion for everyone.",
+  description: "Clothica — це місце, де комфорт поєднується зі стилем.",
   openGraph: {
     title: "Clothica-shop",
-    description: "Designer fashion for everyone.",
+    description: "Clothica — це місце, де комфорт поєднується зі стилем.",
     images: [
       {
-        url: "https://ac.goit.global/fullstack/react/og-meta.jpg/",
+        url: "https://ac.goit.global/fullstack/react/og-meta.jpg/", // замінити
         width: 1200,
         height: 630,
         alt: "Welcome to Clothica-shop",
       },
     ],
-    url: "https://08-zustand-phi-bice.vercel.app/",
+    url: "https://08-zustand-phi-bice.vercel.app/", // замінити
   },
 };
 
