@@ -5,7 +5,6 @@ import "./globals.css";
 import Header from "../components/common/Header/Header";
 import Footer from "../components/common/Footer/Footer";
 
-
 const inter = Inter({
   subsets: ["cyrillic"],
   weight: ["400", "500", "600"],
@@ -39,8 +38,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
-}: Readonly<{
+}: //modal,
+Readonly<{
   children: React.ReactNode;
   modal: React.ReactNode;
 }>) {
