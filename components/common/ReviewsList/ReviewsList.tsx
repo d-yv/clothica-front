@@ -30,9 +30,9 @@ export default function ReviewsSlider() {
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const base = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const base = `${process.env.NEXT_PUBLIC_BACKEND_URL}/API`;
       try {
-        const res = await fetch(`${base}/api/feedbacks`, { cache: "no-store" });
+        const res = await fetch(`${base}/feedbacks`, { cache: "no-store" });
         if (!res.ok) throw new Error("Помилка запиту");
         const data: Review[] = await res.json();
         setReviews(data);
@@ -66,18 +66,18 @@ export default function ReviewsSlider() {
 
   return (
     <section className={css.section}>
-      <div>
         <div className={css.sliderWrap}>
           <Swiper
             tag="ul"
             modules={[Navigation, Keyboard, A11y]}
-            spaceBetween={24}
+            spaceBetween={32}
             slidesPerView={1} /* мобільний — 1 */
+             slidesPerGroup={1} 
             keyboard={{ enabled: true }}
             a11y={{ enabled: true }}
             breakpoints={{
-              768:  { slidesPerView: 2, spaceBetween: 24 }, // планшет — 2
-              1440: { slidesPerView: 3, spaceBetween: 24 }, // десктоп — 3
+              768: { slidesPerView: 2, slidesPerGroup: 2, spaceBetween: 32 }, // планшет — 2
+              1440: { slidesPerView: 3, slidesPerGroup: 3, spaceBetween: 32 }, // десктоп — 3
             }}
             onBeforeInit={(swiper) => {
               swiperRef.current = swiper;
@@ -96,13 +96,27 @@ export default function ReviewsSlider() {
             }}
           >
             {reviews.map((review) => (
-              <SwiperSlide tag="li" key={review._id.$oid}>
+              <SwiperSlide
+                tag="li"
+                key={review._id.$oid}
+                className={css.slide}
+              >
                 <article className={css.card}>
                   <div>
-                    <div className={css.stars}>
-                      {"★".repeat(Math.max(1, Math.round(review.rate)))}
-                    </div>
-                    <p className={css.quote}>&ldquo;{review.description}&rdquo;</p>
+                      {Array.from({
+                        length: Math.max(1, Math.round(review.rate)),
+                      }).map((_, i) => (
+                        <svg
+                          key={i}
+                          className={css.stars}
+                          aria-hidden="true"
+                        >
+                          <use href="/styles.icon.svg#icon-Star-Filled-2" />
+                        </svg>
+                      ))}
+                    <p className={css.quote}>
+                      &ldquo;{review.description}&rdquo;
+                    </p>
                   </div>
 
                   <div className={css.footer}>
@@ -120,11 +134,20 @@ export default function ReviewsSlider() {
               ref={prevBtnRef}
               onClick={handlePrevClick}
               disabled={isBeginning}
-              className={`${css.navBtn} ${isBeginning ? css.navBtnDisabled : ""}`}
+              className={`${css.navBtn} ${
+                isBeginning ? css.navBtnDisabled : ""
+              }`}
               aria-label="Попередній"
               type="button"
             >
-              ←
+              <svg
+                className={css.icon}
+                width="24"
+                height="24"
+                aria-hidden="true"
+              >
+                <use href="/styles.icon.svg#icon-arrow-light"></use>
+              </svg>
             </button>
 
             <button
@@ -135,11 +158,17 @@ export default function ReviewsSlider() {
               aria-label="Наступний"
               type="button"
             >
-              →
+              <svg
+                className={css.icon}
+                width="24"
+                height="24"
+                aria-hidden="true"
+              >
+                <use href="/styles.icon.svg#icon-arrow-right"></use>
+              </svg>
             </button>
           </div>
         </div>
-      </div>
     </section>
   );
 }
