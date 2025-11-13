@@ -55,7 +55,7 @@ export default function Header() {
 
           <button className={styles.menuBtn} onClick={toggleMenu}>
             <svg className={styles.headericon} width="20" height="20">
-              <use href="/styles.icon.svg#icon-menu" />
+              <use href="/sprite.svg#menu" />
             </svg>
           </button>
 

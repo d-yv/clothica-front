@@ -65,16 +65,7 @@
 }
 
 .dot {
-    position: absolute;
-    top: 2px;
-    right: -3px;
-    border-radius: 100%;
-    width: 11px;
-    height: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #b70000;
+    display: none;
 }
 
 .specialBtn {

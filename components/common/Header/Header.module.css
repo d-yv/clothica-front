@@ -137,8 +137,6 @@
 
 .menuBtn {
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: row;
     gap: 12px;
 
@@ -157,7 +155,9 @@
     display: none;
 }
 
-
+.headeri {
+    color: white;
+}
 
 .dot {
     position: absolute;
