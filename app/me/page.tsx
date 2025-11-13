@@ -13,34 +13,59 @@ interface UserProfileData {
   postOfficeNum?: string;
 }
 
+/**
+ * Отримує дані поточного користувача. 
+ * Токен буде автоматично надісланий у Cookie завдяки опції 'credentials'.
+ */
 const fetchCurrentUser = async (): Promise<UserProfileData> => {
-    const res = await fetch('https:/clothica-back.onrender.com/api/users/me'); 
+    // !!! Видалено отримання токена з localStorage !!!
+    
+    // Переконайтеся, що тут правильний URL
+    const API_URL = 'http://localhost:4000/api/users/me'; 
+
+    const res = await fetch(API_URL, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            // !!! Видалено заголовок Authorization !!!
+        },
+        // !!! ДОДАНО: Ця опція дозволяє надсилати Cookie з запитом до іншого домену/порту
+        credentials: 'include', 
+    }); 
     
     if (res.status === 401) {
-        console.error('User not authenticated (401)');
-        throw new Error('Необхідна авторизація');
+        console.error('User not authenticated (401). Cookie missing or invalid.');
+        // Тут можна додати логіку для перенаправлення на сторінку входу
+        throw new Error('Необхідна авторизація: Cookie відсутній або недійсний.');
     }
 
     if (!res.ok) {
-        throw new Error(`Failed to fetch user data: ${res.status}`);
+        const errorBody = await res.json().catch(() => ({ message: 'No message' }));
+        throw new Error(`Failed to fetch user data: ${res.status}. ${errorBody.message}`);
     }
     return res.json();
 }
 
 
 export default function Cabinet(){
+  // ... (весь код компонента залишається майже незмінним, крім функцій)
   const [orders, setOrders] = useState<Order[] | null>(null);
   const [currentUser, setCurrentUser] = useState<UserProfileData | undefined>(undefined); 
   const [isLoading, setIsLoading] = useState(true);
+  const [authError, setAuthError] = useState<string | null>(null);
   
-
+  // ... loadUserData, loadOrdersData, useEffect залишаються незмінними.
+  // ... loadUserData тепер викликає fetchCurrentUser, який використовує Cookie.
+  
   const loadUserData = useCallback(async () => {
+    setAuthError(null); 
     try {
         const userData = await fetchCurrentUser(); 
         setCurrentUser(userData);
     } catch (error) {
       console.error('Failed to load user data:', error);
       setCurrentUser(undefined);
+      setAuthError((error as Error).message.includes('Авторизація') ? (error as Error).message : 'Не вдалося завантажити дані профілю.');
     }
   }, []);
   
@@ -62,7 +87,7 @@ export default function Cabinet(){
     }
     fetchData();
   }, [loadUserData, loadOrdersData]);
-  
+
   if (isLoading) {
     return <div className={styles.kabinetContainer || "p-8 text-center"}>Завантаження даних кабінету...</div>;
   }
@@ -83,9 +108,11 @@ export default function Cabinet(){
       <h1 className={styles.title}>Кабінет</h1>
       <section className="mb-8">
           {currentUser ? (
-              <UserInfoForm currentUser={userFormInitialData} /> 
+              <UserInfoForm currentUser={userFormInitialData} onProfileUpdate={loadUserData} /> 
           ) : (
-              <p className="text-red-500">Не вдалося завантажити дані профілю. Будь ласка, перевірте авторизацію.</p>
+              <p className="text-red-500">
+                  {authError || 'Не вдалося завантажити дані профілю. Будь ласка, перевірте авторизацію.'}
+              </p>
           )}
           
       </section>

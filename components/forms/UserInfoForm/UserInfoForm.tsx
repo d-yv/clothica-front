@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
+import React, { useState } from 'react';
 import styles from './UserInfoForm.module.css';
 
 interface UserUpdateData {
@@ -13,41 +13,52 @@ interface UserUpdateData {
   postOfficeNum: string;
 }
 
-const UserUpdateValidationSchema = Yup.object().shape({
-  firstName: Yup.string().required("Ім'я обов'язкове").min(2, "Занадто коротке ім'я"),
-  lastName: Yup.string().required("Прізвище обов'язкове").min(2, "Занадто коротке прізвище"),
-  phone: Yup.string()
-    .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, 'Невірний формат телефону')
-    .required('Номер телефону обов\'язковий'),
-  city: Yup.string().required('Місто доставки обов\'язкове'),
-  postOfficeNum: Yup.string().required('Номер відділення обов\'язковий'), // НОВЕ ПОЛЕ
-});
-
 interface UserInfoFormProps {
-    currentUser?: UserUpdateData; 
+    currentUser: UserUpdateData | undefined;
+    onProfileUpdate: () => void;
 }
 
-export default function UserInfoForm({ currentUser }: UserInfoFormProps){
+/**
+ * Схема валідації
+ */
+const validationSchema = Yup.object({
+  firstName: Yup.string().required("Ім'я обов'язкове").min(2, "Занадто коротке ім'я"),
+  lastName: Yup.string().notRequired(),
+  phone: Yup.string()
+    .matches(/^\+380\d{9}$/, 'Телефон має бути у форматі +380XXXXXXXXX')
+    .notRequired(),
+  city: Yup.string().notRequired(),
+  postOfficeNum: Yup.string().notRequired(),
+});
+
+
+const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdate }) => {
+  const [status, setStatus] = useState<{ success: boolean; message: string } | null>(null);
   
   const initialValues: UserUpdateData = currentUser || {
-    firstName: '',
-    lastName: '',
-    phone: '',
-    city: '',
-    postOfficeNum: '',
+      firstName: '',
+      lastName: '',
+      phone: '', 
+      city: '',
+      postOfficeNum: '',
   };
-  
-  const handleSubmit = async (values: UserUpdateData, { setSubmitting, setStatus }: any) => {
+
+
+  /**
+   * Обробка відправки форми. Використовує Cookies для авторизації.
+   */
+  const handleSubmit = async (values: UserUpdateData, { setSubmitting, setStatus }: FormikHelpers<UserUpdateData>) => {
     setStatus({ success: false, message: 'Збереження змін...' });
     
+    // !!! ЗМІНА URL на Render, якщо ви готові до віддаленого бекенду, або localhost:4000 !!!
     const API_URL = 'http://localhost:4000/api/users/me'; 
     
     const dataToSend = {
       firstName: values.firstName,
-      lastName: values.lastName,
-      city: values.city,
-      phone: values.phone, 
-      postOfficeNum: values.postOfficeNum
+      lastName: values.lastName || undefined,
+      phone: values.phone || undefined,
+      city: values.city || undefined,
+      postOfficeNum: values.postOfficeNum || undefined,
     };
 
     try {
@@ -57,88 +68,120 @@ export default function UserInfoForm({ currentUser }: UserInfoFormProps){
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(dataToSend),
+        // !!! Використовуємо Cookie
+        credentials: 'include', 
       });
-
+      
       if (response.status === 401) {
-          throw new Error('Несанкціоновано. Будь ласка, увійдіть знову.');
+          setStatus({ success: false, message: 'Помилка авторизації. Сесія недійсна.' });
+          localStorage.removeItem('authToken'); 
+          return;
       }
-      
+
       if (!response.ok) {
-        const errorBody = await response.json();
-        throw new Error(`Помилка HTTP: ${response.status}. ${errorBody.message || 'Помилка валідації.'}`);
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Помилка: ${response.status}`);
       }
+
+      const updatedUser = await response.json();
       
-      const result = await response.json(); 
+      setStatus({ success: true, message: 'Дані успішно оновлено!' });
       
-      setStatus({ success: true, message: result.message || 'Дані успішно оновлено!' }); 
-      
+      onProfileUpdate(); 
+
     } catch (error) {
-      console.error('Помилка при оновленні профілю:', error);
-      setStatus({ 
-          success: false, 
-          message: `Помилка відправки: ${error instanceof Error ? error.message : 'Невідома помилка'}` 
-      });
+      console.error('Update failed:', error);
+      setStatus({ success: false, message: `Помилка при оновленні: ${(error as Error).message}` });
     } finally {
       setSubmitting(false);
     }
   };
 
+
   return (
-    <Formik<UserUpdateData>
-      initialValues={initialValues}
-      validationSchema={UserUpdateValidationSchema}
-      onSubmit={handleSubmit}
-      enableReinitialize={true} 
-    >
-      {({ isSubmitting, status }) => (
-        <Form className={styles.formContainer}>
-          
-          <h3 className={styles.formTitle}>Особиста інформація</h3> 
-          
-          <div className={styles.formWrapper}>
-            <label htmlFor="firstName">Ім'я*</label>
-            <Field name="firstName" type="text" className={styles.formInput} />
-            <ErrorMessage name="firstName" component="div" className={styles.errorMessage} />
-          </div>
+    <div className={styles.formContainer}>
+      <h3 className={styles.formTitle}>Мої дані</h3>
+      
+      {initialValues.firstName !== '' ? (
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+            enableReinitialize={true}
+          >
+            {({ isSubmitting }) => (
+              <Form className={styles.form}>
+                
+                {/* Ім'я */}
+                {/* ЗМІНЕНО: fieldGroup -> formWrapper */}
+                <div className={styles.formWrapper}> 
+                  <label htmlFor="firstName">Ім'я*</label>
+                  {/* ЗМІНЕНО: input -> formInput */}
+                  <Field type="text" id="firstName" name="firstName" className={styles.formInput} /> 
+                  <ErrorMessage name="firstName" component="div" className={styles.errorMessage} />
+                </div>
+                
+                {/* Прізвище */}
+                {/* ЗМІНЕНО: fieldGroup -> formWrapper */}
+                <div className={styles.formWrapper}>
+                  <label htmlFor="lastName">Прізвище</label>
+                  {/* ЗМІНЕНО: input -> formInput */}
+                  <Field type="text" id="lastName" name="lastName" className={styles.formInput} />
+                  <ErrorMessage name="lastName" component="div" className={styles.errorMessage} />
+                </div>
 
-          <div className={styles.formWrapper}>
-            <label htmlFor="lastName">Прізвище*</label>
-            <Field name="lastName" type="text" className={styles.formInput} />
-            <ErrorMessage name="lastName" component="div" className={styles.errorMessage} />
-          </div>
-          
-          <div className={styles.formWrapper}>
-            <label htmlFor="phone">Номер телефону*</label>
-            <Field name="phone" type="tel" className={styles.formInput} />
-            <ErrorMessage name="phone" component="div" className={styles.errorMessage} />
-          </div>
-          
-          <div className={styles.formWrapper}>
-            <label htmlFor="city">Місто доставки*</label>
-            <Field name="city" type="text" className={styles.formInput} />
-            <ErrorMessage name="city" component="div" className={styles.errorMessage} />
-          </div>
+                {/* Телефон */}
+                {/* ЗМІНЕНО: fieldGroup -> formWrapper */}
+                <div className={styles.formWrapper}>
+                  <label htmlFor="phone">Телефон (+380XXXXXXXXX)</label>
+                  {/* ЗМІНЕНО: input -> formInput */}
+                  <Field type="text" id="phone" name="phone" className={styles.formInput} />
+                  <ErrorMessage name="phone" component="div" className={styles.errorMessage} />
+                </div>
 
-          <div className={styles.formWrapper}>
-            <label htmlFor="postOfficeNum">Номер відділення*</label>
-            <Field name="postOfficeNum" type="text" className={styles.formInput} />
-            <ErrorMessage name="postOfficeNum" component="div" className={styles.errorMessage} />
-          </div>
-          
-          <button 
-            type="submit" 
-            disabled={isSubmitting}
-            className={styles.submitButton}>
-            {isSubmitting ? 'Обробка...' : 'Зберегти зміни'}
-          </button>
+                {/* Місто */}
+                {/* ЗМІНЕНО: fieldGroup -> formWrapper */}
+                <div className={styles.formWrapper}>
+                  <label htmlFor="city">Місто</label>
+                  {/* ЗМІНЕНО: input -> formInput */}
+                  <Field type="text" id="city" name="city" className={styles.formInput} />
+                  <ErrorMessage name="city" component="div" className={styles.errorMessage} />
+                </div>
 
-          {status && status.message && (
-            <p className={styles.statusMessage} style={{ color: status.success ? 'green' : 'red' }}>
-              {status.message}
-            </p>
-          )}
-        </Form>
+                {/* Відділення Нової Пошти */}
+                {/* ЗМІНЕНО: fieldGroup -> formWrapper */}
+                <div className={styles.formWrapper}>
+                  <label htmlFor="postOfficeNum">Відділення Нової Пошти</label>
+                  {/* ЗМІНЕНО: input -> formInput */}
+                  <Field type="text" id="postOfficeNum" name="postOfficeNum" className={styles.formInput} />
+                  <ErrorMessage name="postOfficeNum" component="div" className={styles.errorMessage} />
+                </div>
+
+                {/* Кнопка відправки */}
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting} 
+                  className={styles.submitButton}
+                >
+                  {isSubmitting ? 'Зберігаю...' : 'Зберегти зміни'}
+                </button>
+                
+                {/* Повідомлення про статус */}
+                {status && (
+                  <div className={status.success ? styles.successMessage : styles.errorMessage}>
+                    {status.message}
+                  </div>
+                )}
+              </Form>
+            )}
+          </Formik>
+      ) : (
+          <p className={styles.errorMessage}>
+              Не вдалося ініціалізувати форму. Перевірте статус авторизації.
+          </p>
       )}
-    </Formik>
+    </div>
   );
 };
+
+export default UserInfoForm;
