@@ -11,6 +11,7 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
 });
+
 const nunito = Nunito_Sans({
   subsets: ["cyrillic"],
   weight: ["400"],
