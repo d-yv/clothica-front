@@ -27,13 +27,13 @@ export const metadata: Metadata = {
     description: "Clothica — це місце, де комфорт поєднується зі стилем.",
     images: [
       {
-        url: "https://ac.goit.global/fullstack/react/og-meta.jpg/", // замінити
+        url: "https://clothica-front.vercel.app/images/hero/hero-desktop.png", 
         width: 1200,
         height: 630,
         alt: "Welcome to Clothica-shop",
       },
     ],
-    url: "https://08-zustand-phi-bice.vercel.app/", // замінити
+    url: "https://clothica-front.vercel.app",
   },
 };
 
