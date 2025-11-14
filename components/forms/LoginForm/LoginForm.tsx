@@ -22,7 +22,7 @@ const LoginSchema = Yup.object().shape({
     })
     .required("Обов'язкове поле"),
   password: Yup.string()
-    .min(8, 'Пароль повинен містити мінімум 8 символів')
+    
     .required("Обов'язкове поле"),
 });
 

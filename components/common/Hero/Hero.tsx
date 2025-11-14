@@ -6,14 +6,17 @@ export default function Hero() {
     <section className={styles.hero}>
       <div className={styles.container}>
         <div className={styles.hero_content}>
-           <div>
-          <h1 id="hero-title" className={styles.hero_title}>
-            Знайди свій стиль з Clothica вже сьогодні!
-          </h1>
+          <div>
+            <h1 id="hero-title" className={styles.hero_title}>
+              Знайди свій стиль з Clothica вже сьогодні!
+            </h1>
 
-          <p className={styles.hero_text}>
-            Clothica — це місце, де комфорт поєднується зі стилем. Ми створюємо базовий одяг, який легко комбінується та підходить для будь-якої нагоди. Обирай речі, що підкреслять твою індивідуальність і завжди будуть актуальними.
-          </p>
+            <p className={styles.hero_text}>
+              Clothica — це місце, де комфорт поєднується зі стилем. Ми
+              створюємо базовий одяг, який легко комбінується та підходить для
+              будь-якої нагоди. Обирай речі, що підкреслять твою
+              індивідуальність і завжди будуть актуальними.
+            </p>
           </div>
           <div className={styles.hero_links}>
             {/* Якір на секцію-компонент PopularGoods */}
@@ -29,7 +32,7 @@ export default function Hero() {
         </div>
 
         <div>
-      <picture>
+          <picture>
             <source
               media="(min-width: 1440px)"
               srcSet="/images/hero/hero-desktop.png 1x, /images/hero/hero-desktop@2x.png 2x"
@@ -43,8 +46,8 @@ export default function Hero() {
               srcSet="/images/hero/hero-mobile.png 1x, /images/hero/hero-mobile@2x.png 2x"
               alt="Молода пара в базовому одязі Clothica"
               className={styles.hero_image}
-        />
-      </picture>
+            />
+          </picture>
         </div>
       </div>
     </section>

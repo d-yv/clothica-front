@@ -1,11 +1,13 @@
-"use client";
+'use client';
 
 import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Keyboard, A11y } from "swiper/modules";
+import { Keyboard, A11y } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/navigation";
 import css from "./ReviewsList.module.css";
+import { api } from "@/app/api/api";
+import axios from "axios";
+import type { Swiper as SwiperType } from "swiper";
 
 type Review = {
   _id: { $oid: string };
@@ -21,27 +23,32 @@ export default function ReviewsSlider() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const swiperRef = useRef<any>(null);
-  const prevBtnRef = useRef<HTMLButtonElement | null>(null);
-  const nextBtnRef = useRef<HTMLButtonElement | null>(null);
+  const swiperRef = useRef<SwiperType | null>(null);
+  // const prevBtnRef = useRef<HTMLButtonElement | null>(null);
+  // const nextBtnRef = useRef<HTMLButtonElement | null>(null);
 
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const base = process.env.NEXT_PUBLIC_BACKEND_URL;
       try {
-        const res = await fetch(`${base}/api/feedbacks`, { cache: "no-store" });
-        if (!res.ok) throw new Error("Помилка запиту");
-        const data: Review[] = await res.json();
-        setReviews(data);
+        const res = await api.get<Review[]>("/feedbacks", {
+          headers: { "Cache-Control": "no-cache" },
+        });
+
+        setReviews(res.data);
       } catch (err) {
-        console.error("Помилка при отриманні відгуків:", err);
+        if (axios.isAxiosError(err)) {
+          console.error("Помилка при отриманні відгуків:", err.message);
+        } else {
+          console.error("Помилка при отриманні відгуків:", err);
+        }
       } finally {
         setLoading(false);
       }
     };
+
     fetchReviews();
   }, []);
 
@@ -66,78 +73,101 @@ export default function ReviewsSlider() {
 
   return (
     <section className={css.section}>
-      <div>
-        <div className={css.sliderWrap}>
-          <Swiper
-            tag="ul"
-            modules={[Navigation, Keyboard, A11y]}
-            spaceBetween={24}
-            slidesPerView={1} /* мобільний — 1 */
-            keyboard={{ enabled: true }}
-            a11y={{ enabled: true }}
-            breakpoints={{
-              768:  { slidesPerView: 2, spaceBetween: 24 }, // планшет — 2
-              1440: { slidesPerView: 3, spaceBetween: 24 }, // десктоп — 3
-            }}
-            onBeforeInit={(swiper) => {
-              swiperRef.current = swiper;
-              swiper.params.navigation = {
-                prevEl: prevBtnRef.current,
-                nextEl: nextBtnRef.current,
-              };
-            }}
-            onAfterInit={(swiper) => {
-              setIsBeginning(swiper.isBeginning);
-              setIsEnd(swiper.isEnd);
-            }}
-            onSlideChange={(swiper) => {
-              setIsBeginning(swiper.isBeginning);
-              setIsEnd(swiper.isEnd);
-            }}
+      <div className={css.sliderWrap}>
+        <Swiper
+          tag="ul"
+          modules={[Keyboard, A11y]}
+          spaceBetween={32}
+          slidesPerView={1}
+          slidesPerGroup={1}
+          speed={1500} 
+          keyboard={{ enabled: true }}
+          a11y={{ enabled: true }}
+          breakpoints={{
+            768: { slidesPerView: 2, slidesPerGroup: 2, spaceBetween: 32 },
+            1440: { slidesPerView: 3, slidesPerGroup: 3, spaceBetween: 32 },
+          }}
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
+            setIsBeginning(swiper.isBeginning);
+            setIsEnd(swiper.isEnd);
+          }}
+          onSlideChange={(swiper) => {
+            setIsBeginning(swiper.isBeginning);
+            setIsEnd(swiper.isEnd);
+          }}
+        >
+          {reviews.map((review) => (
+            <SwiperSlide
+              tag="li"
+              key={review._id.$oid}
+              className={css.slide}
+            >
+              <article className={css.card}>
+                <div>
+                  {Array.from({
+                    length: Math.max(1, Math.round(review.rate)),
+                  }).map((_, i) => (
+                    <svg
+                      key={i}
+                      className={css.stars}
+                      aria-hidden="true"
+                    >
+                      <use href="/styles.icon.svg#icon-Star-Filled-2" />
+                    </svg>
+                  ))}
+                  <p className={css.quote}>
+                    &ldquo;{review.description}&rdquo;
+                  </p>
+                </div>
+
+                <div className={css.footer}>
+                  <p className={css.author}>{review.author}</p>
+                  <p className={css.category}>{review.category}</p>
+                </div>
+              </article>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        <div className={css.navWrap}>
+          <button
+            // ref={prevBtnRef}
+            onClick={handlePrevClick}
+            disabled={isBeginning}
+            className={`${css.navBtn} ${
+              isBeginning ? css.navBtnDisabled : ""
+            }`}
+            aria-label="Попередній"
+            type="button"
           >
-            {reviews.map((review) => (
-              <SwiperSlide tag="li" key={review._id.$oid}>
-                <article className={css.card}>
-                  <div>
-                    <div className={css.stars}>
-                      {"★".repeat(Math.max(1, Math.round(review.rate)))}
-                    </div>
-                    <p className={css.quote}>&ldquo;{review.description}&rdquo;</p>
-                  </div>
-
-                  <div className={css.footer}>
-                    <p className={css.author}>{review.author}</p>
-                    <p className={css.category}>{review.category}</p>
-                  </div>
-                </article>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          {/* Стрілки */}
-          <div className={css.navWrap}>
-            <button
-              ref={prevBtnRef}
-              onClick={handlePrevClick}
-              disabled={isBeginning}
-              className={`${css.navBtn} ${isBeginning ? css.navBtnDisabled : ""}`}
-              aria-label="Попередній"
-              type="button"
+            <svg
+              className={css.icon}
+              width="24"
+              height="24"
+              aria-hidden="true"
             >
-              ←
-            </button>
+              <use href="/styles.icon.svg#icon-arrow-light" />
+            </svg>
+          </button>
 
-            <button
-              ref={nextBtnRef}
-              onClick={handleNextClick}
-              disabled={isEnd}
-              className={`${css.navBtn} ${isEnd ? css.navBtnDisabled : ""}`}
-              aria-label="Наступний"
-              type="button"
+          <button
+            // ref={nextBtnRef}
+            onClick={handleNextClick}
+            disabled={isEnd}
+            className={`${css.navBtn} ${isEnd ? css.navBtnDisabled : ""}`}
+            aria-label="Наступний"
+            type="button"
+          >
+            <svg
+              className={css.icon}
+              width="24"
+              height="24"
+              aria-hidden="true"
             >
-              →
-            </button>
-          </div>
+              <use href="/styles.icon.svg#icon-arrow-right" />
+            </svg>
+          </button>
         </div>
       </div>
     </section>

@@ -1,34 +1,47 @@
 :root {
-    --bg-soft-green: #edf6e6;
-    --text: #111;
-    --muted: #6b7280;
-    --card-bg: #fff;
-    --border: #e5e7eb;
-    --btn: #cfe8a7;
-    --btn-hover: #bfe093;
+    --nav-bg: #cfe8a7;
+    --nav-bg-hover: #bfe093;
+    --nav-bg-active: #3f4a34;
+    --nav-bg-disabled: #e6efd6;
+    --nav-fg: #111;
+    --nav-fg-active: #fff;
+    --nav-fg-disabled: #9aa39a;
 }
-
-/* ===== Mobile First (320+): гумова верстка до 375px ===== */
-
 
 .sliderWrap {
     position: relative;
+
 }
 
+.slide {
+    display: flex;
+}
 
-/* Картка */
 .card {
-    height: 100%;
+
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    flex: 1;
+    height: 100%;
+
+
 }
 
 .stars {
-    font-size: 18px;
-    color: #000;
-    /* чорні зірочки як у макеті */
-    letter-spacing: 2px;
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    stroke: currentColor;
+    transition: opacity .3s ease;
+    margin-right: 4px;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    stroke: currentColor;
+    transition: opacity .3s ease;
 }
 
 .quote {
@@ -40,12 +53,12 @@
     color: #000;
     margin: 0;
     padding: 32px 0;
-    ;
 }
 
 .footer {
     display: grid;
     gap: 4px;
+    margin-top: auto;
 }
 
 .author {
@@ -72,42 +85,70 @@
 /* Кнопки навігації — внизу праворуч */
 .navWrap {
     position: absolute;
-    right: 12px;
-    bottom: 16px;
+    right: 0px;
+    bottom: 0px;
     display: flex;
-    gap: 12px;
-    z-index: 5;
+    gap: 9px;
+    z-index: 9;
+
 }
 
 .navBtn {
-    width: 40px;
-    height: 40px;
-    border: none;
+    width: 48px;
+    height: 48px;
     border-radius: 9999px;
-    background: var(--btn);
-    color: #111;
-    font-size: 18px;
+    background: var(--nav-bg);
+    color: var(--nav-fg);
     display: grid;
     place-items: center;
     box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
-    transition: transform .15s ease, background-color .15s ease, opacity .15s ease;
+    transition:
+        transform .12s ease,
+        background-color .12s ease,
+        color .12s ease,
+        box-shadow .12s ease,
+        border-color .12s ease;
 }
 
+/* Hover + Focus (той самий фон) */
 .navBtn:hover {
+    background: #9db484;
+    ;
     transform: translateY(-1px);
-    background: var(--btn-hover);
+    border: 1px solid #4e5a42;
 }
 
-.navBtn:focus {
-    outline: 2px solid #86efac;
-    outline-offset: 2px;
+.navBtn:focus-visible {
+    background: var(--nav-bg-hover);
+    outline: none;
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, .06),
+        0 0 0 3px var(--nav-ring);
+    /* кільце як у макеті Focus */
 }
 
+/* Active (темний фон, світла іконка) */
+.navBtn:active {
+    background: var(--nav-bg-active);
+    color: var(--nav-fg-active);
+    transform: translateY(0);
+    /* без підскакування при кліку */
+    border-color: rgba(0, 0, 0, .3);
+}
+
+/* Disabled */
+.navBtn:disabled,
 .navBtnDisabled {
-    opacity: .5;
+    background: var(--nav-bg-disabled);
+    color: var(--nav-fg-disabled);
+    border-color: rgba(0, 0, 0, .12);
     cursor: not-allowed;
+    pointer-events: none;
+    /* щоб не ловила hover */
+    box-shadow: none;
     transform: none;
 }
+
 
 /* Стани */
 .loadingWrap {
@@ -118,73 +159,25 @@
     color: var(--muted);
 }
 
-/* ===== breakpoint: 375px — починається адаптивність мобайлу ===== */
-@media (min-width: 375px) {
-    .container {
-        padding: 64px 20px 96px;
-    }
+@media (min-width: 375px) {}
 
-    .title {
-        font-size: 30px;
-        margin-bottom: 30px;
-    }
+@media screen and (min-width: 768px) {
 
     .card {
-        padding: 22px;
-    }
-}
-
-/* ===== breakpoint: 768px (tablet) ===== */
-@media (min-width: 768px) {
-    .container {
-        padding: 72px 24px 104px;
-    }
-
-    .title {
-        font-size: 40px;
-        margin-bottom: 36px;
-    }
-
-    .navWrap {
-        right: 20px;
-        bottom: 24px;
-        gap: 16px;
-    }
-
-    .navBtn {
-        width: 44px;
-        height: 44px;
-        font-size: 20px;
-    }
-
-    .card {
-        padding: 24px;
-    }
-
-    .stars {
-        font-size: 20px;
-        margin-bottom: 12px;
+        display: flex;
+        flex-direction: column;
+        min-height: 240px;
+        /* або 280 / 300 — підібрати по макету */
     }
 
     .footer {
-        margin-top: 16px;
+        margin-top: auto;
     }
 }
 
-/* ===== breakpoint: 1440px (desktop) ===== */
-@media (min-width: 1440px) {
-    .container {
-        padding: 88px 24px 120px;
-        max-width: 1280px;
-        /* центрована велика сітка */
-    }
+@media screen and (min-width: 1440px) {
 
-    .title {
-        font-size: 48px;
-        margin-bottom: 40px;
-    }
-
-    .card {
-        padding: 28px;
+    .quote {
+        font-size: 20px;
     }
 }

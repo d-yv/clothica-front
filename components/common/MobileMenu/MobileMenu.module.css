@@ -7,7 +7,7 @@
     align-items: center;
     padding-top: 80px;
     transform: translateX(100%);
-    transition: 0.4s ease;
+    transition: transform 0.4s ease;
     z-index: 9999;
 }
 
@@ -28,7 +28,6 @@
 }
 
 .logo {
-    fill: currentColor;
     fill: black;
 }
 
@@ -46,9 +45,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: row;
-    gap: 12px;
     background: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
 }
 
 .cartBtn {
@@ -56,44 +54,18 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 0;
+    border: none;
     background: #000;
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-}
-
-.headercart {
-    position: relative;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 0;
-    background: #000;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+    text-decoration: none;
 }
 
 .dot {
-    position: absolute;
-    top: 2px;
-    right: -3px;
-    color: white;
-    border-radius: 100%;
-    padding: 1px 3px;
-    width: 11px;
-    height: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    gap: 12px;
-    background: #b70000;
+    display: none;
 }
 
 .specialBtn {
@@ -104,12 +76,9 @@
     display: flex;
 }
 
-
-
 @media (min-width: 768px) {
     .modal {
         display: none;
-
     }
 
     .specialBtn {
@@ -132,14 +101,14 @@
     line-height: 1.5;
     color: #000;
     text-decoration: none;
-
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    gap: 32px;
 }
 
+.mobileMenuA:hover {
+    text-decoration: underline;
+}
 
 .headerAuth {
     display: flex;
@@ -147,7 +116,6 @@
     gap: 16px;
     width: 85%;
     margin-top: 40px;
-
 }
 
 .btnEntrance,
@@ -156,27 +124,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
     border-radius: 100px;
     height: 36px;
     cursor: pointer;
     font-size: 16px;
     line-height: 1.5;
     color: #000;
-
-
-
+    text-decoration: none;
 }
-
 
 .btnEntrance.light {
     background: #dbeac7;
-    color: #000;
 }
 
 .btnRegistration {
     background: #c5e1a5;
-    color: #000;
 }
 
 .btnOfice {
