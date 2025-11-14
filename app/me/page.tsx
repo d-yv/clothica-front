@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import styles from './page.module.css';
+import axios from 'axios';
 import UserInfoForm from '@/components/forms/UserInfoForm/UserInfoForm';
 import { OrderList, fetchUserOrders, Order } from '@/components/common/OrderList/OrderList'; 
 import { api } from '@/app/api/api';
