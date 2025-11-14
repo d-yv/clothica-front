@@ -18,9 +18,6 @@ interface UserInfoFormProps {
     onProfileUpdate: () => void;
 }
 
-/**
- * Схема валідації
- */
 const validationSchema = Yup.object({
   firstName: Yup.string().required("Ім'я обов'язкове").min(2, "Занадто коротке ім'я"),
   lastName: Yup.string().notRequired(),
@@ -43,14 +40,9 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
       postOfficeNum: '',
   };
 
-
-  /**
-   * Обробка відправки форми. Використовує Cookies для авторизації.
-   */
   const handleSubmit = async (values: UserUpdateData, { setSubmitting, setStatus }: FormikHelpers<UserUpdateData>) => {
     setStatus({ success: false, message: 'Збереження змін...' });
     
-    // !!! ЗМІНА URL на Render, якщо ви готові до віддаленого бекенду, або localhost:4000 !!!
     const API_URL = 'http://localhost:4000/api/users/me'; 
     
     const dataToSend = {
@@ -68,7 +60,6 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(dataToSend),
-        // !!! Використовуємо Cookie
         credentials: 'include', 
       });
       
@@ -112,52 +103,32 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
             {({ isSubmitting }) => (
               <Form className={styles.form}>
                 
-                {/* Ім'я */}
-                {/* ЗМІНЕНО: fieldGroup -> formWrapper */}
                 <div className={styles.formWrapper}> 
                   <label htmlFor="firstName">Ім'я*</label>
-                  {/* ЗМІНЕНО: input -> formInput */}
                   <Field type="text" id="firstName" name="firstName" className={styles.formInput} /> 
                   <ErrorMessage name="firstName" component="div" className={styles.errorMessage} />
                 </div>
                 
-                {/* Прізвище */}
-                {/* ЗМІНЕНО: fieldGroup -> formWrapper */}
                 <div className={styles.formWrapper}>
                   <label htmlFor="lastName">Прізвище</label>
-                  {/* ЗМІНЕНО: input -> formInput */}
                   <Field type="text" id="lastName" name="lastName" className={styles.formInput} />
                   <ErrorMessage name="lastName" component="div" className={styles.errorMessage} />
                 </div>
-
-                {/* Телефон */}
-                {/* ЗМІНЕНО: fieldGroup -> formWrapper */}
                 <div className={styles.formWrapper}>
                   <label htmlFor="phone">Телефон (+380XXXXXXXXX)</label>
-                  {/* ЗМІНЕНО: input -> formInput */}
                   <Field type="text" id="phone" name="phone" className={styles.formInput} />
                   <ErrorMessage name="phone" component="div" className={styles.errorMessage} />
                 </div>
-
-                {/* Місто */}
-                {/* ЗМІНЕНО: fieldGroup -> formWrapper */}
                 <div className={styles.formWrapper}>
                   <label htmlFor="city">Місто</label>
-                  {/* ЗМІНЕНО: input -> formInput */}
                   <Field type="text" id="city" name="city" className={styles.formInput} />
                   <ErrorMessage name="city" component="div" className={styles.errorMessage} />
                 </div>
-
-                {/* Відділення Нової Пошти */}
-                {/* ЗМІНЕНО: fieldGroup -> formWrapper */}
                 <div className={styles.formWrapper}>
                   <label htmlFor="postOfficeNum">Відділення Нової Пошти</label>
-                  {/* ЗМІНЕНО: input -> formInput */}
                   <Field type="text" id="postOfficeNum" name="postOfficeNum" className={styles.formInput} />
                   <ErrorMessage name="postOfficeNum" component="div" className={styles.errorMessage} />
                 </div>
-
-                {/* Кнопка відправки */}
                 <button 
                   type="submit" 
                   disabled={isSubmitting} 
@@ -165,8 +136,6 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
                 >
                   {isSubmitting ? 'Зберігаю...' : 'Зберегти зміни'}
                 </button>
-                
-                {/* Повідомлення про статус */}
                 {status && (
                   <div className={status.success ? styles.successMessage : styles.errorMessage}>
                     {status.message}
@@ -183,5 +152,4 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
     </div>
   );
 };
-
 export default UserInfoForm;
