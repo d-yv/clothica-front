@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import styles from './page.module.css';
 import UserInfoForm from '@/components/forms/UserInfoForm/UserInfoForm';
 import { OrderList, fetchUserOrders, Order } from '@/components/common/OrderList/OrderList'; 
+import { api } from '@/app/api/api';
 
 interface UserProfileData {
   firstName: string;
@@ -13,50 +14,32 @@ interface UserProfileData {
   postOfficeNum?: string;
 }
 
-/**
- * Отримує дані поточного користувача. 
- * Токен буде автоматично надісланий у Cookie завдяки опції 'credentials'.
- */
 const fetchCurrentUser = async (): Promise<UserProfileData> => {
-    // !!! Видалено отримання токена з localStorage !!!
-    
-    // Переконайтеся, що тут правильний URL
-    const API_URL = 'http://localhost:4000/api/users/me'; 
-
-    const res = await fetch(API_URL, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            // !!! Видалено заголовок Authorization !!!
-        },
-        // !!! ДОДАНО: Ця опція дозволяє надсилати Cookie з запитом до іншого домену/порту
-        credentials: 'include', 
-    }); 
-    
-    if (res.status === 401) {
-        console.error('User not authenticated (401). Cookie missing or invalid.');
-        // Тут можна додати логіку для перенаправлення на сторінку входу
-        throw new Error('Необхідна авторизація: Cookie відсутній або недійсний.');
+    try {
+        const res = await api.get<UserProfileData>('/users/me'); 
+        
+        return res.data;
+        
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            if (error.response && error.response.status === 401) {
+                console.error('User not authenticated (401). Cookie missing or invalid.');
+                throw new Error('Необхідна авторизація: Cookie відсутній або недійсний.');
+            }
+            const errorMessage = error.response?.data?.error || `Failed to fetch user data: ${error.response?.status}`;
+            throw new Error(errorMessage);
+        }
+        throw new Error('Невідома помилка при отриманні даних користувача.');
     }
-
-    if (!res.ok) {
-        const errorBody = await res.json().catch(() => ({ message: 'No message' }));
-        throw new Error(`Failed to fetch user data: ${res.status}. ${errorBody.message}`);
-    }
-    return res.json();
 }
 
 
 export default function Cabinet(){
-  // ... (весь код компонента залишається майже незмінним, крім функцій)
   const [orders, setOrders] = useState<Order[] | null>(null);
   const [currentUser, setCurrentUser] = useState<UserProfileData | undefined>(undefined); 
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
-  
-  // ... loadUserData, loadOrdersData, useEffect залишаються незмінними.
-  // ... loadUserData тепер викликає fetchCurrentUser, який використовує Cookie.
-  
+
   const loadUserData = useCallback(async () => {
     setAuthError(null); 
     try {
@@ -102,7 +85,6 @@ export default function Cabinet(){
       postOfficeNum: currentUser.postOfficeNum || '',
   } : undefined;
 
-
   return(
     <div className={styles.kabinetContainer}>
       <h1 className={styles.title}>Кабінет</h1>
@@ -119,9 +101,7 @@ export default function Cabinet(){
       <section className="mb-8">
           <h2>Мої замовлення</h2>
           <OrderList orders={currentOrders} /> 
-          
       </section>
-      
     </div>
   )
 }
