@@ -35,7 +35,7 @@ export default function Header() {
 
         <nav className={styles.mainNav}>
           <Link href="/" className={styles.btnEntrance}>Головна</Link>
-          <Link href="/common/GoodsList" className={styles.btnEntrance}>Товари</Link>
+          <Link href="/goods" className={styles.btnEntrance}>Товари</Link>
           <Link href="/common/CategoriesList" className={styles.btnRegistration}>Категорії</Link>
         </nav>
 
