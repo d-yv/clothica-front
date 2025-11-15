@@ -43,7 +43,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
   const handleSubmit = async (values: UserUpdateData, { setSubmitting, setStatus }: FormikHelpers<UserUpdateData>) => {
     setStatus({ success: false, message: 'Збереження змін...' });
     
-    const API_URL = 'http://localhost:4000/api/users/me'; 
+    const API_URL = '/api/user'; 
     
     const dataToSend = {
       firstName: values.firstName,
@@ -65,7 +65,6 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
       
       if (response.status === 401) {
           setStatus({ success: false, message: 'Помилка авторизації. Сесія недійсна.' });
-          localStorage.removeItem('authToken'); 
           return;
       }
 
@@ -74,7 +73,6 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
         throw new Error(errorData.message || `Помилка: ${response.status}`);
       }
 
-      const updatedUser = await response.json();
       
       setStatus({ success: true, message: 'Дані успішно оновлено!' });
       

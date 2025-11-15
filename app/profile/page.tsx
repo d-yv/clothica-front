@@ -2,10 +2,8 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import styles from './page.module.css';
-import axios from 'axios';
 import UserInfoForm from '@/components/forms/UserInfoForm/UserInfoForm';
-import { OrderList, fetchUserOrders, Order } from '@/components/common/OrderList/OrderList'; 
-import { api } from '@/app/api/api';
+import { OrderList, Order } from '@/components/common/OrderList/OrderList'; 
 
 interface UserProfileData {
   firstName: string;
@@ -17,22 +15,53 @@ interface UserProfileData {
 
 const fetchCurrentUser = async (): Promise<UserProfileData> => {
     try {
-        const res = await api.get<UserProfileData>('/users/me'); 
+        const res = await fetch('/api/user', {
+            method: 'GET',
+            credentials: 'include', 
+            cache: 'no-store',
+        });
         
-        return res.data;
-        
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            if (error.response && error.response.status === 401) {
-                console.error('User not authenticated (401). Cookie missing or invalid.');
+        if (!res.ok) {
+            if (res.status === 401) {
                 throw new Error('Необхідна авторизація: Cookie відсутній або недійсний.');
             }
-            const errorMessage = error.response?.data?.error || `Failed to fetch user data: ${error.response?.status}`;
-            throw new Error(errorMessage);
+            const errorData = await res.json();
+            throw new Error(errorData.message || `Failed to fetch user data: ${res.status}`);
         }
-        throw new Error('Невідома помилка при отриманні даних користувача.');
+        
+        return res.json();
+        
+    } catch (error) {
+        console.error('Error in fetchCurrentUser:', error);
+        throw new Error((error as Error).message.includes('Авторизація') ? (error as Error).message : 'Невідома помилка при отриманні даних користувача.');
     }
 }
+
+const fetchUserOrders = async (): Promise<Order[]> => {
+    console.log('Fetching user orders (using Next.js API Route)...');
+    
+    try {
+        const response = await fetch('/api/orders', {
+            method: 'GET',
+            credentials: 'include',
+            cache: 'no-store',
+        }); 
+        
+        if (!response.ok) {
+             if (response.status === 401) {
+                 throw new Error('Необхідна авторизація для отримання замовлень.');
+            }
+            const errorData = await response.json();
+            throw new Error(errorData.message || `Failed to fetch orders: ${response.status}`);
+        }
+        
+        return response.json();
+
+    } catch (error) {
+        console.error('Помилка при отриманні замовлень:', error);
+        return []; 
+    }
+};
 
 
 export default function Cabinet(){
@@ -40,6 +69,7 @@ export default function Cabinet(){
   const [currentUser, setCurrentUser] = useState<UserProfileData | undefined>(undefined); 
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false); // Новий стан
 
   const loadUserData = useCallback(async () => {
     setAuthError(null); 
@@ -72,6 +102,26 @@ export default function Cabinet(){
     fetchData();
   }, [loadUserData, loadOrdersData]);
 
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+        const response = await fetch('/api/logout', {
+            method: 'POST',
+            credentials: 'include',
+        });
+        
+        if (typeof window !== 'undefined') {
+            window.location.href = 'auth/login';
+        }
+
+    } catch (error) {
+        console.error('Logout failed:', error);
+        alert('Помилка при спробі вийти. Спробуйте пізніше.');
+    } finally {
+        setIsLoggingOut(false);
+    }
+  };
+
   if (isLoading) {
     return <div className={styles.kabinetContainer || "p-8 text-center"}>Завантаження даних кабінету...</div>;
   }
@@ -89,6 +139,7 @@ export default function Cabinet(){
   return(
     <div className={styles.kabinetContainer}>
       <h1 className={styles.title}>Кабінет</h1>
+      
       <section className="mb-8">
           {currentUser ? (
               <UserInfoForm currentUser={userFormInitialData} onProfileUpdate={loadUserData} /> 
@@ -103,6 +154,15 @@ export default function Cabinet(){
           <h2>Мої замовлення</h2>
           <OrderList orders={currentOrders} /> 
       </section>
+      <div className={styles.logoutWrapper}>
+          <button 
+              onClick={handleLogout} 
+              disabled={isLoggingOut}
+              className={styles.logoutButton}
+          >
+              {isLoggingOut ? 'Вихід...' : 'Вийти'}
+          </button>
+      </div>
     </div>
   )
 }
