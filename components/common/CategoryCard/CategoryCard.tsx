@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Category } from "@/utils/categories";
 import { categoryImages } from "@/constants/categoryImages";
-import styles from "./CategoryCard.module.css";
+import css from "./CategoryCard.module.css";
 
 interface Props {
   category: Category;
@@ -13,13 +13,16 @@ interface Props {
 export default function CategoryCard({ category }: Props) {
   return (
     <Link
-      href={{
-        pathname: "/goods",
-        query: { categoryId: category.id },
-      }}
-      className={styles.card}
+      //   href={{
+      //     pathname: "/goods",
+      //     query: { categoryId: category.id },
+      //   }}
+      //   className={css.card}
+      // >
+      href={`/goods?categoryId=${category.id}`}
+      className={css.card}
     >
-      <div className={styles.imageWrapper}>
+      <div className={css.imageWrapper}>
         <Image
           src={
             categoryImages[category.name] ||
@@ -27,11 +30,11 @@ export default function CategoryCard({ category }: Props) {
           }
           alt={category.name}
           fill
-          className={styles.image}
+          className={css.image}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       </div>
-      <p className={styles.name}>{category.name}</p>
+      <p className={css.name}>{category.name}</p>
     </Link>
   );
 }

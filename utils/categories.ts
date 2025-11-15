@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_URL } from "@/constants/api";
+import { api } from "@/app/api/api";
 
 export interface CategoryFromBackend {
   _id: string;
@@ -10,14 +10,9 @@ export interface Category {
   id: string;
   name: string;
 }
-
 export async function getCategories(): Promise<Category[]> {
-  const url = `${BACKEND_URL.replace(/\/$/, "")}/api/categories`;
-
-  console.log(`Завантаження категорій з: ${url}`);
-
   try {
-    const { data } = await axios.get(url);
+    const { data } = await api.get("/categories");
     const categoriesData: CategoryFromBackend[] = data?.categories || [];
 
     if (!Array.isArray(categoriesData)) {
