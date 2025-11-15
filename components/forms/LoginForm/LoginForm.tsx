@@ -1,4 +1,4 @@
-//componets/forms/LoginForm/LoginForm.tsx
+// components/forms/LoginForm/LoginForm.tsx
 
 'use client';
 
@@ -9,11 +9,9 @@ import styles from './LoginForm.module.css';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
-// Тип для формы
 type LoginFormValues = LoginRequest;
 
 const LoginSchema = Yup.object().shape({
-
   phone: Yup.string()
     .test('phone-format', 'Невірний формат телефону', (value) => {
       if (!value) return false;
@@ -22,11 +20,9 @@ const LoginSchema = Yup.object().shape({
     })
     .required("Обов'язкове поле"),
   password: Yup.string()
-    
     .required("Обов'язкове поле"),
 });
 
-// Функция для форматирования номера телефона
 const formatPhoneNumber = (value: string) => {
   const numbers = value.replace(/\D/g, '');
   
@@ -57,31 +53,42 @@ const SignIn = () => {
   };
 
   const handleSubmit = async (
-  values: LoginFormValues,
-  { setSubmitting }: FormikHelpers<LoginFormValues>
-) => {
-  try {
-    setError('');
-    console.log('Sending login data:', values); 
-    
-    const res = await login(values);
-    console.log('Login successful:', res); 
-    
-    
-    router.push('/');
-    
-  } catch (error: unknown) {
-    console.error('Login error:', error); 
-    
-    if (error instanceof Error) {
-      setError(error.message);
-    } else {
-      setError('Помилка входу. Спробуйте ще раз.'); 
+    values: LoginFormValues,
+    { setSubmitting }: FormikHelpers<LoginFormValues>
+  ) => {
+    try {
+      setError('');
+      
+      const user = await login(values);
+      
+      localStorage.setItem('token', 'authenticated');
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      router.push('/');
+      
+    } catch (error: unknown) {
+      console.error('Login error:', error);
+      
+      if (error instanceof Error) {
+        const errorMessage = error.message;
+        
+        if (errorMessage.includes('401') || errorMessage.includes('Invalid credentials')) {
+          setError('401 Такий користувач не існує');
+        } else if (errorMessage.includes('400') || errorMessage.includes('Validation error')) {
+          setError('400 Невірний формат даних');
+        } else if (errorMessage.includes('Network Error')) {
+          setError('Проблема з з\'єднанням');
+        } else {
+          setError(errorMessage);
+        }
+      } else {
+        setError('Помилка входу. Спробуйте ще раз.'); 
+      }
+    } finally {
+      setSubmitting(false);
     }
-  } finally {
-    setSubmitting(false);
-  }
-};
+  };
+
   return (
     <div className={styles.container}>
       {error && (

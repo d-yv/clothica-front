@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import { api } from '@/app/api/api';
-import axios from 'axios';
 
 export interface Order {
   id: string; 
@@ -12,27 +10,6 @@ export interface Order {
   status: 'Оплачено' | 'В обробці' | 'Відправлено' | 'Скасовано';
 }
 
-export const fetchUserOrders = async (): Promise<Order[]> => {
-  console.log('Fetching user orders (using API)...');
-  
-  try {
-    const response = await api.get<Order[]>('/orders'); 
-    
-    return response.data;
-
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-        console.error('Помилка при отриманні замовлень:', error.response?.data?.error || error.message);
-        
-        if (error.response && error.response.status === 401) {
-             throw new Error('Необхідна авторизація для отримання замовлень.');
-        }
-    } else {
-        console.error('Невідома помилка при отриманні замовлень:', error);
-    }
-    return []; 
-  }
-};
 
 interface OrderListProps {
   orders: Order[];
