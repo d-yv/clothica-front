@@ -37,7 +37,7 @@ const fetchCurrentUser = async (): Promise<UserProfileData> => {
     }
 }
 
-export const fetchUserOrders = async (): Promise<Order[]> => {
+const fetchUserOrders = async (): Promise<Order[]> => {
     console.log('Fetching user orders (using Next.js API Route)...');
     
     try {
