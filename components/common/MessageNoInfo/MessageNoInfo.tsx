@@ -1,53 +1,31 @@
-"use client";
+// components/MessageNoInfo/MessageNoInfo.tsx
 
-import React from "react";
-import { useRouter } from "next/navigation";
-import styles from "./MessageNoInfo.module.css";
-
-export type Variant = "emptyCart" | "noProducts" | "noReviews";
+"use client"
+import React from "react"
+import { useRouter } from "next/navigation"
+import styles from "./MessageNoInfo.module.css"
 
 interface MessageNoInfoProps {
-    variant?: Variant;
-    text?: string;
-    buttonText?: string;
-    route?: string;
+    text: string
+    buttonText: string
+    route?: string // '/goods' | '/categories'
 }
 
-interface Message {
-    text: string;
-    buttonText: string;
-    route: string;
-}
+export default function MessageNoInfo({ text, buttonText, route = "/goods" }: MessageNoInfoProps) {
+    const router = useRouter()
 
-export default function MessageNoInfo({
-    variant = "noProducts",
-    text,
-    buttonText,
-    route,
-}: MessageNoInfoProps) {
-    const router = useRouter();
-
-    const messages: Record<Variant, Message> = {
-        emptyCart: { text: "Ваш кошик порожній, мершій до покупок!", buttonText: "До покупок", route: "/goods" },
-        noProducts: { text: "За вашим запитом не знайдено жодних товарів, спробуйте змінити фільтри, або скинути їх.", buttonText: "Скинути фільтри", route: "/categories" },
-        noReviews: { text: "У цього товару ще немає відгуків", buttonText: "Залишити відгук", route: "/goods" },
-    };
-
-    const { text: defaultText, buttonText: defaultButton, route: defaultRoute } = messages[variant];
-    const finalText = text ?? defaultText;
-    const finalButton = buttonText ?? defaultButton;
-    const finalRoute = route ?? defaultRoute;
-
-    const handleClick = () => router.push(finalRoute);
+    const handleClick = () => {
+        router.push(route)
+    }
 
     return (
-        <div className={styles.messagenoinfo}>
-            <p className={styles.messagenoinfotext}>{finalText}</p>
-            {finalButton && (
-                <button onClick={handleClick} className={styles.messagenoinfobutton}>
-                    {finalButton}
+        <div className={styles.message_wrapper}>
+            <div className={styles.message_container}>
+                <p className={styles.message_text}>{text}</p>
+                <button onClick={handleClick} className={styles.message_button}>
+                    {buttonText}
                 </button>
-            )}
+            </div>
         </div>
-    );
+    )
 }
