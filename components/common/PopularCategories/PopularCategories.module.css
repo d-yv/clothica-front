@@ -674,7 +674,50 @@
   background-color: #000;
   color: #fff;
 }
+.allButton {
+  justify-content: flex-end;
+  gap: 16px;
+  display: flex;
+  margin-top: 40px;
+}
 
+.navButton {
+  background: #c5e1a5;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s;
+}
+.disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+.navButton:hover {
+  background-color: #eff6ff;
+}
+/* .wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.swiper {
+  width: 100%;
+} */
+.icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  stroke: currentColor;
+  transition: opacity 0.3s ease;
+}
 @media only screen and (min-width: 768px) {
   .section {
     padding: 48px 32px;
@@ -690,6 +733,26 @@
     line-height: 43.2px;
     justify-content: flex-start;
     align-items: flex-start;
+  }
+  .allButton {
+    position: absolute;
+    top: 35%;
+    left: -25px;
+    right: -25px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .navButton {
+    background: #c5e1a5;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s;
   }
 }
 
