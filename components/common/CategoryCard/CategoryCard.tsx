@@ -13,10 +13,13 @@ interface Props {
 export default function CategoryCard({ category }: Props) {
   return (
     <Link
-      href={{
-        pathname: "/goods",
-        query: { categoryId: category.id },
-      }}
+      //   href={{
+      //     pathname: "/goods",
+      //     query: { categoryId: category.id },
+      //   }}
+      //   className={css.card}
+      // >
+      href={`/goods?categoryId=${category.id}`}
       className={css.card}
     >
       <div className={css.imageWrapper}>

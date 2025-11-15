@@ -33,7 +33,7 @@ export default function PopularCategories() {
   };
 
   return (
-    <section className={css.section}>
+    <section id="PopularCategories" className={css.section}>
       <div className={css.container}>
         <div className={css.header}>
           <h2 className={css.title}>Популярні категорії</h2>
