@@ -1,14 +1,14 @@
-//componets/forms/RegistrationForm/RegistrationForm.tsx
+// //componets/forms/RegistrationForm/RegistrationForm.tsx
+
 
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { register, RegisterRequest } from '@/lib/api';
+import { register, login, RegisterRequest, LoginRequest } from '@/lib/api';
 import styles from './RegistrationForm.module.css';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-
 
 type RegistrationFormValues = RegisterRequest;
 
@@ -30,7 +30,6 @@ const RegistrationSchema = Yup.object().shape({
     .required("Обов'язкове поле"),
 });
 
-// Функция для форматирования номера телефона
 const formatPhoneNumber = (value: string) => {
   const numbers = value.replace(/\D/g, '');
   
@@ -67,18 +66,37 @@ const SignUp = () => {
   ) => {
     try {
       setError('');
-      console.log('Sending registration data:', values);
       
-      const res = await register(values);
-      console.log('Registration successful:', res);
+      await register(values);
       
+      const loginData: LoginRequest = {
+        phone: values.phone,
+        password: values.password
+      };
+      
+      const user = await login(loginData);
+      
+      localStorage.setItem('token', 'authenticated');
+      localStorage.setItem('user', JSON.stringify(user));
+      
+     
       router.push('/');
       
     } catch (error: unknown) {
       console.error('Registration error:', error);
       
       if (error instanceof Error) {
-        setError(error.message);
+        const errorMessage = error.message;
+        
+        if (errorMessage.includes('400') || errorMessage.includes('already exists') || errorMessage.includes('вже існує')) {
+          setError('400 Такий користувач вже існує');
+        } else if (errorMessage.includes('401') || errorMessage.includes('Invalid credentials')) {
+          setError('401 Помилка авторизації');
+        } else if (errorMessage.includes('Network Error')) {
+          setError('Проблема з з\'єднанням');
+        } else {
+          setError(errorMessage);
+        }
       } else {
         setError('Помилка реєстрації. Спробуйте ще раз.');
       }
