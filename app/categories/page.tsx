@@ -10,15 +10,19 @@ const LOAD_MORE_AMOUNT = 3;
 export default function CategoriesPage() {
   const getInitialLimit = () => {
     if (typeof window === "undefined") return 6;
-    return window.innerWidth >= 1024 ? 6 : 4;
+    return window.innerWidth >= 1440 ? 6 : 4;
   };
 
-  const initialLimit = getInitialLimit();
-
   const [categories, setCategories] = useState<Category[]>([]);
-  const [visibleCount, setVisibleCount] = useState(initialLimit);
+  const [visibleCount, setVisibleCount] = useState(getInitialLimit());
 
   useEffect(() => {
+    const handleResize = () => {
+      setVisibleCount(getInitialLimit());
+    };
+
+    window.addEventListener("resize", handleResize);
+
     (async () => {
       try {
         const data = await getCategories();
@@ -27,6 +31,10 @@ export default function CategoriesPage() {
         console.error("Помилка завантаження категорій:", error);
       }
     })();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const visibleCategories = useMemo(
@@ -35,11 +43,11 @@ export default function CategoriesPage() {
   );
 
   const isExpanded = visibleCount >= categories.length;
-  const canShowButton = categories.length > initialLimit;
+  const canShowButton = categories.length > getInitialLimit();
 
   const toggleShow = () => {
     if (isExpanded) {
-      setVisibleCount(initialLimit);
+      setVisibleCount(getInitialLimit());
     } else {
       const next = visibleCount + LOAD_MORE_AMOUNT;
       setVisibleCount(Math.min(next, categories.length));
