@@ -43,7 +43,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
   const handleSubmit = async (values: UserUpdateData, { setSubmitting, setStatus }: FormikHelpers<UserUpdateData>) => {
     setStatus({ success: false, message: 'Збереження змін...' });
     
-    const API_URL = 'http://localhost:4000/api/users/me'; 
+    const API_URL = '/api/user'; 
     
     const dataToSend = {
       firstName: values.firstName,
@@ -65,7 +65,6 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
       
       if (response.status === 401) {
           setStatus({ success: false, message: 'Помилка авторизації. Сесія недійсна.' });
-          localStorage.removeItem('authToken'); 
           return;
       }
 
@@ -74,7 +73,6 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
         throw new Error(errorData.message || `Помилка: ${response.status}`);
       }
 
-      const updatedUser = await response.json();
       
       setStatus({ success: true, message: 'Дані успішно оновлено!' });
       
@@ -91,7 +89,6 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
 
   return (
     <div className={styles.formContainer}>
-      <h3 className={styles.formTitle}>Мої дані</h3>
       
       {initialValues.firstName !== '' ? (
           <Formik
@@ -102,8 +99,8 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
           >
             {({ isSubmitting }) => (
               <Form className={styles.form}>
-                
-                <div className={styles.formWrapper}> 
+                <div className={styles.formWrap}>
+                  <div className={styles.formWrapper}> 
                   <label htmlFor="firstName">Ім'я*</label>
                   <Field type="text" id="firstName" name="firstName" className={styles.formInput} /> 
                   <ErrorMessage name="firstName" component="div" className={styles.errorMessage} />
@@ -114,11 +111,15 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
                   <Field type="text" id="lastName" name="lastName" className={styles.formInput} />
                   <ErrorMessage name="lastName" component="div" className={styles.errorMessage} />
                 </div>
+                </div>
+                
                 <div className={styles.formWrapper}>
                   <label htmlFor="phone">Телефон (+380XXXXXXXXX)</label>
                   <Field type="text" id="phone" name="phone" className={styles.formInput} />
                   <ErrorMessage name="phone" component="div" className={styles.errorMessage} />
                 </div>
+                
+                <div className={styles.formWrap}>
                 <div className={styles.formWrapper}>
                   <label htmlFor="city">Місто</label>
                   <Field type="text" id="city" name="city" className={styles.formInput} />
@@ -128,6 +129,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
                   <label htmlFor="postOfficeNum">Відділення Нової Пошти</label>
                   <Field type="text" id="postOfficeNum" name="postOfficeNum" className={styles.formInput} />
                   <ErrorMessage name="postOfficeNum" component="div" className={styles.errorMessage} />
+                </div>
                 </div>
                 <button 
                   type="submit" 

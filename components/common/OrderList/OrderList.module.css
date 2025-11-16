@@ -1,0 +1,72 @@
+.orderListContainer {
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 16px; 
+    
+}
+.orderItem {
+    width: 100%; 
+    padding: 1rem;
+    flex-shrink: 0; 
+}
+.orderItemDetails {
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start;
+}
+.orderLeft {
+    flex-shrink: 0; 
+    margin-right: 10px; 
+}
+.date{
+  font: 400 14px / 1.5 "Inter", sans-serif;
+color: #000;
+}
+.number{
+  font: 600 18px / 1.5 "Inter", sans-serif;
+color: #000;
+}
+.orderTotal {
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start; 
+    text-align: left;
+    font-weight: bold;
+    flex-shrink: 0; 
+}
+.summTitle{
+  font: 600 18px / 1.5 "Inter", sans-serif;
+color: #000;
+}
+.orderPriceValue{font: 400 16px / 1.5 "Inter", sans-serif;
+color: #000;
+}
+.orderStatusWrapper {display: none; }
+
+@media screen and (min-width: 768px){
+    .orderListContainer {
+        gap: 24px; 
+    }
+    
+    .orderItemDetails {
+        justify-content: space-between; 
+        gap: 16px; 
+    }
+
+    .orderLeft,
+    .orderTotal,
+    .orderStatusWrapper {
+        flex: 1;
+        flex-shrink: 0; 
+    }
+    .orderTotal {
+        align-items: center; 
+        text-align: center;
+    }
+    .orderStatusWrapper {
+        display: block; 
+        align-self: flex-start; 
+        text-align: right;
+        font-weight: bold;
+    }
+}

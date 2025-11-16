@@ -1,5 +1,5 @@
-"use client";
-
+'use client';
+import StarsIcon from "@/components/common/StarsIcon/StarsIcon";
 import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, A11y } from "swiper/modules";
@@ -80,7 +80,7 @@ export default function ReviewsSlider() {
           spaceBetween={32}
           slidesPerView={1}
           slidesPerGroup={1}
-          speed={1500}
+          speed={1200} 
           keyboard={{ enabled: true }}
           a11y={{ enabled: true }}
           breakpoints={{
@@ -101,13 +101,14 @@ export default function ReviewsSlider() {
             <SwiperSlide tag="li" key={review._id.$oid} className={css.slide}>
               <article className={css.card}>
                 <div>
-                  {Array.from({
+                  {/* {Array.from({
                     length: Math.max(1, Math.round(review.rate)),
                   }).map((_, i) => (
                     <svg key={i} className={css.stars} aria-hidden="true">
                       <use href="/styles.icon.svg#icon-Star-Filled-2" />
                     </svg>
-                  ))}
+                  ))} */}
+                  <StarsIcon rating={review.rate} />
                   <p className={css.quote}>
                     &ldquo;{review.description}&rdquo;
                   </p>
