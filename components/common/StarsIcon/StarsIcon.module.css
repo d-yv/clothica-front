@@ -1,0 +1,26 @@
+.stars {
+    display: flex;
+    gap: 4px;
+}
+
+.star,
+.starEmpty,
+.starFull {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.partialWrap {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.partialFill {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+}
