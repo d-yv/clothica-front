@@ -98,21 +98,13 @@ export default function ReviewsSlider() {
           }}
         >
           {reviews.map((review) => (
-            <SwiperSlide
-              tag="li"
-              key={review._id.$oid}
-              className={css.slide}
-            >
+            <SwiperSlide tag="li" key={review._id.$oid} className={css.slide}>
               <article className={css.card}>
                 <div>
                   {/* {Array.from({
                     length: Math.max(1, Math.round(review.rate)),
                   }).map((_, i) => (
-                    <svg
-                      key={i}
-                      className={css.stars}
-                      aria-hidden="true"
-                    >
+                    <svg key={i} className={css.stars} aria-hidden="true">
                       <use href="/styles.icon.svg#icon-Star-Filled-2" />
                     </svg>
                   ))} */}
@@ -136,18 +128,11 @@ export default function ReviewsSlider() {
             // ref={prevBtnRef}
             onClick={handlePrevClick}
             disabled={isBeginning}
-            className={`${css.navBtn} ${
-              isBeginning ? css.navBtnDisabled : ""
-            }`}
+            className={`${css.navBtn} ${isBeginning ? css.navBtnDisabled : ""}`}
             aria-label="Попередній"
             type="button"
           >
-            <svg
-              className={css.icon}
-              width="24"
-              height="24"
-              aria-hidden="true"
-            >
+            <svg className={css.icon} width="24" height="24" aria-hidden="true">
               <use href="/styles.icon.svg#icon-arrow-light" />
             </svg>
           </button>
@@ -160,12 +145,7 @@ export default function ReviewsSlider() {
             aria-label="Наступний"
             type="button"
           >
-            <svg
-              className={css.icon}
-              width="24"
-              height="24"
-              aria-hidden="true"
-            >
+            <svg className={css.icon} width="24" height="24" aria-hidden="true">
               <use href="/styles.icon.svg#icon-arrow-right" />
             </svg>
           </button>
