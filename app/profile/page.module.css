@@ -1,12 +1,14 @@
-.kabinetContainer{
+.profilePageContainer{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 48px;
   background: #f3f9ed;
-  padding: 64px 20px 48px;
-  width: 375px;
- display: flex;
-align-items: center;
-justify-content: flex-start;
-flex-direction: column;
-gap: 48px;
+  padding-block: 64px 48px;
+  padding-inline: 20px;
+  width: 100%;
+ height: auto;
 }
 .title {
   font-family: "Nunito Sans", sans-serif;
@@ -16,13 +18,20 @@ gap: 48px;
   letter-spacing: -0.01em;
   text-align: center;
   color: #000;
-  padding-bottom:48px;
+}
+.sectionTitle{
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 120%;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: #000;
 }
 .logoutWrapper{
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
 }
 .logoutButton{
   width: 335px;
@@ -30,13 +39,21 @@ gap: 48px;
   box-sizing: border-box;
   padding-block: 6px;
   padding-inline: 12px;
-  background: #C5E1A5;
   border: 1px solid #5e5e5e;
   border-radius: 100px;
   color: #000;
+  background: rgba(0, 0, 0, 0.05);
   font-size: 16px;
   font-weight: 500;
   line-height: 1.5;
   text-align: center;
   cursor: pointer;
+}
+@media (min-width: 768px){
+  .profilePageContainer{
+    padding-inline: 32px;
+  }
+  .logoutButton{
+    width: 156px;
+  }
 }
