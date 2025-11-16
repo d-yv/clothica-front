@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import styles from './page.module.css';
 import UserInfoForm from '@/components/forms/UserInfoForm/UserInfoForm';
 import { OrderList, Order } from '@/components/common/OrderList/OrderList'; 
+import MessageNoInfo from "@/components/common/MessageNoInfo/MessageNoInfo"; 
 
 interface UserProfileData {
   firstName: string;
@@ -69,7 +70,7 @@ export default function Cabinet(){
   const [currentUser, setCurrentUser] = useState<UserProfileData | undefined>(undefined); 
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [isLoggingOut, setIsLoggingOut] = useState(false); // Новий стан
+  const [isLoggingOut, setIsLoggingOut] = useState(false); 
 
   const loadUserData = useCallback(async () => {
     setAuthError(null); 
@@ -134,13 +135,13 @@ export default function Cabinet(){
       phone: currentUser.phone || '', 
       city: currentUser.city || '',
       postOfficeNum: currentUser.postOfficeNum || '',
-  } : undefined;
+  } : undefined; 
 
   return(
-    <div className={styles.kabinetContainer}>
+    <div className={styles.profilePageContainer}>
       <h1 className={styles.title}>Кабінет</h1>
-      
-      <section className="mb-8">
+      <h3 className={styles.sectionTitle}>Мої дані</h3>
+      <section>
           {currentUser ? (
               <UserInfoForm currentUser={userFormInitialData} onProfileUpdate={loadUserData} /> 
           ) : (
@@ -150,9 +151,17 @@ export default function Cabinet(){
           )}
           
       </section>
-      <section className="mb-8">
-          <h2>Мої замовлення</h2>
-          <OrderList orders={currentOrders} /> 
+      <section>
+          <h2 className={styles.sectionTitle}>Мої замовлення</h2>
+          {currentOrders.length === 0 ? (
+              <MessageNoInfo 
+                  text="У вас ще немає жодного замовлення." 
+                  buttonText="Перейти до покупок" 
+                  route="/goods" 
+              />
+          ) : (
+              <OrderList orders={currentOrders} /> 
+          )}
       </section>
       <div className={styles.logoutWrapper}>
           <button 

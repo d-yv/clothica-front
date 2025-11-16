@@ -4,14 +4,18 @@
   flex-direction: column;
   gap: 24px;
   width: 100%;
-  max-width: 400px;
 }
-
-/* Заголовок форми */
-.formTitle {
-  font-size: 20px;
-  font-weight: 600;
-  text-align: center;
+.form{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+.formWrap{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 .formWrapper {
   display: flex;
@@ -26,17 +30,6 @@
   padding: 8px;
   width: 100%; 
   height: 40px;
-  box-sizing: border-box;
-}
-
-.formInputTextarea{
- height: auto;
-  min-height: 180px;
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 16px;
-  padding: 8px;
-  width: 100%;
   box-sizing: border-box;
 }
 .errorMessage {
@@ -60,11 +53,26 @@
   text-align: center;
   cursor: pointer;
 }
+.submitButton::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #4e5a42;
+}
 
-
-/* Стиль для повідомлень про статус відправки */
-.statusMessage {
-  margin-top: 15px;
-  text-align: center;
-  font-size: 14px;
+@media screen and (min-width: 768px){
+  .formWrap{
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 32px;
+  }
+  .submitButton{
+    width: 146px;
+    padding-inline: 8px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

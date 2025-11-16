@@ -1,12 +1,13 @@
 'use client';
 
 import React from 'react';
+import styles from "./OrderList.module.css";
 
 export interface Order {
   id: string; 
-  date: string; 
-  number: string;
-  amount: number;
+  orderDate: string; 
+  orderNumber: string;
+  total: number;
   status: 'Оплачено' | 'В обробці' | 'Відправлено' | 'Скасовано';
 }
 
@@ -16,29 +17,28 @@ interface OrderListProps {
 }
 
 export const OrderList: React.FC<OrderListProps> = ({ orders }) => (
-  <div className="space-y-3">
-    {orders.length === 0 && <p className="text-gray-500">Замовлень поки немає.</p>}
-    
+  <div className={styles.orderListContainer}>
     {orders.map((order) => {
-        let statusColor = 'text-gray-600';
-        if (order.status === 'Відправлено' || order.status === 'Оплачено') {
-            statusColor = 'text-green-600';
-        } else if (order.status === 'В обробці') {
-            statusColor = 'text-orange-600';
-        } else if (order.status === 'Скасовано') {
-            statusColor = 'text-red-600';
-        }
         return (
-            <div key={order.id} className="p-3 border rounded-lg shadow-sm bg-white">
-                <p><strong>Дата:</strong> {order.date}</p>
-                <p><strong>Номер:</strong> {order.number}</p>
-                <p><strong>Сума:</strong> {order.amount.toFixed(2)} грн</p>
-                <p>
-                    <strong>Статус:</strong> 
-                    <span className={`font-semibold ${statusColor} ml-2`}>
-                        {order.status}
-                    </span>
-                </p>
+            <div key={order.id} className={styles.orderItem}>
+              <div className={styles.orderItemDetails}>
+                
+                <div className={styles.orderLeft}>
+                  <p className={styles.date}>{order.orderDate}</p>
+                  <p className={styles.number}>{order.orderNumber}</p>
+                </div>
+                
+                <div className={styles.orderTotal} >
+                  <p className={styles.summTitle}>Сума:</p>
+                  <p className={styles.orderPriceValue}>{order.total} грн</p>
+                </div>
+                
+                <div className={styles.orderStatusWrapper}>
+                  <p className={styles.orderStatus}>Статус:</p>
+                  <p>{order.status}</p>
+                </div>
+                
+                </div>
             </div>
         );
     })}
