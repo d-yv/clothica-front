@@ -3,9 +3,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-import CategoriesFilter, {
-  GoodsFilters,
-} from "@/components/common/CategoriesFilter/CategoriesFilter";
+import { GoodsFilters } from "@/types/goodsFilters";
+import CategoriesFilter from "@/components/common/CategoriesFilter/CategoriesFilter";
 import GoodsList from "@/components/common/GoodsList/GoodsList";
 
 import styles from "./GoodsPage.module.css";
@@ -34,16 +33,10 @@ export default function GoodsPage() {
     gender: "all",
   });
 
-  const [perPage, setPerPage] = useState<number>(DESKTOP_COUNT);
-
-  // Выставляем количество товаров на старте по брейкпоинту
-  useEffect(() => {
-    setPerPage(getInitialPerPage());
-  }, []);
+  const [perPage, setPerPage] = useState<number>(() => getInitialPerPage());
 
   const title = activeCategoryName ?? "Всі товари";
 
-  // Обновляем query при изменении фильтров или количества
   useEffect(() => {
     const params = new URLSearchParams();
 
@@ -82,7 +75,6 @@ export default function GoodsPage() {
           </aside>
 
           <div className={styles.listArea}>
-            {/* Оборачиваем GoodsList, чтобы ограничивать товары по perPage */}
             <div className={styles.limit} data-count={perPage}>
               <GoodsList />
             </div>
