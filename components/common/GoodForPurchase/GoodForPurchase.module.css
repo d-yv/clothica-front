@@ -1,0 +1,54 @@
+
+.container{
+    display: flex;
+    gap: 3rem;
+}
+.col{
+    flex: 1;
+}
+.imageWrap{
+    height: 680px;
+    position: relative;
+}
+.image{
+    object-fit: cover;
+}
+.header{
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 120%;
+    letter-spacing: -0.01em;
+}
+.price{
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 140%;
+    letter-spacing: -0.01em; 
+}
+.about{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+}
+.btn1{
+    background:#C5E1A5;
+    border: 1px solid #C5E1A5;
+    border-radius: 100px;
+    padding: 6px 12px;
+    width: 560px;
+    height: 36px;
+}
+.btn2{
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 100px;
+    padding: 6px 12px;
+    width: 640px;
+    height: 36px;
+}
+.text{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 150%;
+    text-align: center;
+}
