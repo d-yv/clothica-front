@@ -59,7 +59,7 @@ export default function PopularGoods() {
   if (!goods.length) return null;
 
   return (
-    <section className={styles.section} id="populargoods">
+    <section className={styles.section} id="PopularGoods">
       <div className="container">
         <div className={styles.header}>
           <h2 className={styles.title}>Популярні товари</h2>
@@ -105,7 +105,9 @@ export default function PopularGoods() {
                 className={`${styles.arrow} ${styles.prev}`}
                 onClick={handlePrevClick}
               >
-                ←
+                 <svg className={styles.icon}>
+      <use href="/sprite.svg#arrow_back"></use>
+    </svg>
               </button>
 
               <button
@@ -113,7 +115,9 @@ export default function PopularGoods() {
                 className={`${styles.arrow} ${styles.next}`}
                 onClick={handleNextClick}
               >
-                →
+                 <svg className={styles.icon}>
+      <use href="/sprite.svg#arrow_forward"></use>
+    </svg>
               </button>
             </div>
           </div>
