@@ -1,0 +1,174 @@
+/* ============================
+   DESKTOP (default)
+   ============================ */
+
+.wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+/* Хрестик */
+.closeBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeIcon {
+  width: 24px;
+  height: 24px;
+  stroke: var(--color-scheme-1-text);
+  fill: none;
+}
+
+/* Заголовок */
+.title {
+  font-family: var(--second-family);
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: var(--color-scheme-1-text);
+  margin-bottom: 64px;
+}
+
+/* Форма */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-scheme-1-text);
+}
+
+/* Поле "Ваше ім’я" */
+.inputName {
+  margin-top: 8px;
+  width: 640px;
+  height: 40px;
+  border-radius: 16px;
+  border: 1px solid var(--opacity-neutral-darkest-15);
+  padding: 8px;
+  background: var(--opacity-transparent);
+}
+
+/* Поле "Відгук" */
+.textarea {
+  margin-top: 8px;
+  width: 640px;
+  height: 180px;
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid var(--opacity-neutral-darkest-15);
+  background: var(--opacity-transparent);
+  resize: none;
+}
+
+/* Кнопка Надіслати */
+.submitBtn {
+  width: 105px;
+  height: 36px;
+  padding: 6px 12px;
+  background: var(--color-deco);
+  border: 1px solid var(--color-deco);
+  border-radius: 100px;
+
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--color-neutral-darkest);
+
+  margin-top: 72px;
+  align-self: center;
+  cursor: pointer;
+}
+
+/* ============================
+   TABLET (768px – 1023px)
+   ============================ */
+
+@media (max-width: 1023px) and (min-width: 768px) {
+  .wrap {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .title {
+    font-size: 36px;
+    margin-bottom: 40px;
+  }
+
+  .inputName,
+  .textarea {
+    width: 640px;
+  }
+
+  .closeBtn {
+    top: 20px;
+    right: 20px;
+  }
+}
+
+/* ============================
+   MOBILE (до 767px)
+   ============================ */
+
+@media (max-width: 767px) {
+  .wrap {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .title {
+    font-size: 36px; /* 🔥 ТАК САМО, ЯК НА ПЛАНШЕТІ */
+    margin-bottom: 40px; /* 🔥 40px як у Figma */
+  }
+
+  .form {
+    width: 100%;
+    padding-inline: 20px; /* 🔥 по 20px як на твоєму скріні */
+    align-items: center;
+  }
+
+  .label {
+    width: 100%;
+  }
+
+  .inputName,
+  .textarea {
+    width: 100%;
+  }
+
+  .textarea {
+    height: 180px;
+  }
+
+  .submitBtn {
+    margin-top: 40px;
+  }
+
+  .closeBtn {
+    top: 20px;
+    right: 20px;
+  }
+}
