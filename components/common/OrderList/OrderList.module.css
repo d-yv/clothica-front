@@ -6,7 +6,6 @@
 }
 .orderItem {
     width: 100%; 
-    padding: 1rem;
     flex-shrink: 0; 
 }
 .orderItemDetails {
@@ -22,7 +21,7 @@
   font: 400 14px / 1.5 "Inter", sans-serif;
 color: #000;
 }
-.number{
+.boldText{
   font: 600 18px / 1.5 "Inter", sans-serif;
 color: #000;
 }
@@ -34,39 +33,38 @@ color: #000;
     font-weight: bold;
     flex-shrink: 0; 
 }
-.summTitle{
-  font: 600 18px / 1.5 "Inter", sans-serif;
-color: #000;
-}
-.orderPriceValue{font: 400 16px / 1.5 "Inter", sans-serif;
+.orderValueText{font: 400 16px / 1.5 "Inter", sans-serif;
 color: #000;
 }
 .orderStatusWrapper {display: none; }
 
 @media screen and (min-width: 768px){
     .orderListContainer {
-        gap: 24px; 
+        width: 704px;
+        padding-top:16px;
     }
     
     .orderItemDetails {
         justify-content: space-between; 
-        gap: 16px; 
     }
 
     .orderLeft,
     .orderTotal,
     .orderStatusWrapper {
         flex: 1;
-        flex-shrink: 0; 
+        flex-shrink: 0;
     }
     .orderTotal {
-        align-items: center; 
-        text-align: center;
+        align-items: flex-start; 
+        text-align: left;
     }
     .orderStatusWrapper {
         display: block; 
         align-self: flex-start; 
-        text-align: right;
+        text-align: left;
         font-weight: bold;
     }
+}
+@media screen and (min-width: 1440px){
+  
 }

@@ -1,21 +1,17 @@
-
 .formContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
   width: 100%;
 }
 .form{
   display: flex;
-  flex-direction: column;
+ flex-direction: column;
   gap: 24px;
-  width: 100%;
+  /*width: 100%;*/
 }
 .formWrap{
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+  gap: 24px;
+  width: 100%;
 }
 .formWrapper {
   display: flex;
@@ -33,9 +29,12 @@
   box-sizing: border-box;
 }
 .errorMessage {
-  color: red;
+  color: #9d0000;
   font-size: 12px;
   margin-top: -4px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
 }
 .submitButton {
   width: 335px;
@@ -53,19 +52,34 @@
   text-align: center;
   cursor: pointer;
 }
-.submitButton::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background-color: #4e5a42;
+.submitButton:hover {
+  border: 1px solid #4e5a42;
+  background-color: #9db484;
+  transform: translateY(-1px);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+.submitButton:disabled {
+  border: 1px solid #c5e1a5;
+  background-color: #c5e1a5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.4;
 }
 
 @media screen and (min-width: 768px){
+  .formContainer{
+    width: 704px;
+  }
+  .formWrapper{
+    flex: 1;
+  }
+  
   .formWrap{
-    justify-content: flex-start;
     flex-direction: row;
     gap: 32px;
   }
@@ -75,4 +89,8 @@
     margin-left: auto;
     margin-right: auto;
   }
+}
+
+@media screen and (min-width: 1440px){
+  
 }
