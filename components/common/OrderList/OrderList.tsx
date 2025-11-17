@@ -25,17 +25,17 @@ export const OrderList: React.FC<OrderListProps> = ({ orders }) => (
                 
                 <div className={styles.orderLeft}>
                   <p className={styles.date}>{order.orderDate}</p>
-                  <p className={styles.number}>{order.orderNumber}</p>
+                  <p className={styles.boldText}>{order.orderNumber}</p>
                 </div>
                 
                 <div className={styles.orderTotal} >
-                  <p className={styles.summTitle}>Сума:</p>
-                  <p className={styles.orderPriceValue}>{order.total} грн</p>
+                  <p className={styles.boldText}>Сума:</p>
+                  <p className={styles.orderValueText}>{order.total} грн</p>
                 </div>
                 
                 <div className={styles.orderStatusWrapper}>
-                  <p className={styles.orderStatus}>Статус:</p>
-                  <p>{order.status}</p>
+                  <p className={styles.boldText}>Статус:</p>
+                  <p className={styles.orderValueText}>{order.status}</p>
                 </div>
                 
                 </div>
