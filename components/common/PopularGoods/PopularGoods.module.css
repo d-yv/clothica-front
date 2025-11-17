@@ -1,7 +1,6 @@
 .section {
-  width: 100%;
+  max-width: 100%;
   background-color: #f3f9ed;
-  padding: 48px 0;
 }
 
 .header {
@@ -20,19 +19,18 @@ padding-bottom: 40px;
   letter-spacing: -0.01em;
   color: #000;
   width: 200px;
-  /* max-width: 768px; */
 }
 
 .allButton {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   gap: 24px;
   width: 108px;
   height: 36px;
   border-radius: 100px;
-  padding: 6px 12px;
+  /* padding: 6px 12px; */
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 16px;
   line-height: 1.5;
@@ -54,6 +52,7 @@ padding-bottom: 40px;
   flex-direction: row;
   align-items: center;
   gap: 16px;
+  padding-bottom: 48px;
 }
 
 .pagination {
@@ -93,6 +92,14 @@ padding-bottom: 40px;
   transition: background-color 150ms ease, transform 150ms ease;
 }
 
+.icon {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  width: 24px;
+  stroke: #000;
+  fill: none;
+}
 
 
 @media (min-width: 768px) {
@@ -121,24 +128,21 @@ padding-bottom: 40px;
 
   .pagination {
     position: absolute;
-    bottom: 24px;
+    padding-bottom: 48px;
     left: 50%;
-    /* transform: translateX(-50%); */
     pointer-events: auto;
   }
 
 
   .arrows {
     position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
+    top: 40%;
+    left: -30;
+    right: -30;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    /* padding: 0 32px; */
     transform: translateY(-50%);
 
     pointer-events: none;
@@ -163,9 +167,8 @@ padding-bottom: 40px;
   }
 
   .arrows {
-    /* padding: 0 64px; */
-    left: -50;
-    right: -50;
+    left: -30;
+    right: -30;
   }
 
   .arrow:hover {
