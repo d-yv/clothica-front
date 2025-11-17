@@ -1,0 +1,1 @@
+export type GoodsGender = "all" | "women" | "man" | "unisex";
