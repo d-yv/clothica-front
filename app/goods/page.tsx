@@ -34,8 +34,22 @@ export default function GoodsPage() {
   });
 
   const [perPage, setPerPage] = useState<number>(() => getInitialPerPage());
+  const [hasMore, setHasMore] = useState(true);
 
   const title = activeCategoryName ?? "Всі товари";
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handler = (event: Event) => {
+      const custom = event as CustomEvent<{ hasMore: boolean }>;
+      setHasMore(custom.detail.hasMore);
+    };
+
+    window.addEventListener("goods-meta", handler as EventListener);
+    return () =>
+      window.removeEventListener("goods-meta", handler as EventListener);
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -44,7 +58,10 @@ export default function GoodsPage() {
     params.set("perPage", String(perPage));
 
     if (filters.categoryId) params.set("categoryId", filters.categoryId);
-    if (filters.sizes.length) params.set("sizes", filters.sizes.join(","));
+    if (filters.sizes.length) {
+      // бек принимает size
+      params.set("size", filters.sizes.join(","));
+    }
     if (filters.minPrice) params.set("minPrice", String(filters.minPrice));
     if (filters.maxPrice) params.set("maxPrice", String(filters.maxPrice));
     if (filters.gender !== "all") params.set("gender", filters.gender);
@@ -58,6 +75,7 @@ export default function GoodsPage() {
   }, []);
 
   const handleShowMore = () => {
+    if (!hasMore) return;
     setPerPage((prev) => prev + LOAD_STEP);
   };
 
@@ -75,17 +93,19 @@ export default function GoodsPage() {
           </aside>
 
           <div className={styles.listArea}>
-            <div className={styles.limit} data-count={perPage}>
-              <GoodsList />
-            </div>
+            <GoodsList />
 
-            <button
-              type="button"
-              className={styles.showMoreBtn}
-              onClick={handleShowMore}
-            >
-              Показати більше
-            </button>
+            {hasMore && (
+              <div className={styles.showMoreWrapper}>
+                <button
+                  type="button"
+                  className={styles.showMoreBtn}
+                  onClick={handleShowMore}
+                >
+                  Показати більше
+                </button>
+              </div>
+            )}
           </div>
         </section>
       </div>
