@@ -9,13 +9,12 @@ import GoodsList from "@/components/common/GoodsList/GoodsList";
 
 import styles from "./GoodsPage.module.css";
 
-const MOBILE_TABLET_COUNT = 8;
-const DESKTOP_COUNT = 12;
-const LOAD_STEP = 3;
+const DESKTOP_PER_PAGE = 12;
+const MOBILE_TABLET_PER_PAGE = 8;
 
 const getInitialPerPage = () => {
-  if (typeof window === "undefined") return DESKTOP_COUNT;
-  return window.innerWidth >= 1440 ? DESKTOP_COUNT : MOBILE_TABLET_COUNT;
+  if (typeof window === "undefined") return DESKTOP_PER_PAGE;
+  return window.innerWidth >= 1440 ? DESKTOP_PER_PAGE : MOBILE_TABLET_PER_PAGE;
 };
 
 export default function GoodsPage() {
@@ -33,7 +32,12 @@ export default function GoodsPage() {
     gender: "all",
   });
 
+  const [page, setPage] = useState<number>(1);
+
   const [perPage, setPerPage] = useState<number>(() => getInitialPerPage());
+
+  const [shownCount, setShownCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
   const title = activeCategoryName ?? "Всі товари";
@@ -41,25 +45,24 @@ export default function GoodsPage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const handler = (event: Event) => {
-      const custom = event as CustomEvent<{ hasMore: boolean }>;
-      setHasMore(custom.detail.hasMore);
+    const handleResize = () => {
+      const next = getInitialPerPage();
+
+      setPerPage((prev) => (page === 1 ? next : prev));
     };
 
-    window.addEventListener("goods-meta", handler as EventListener);
-    return () =>
-      window.removeEventListener("goods-meta", handler as EventListener);
-  }, []);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [page]);
 
   useEffect(() => {
     const params = new URLSearchParams();
 
-    params.set("page", "1");
+    params.set("page", String(page));
     params.set("perPage", String(perPage));
 
     if (filters.categoryId) params.set("categoryId", filters.categoryId);
     if (filters.sizes.length) {
-      // бек принимает size
       params.set("size", filters.sizes.join(","));
     }
     if (filters.minPrice) params.set("minPrice", String(filters.minPrice));
@@ -67,33 +70,53 @@ export default function GoodsPage() {
     if (filters.gender !== "all") params.set("gender", filters.gender);
 
     router.replace(`/goods?${params.toString()}`, { scroll: false });
-  }, [filters, perPage, router]);
+  }, [filters, page, perPage, router]);
 
   const handleFiltersChange = useCallback((next: GoodsFilters) => {
     setFilters(next);
+    setPage(1);
+    setShownCount(0);
+    setTotalCount(0);
+    setHasMore(true);
     setPerPage(getInitialPerPage());
   }, []);
 
   const handleShowMore = () => {
     if (!hasMore) return;
-    setPerPage((prev) => prev + LOAD_STEP);
+    setPage((prev) => prev + 1);
   };
+
+  const handleMetaChange = useCallback(
+    (meta: { hasMore: boolean; shownCount: number; totalCount: number }) => {
+      setHasMore(meta.hasMore);
+      setShownCount(meta.shownCount);
+      setTotalCount(meta.totalCount);
+    },
+    []
+  );
 
   return (
     <main className="style">
       <div className="container">
-        <h1 className={`title ${styles.goodsPageTitle}`}>{title}</h1>
+        <h1 className={`${title} ${styles.goodsPageTitle}`}>{title}</h1>
 
         <section className={styles.content}>
           <aside className={styles.sidebar}>
             <CategoriesFilter
               onCategoryChange={setActiveCategoryName}
               onFiltersChange={handleFiltersChange}
+              shownCount={shownCount}
+              totalCount={totalCount}
             />
           </aside>
 
           <div className={styles.listArea}>
-            <GoodsList />
+            <GoodsList
+              page={page}
+              perPage={perPage}
+              filters={filters}
+              onMetaChange={handleMetaChange}
+            />
 
             {hasMore && (
               <div className={styles.showMoreWrapper}>

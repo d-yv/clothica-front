@@ -1,21 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 import { api } from "@/app/api/api";
 import { Good } from "@/types/good";
+import { GoodsFilters } from "@/types/goodsFilters";
+
 import GoodCard from "../GoodCard/GoodCard";
+import MessageNoInfo from "@/components/common/MessageNoInfo/MessageNoInfo";
+
 import styles from "./GoodsList.module.css";
 
+type Props = {
+  page: number;
+  perPage: number;
+  filters: GoodsFilters;
+  onMetaChange?: (meta: {
+    hasMore: boolean;
+    shownCount: number;
+    totalCount: number;
+  }) => void;
+};
 
-const BACKEND_PER_PAGE = 12; 
-
-export default function GoodsList() {
-  const searchParams = useSearchParams();
-  const paramsString = searchParams.toString(); 
-
-
+export default function GoodsList({
+  page,
+  perPage,
+  filters,
+  onMetaChange,
+}: Props) {
   const [goods, setGoods] = useState<Good[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,93 +36,103 @@ export default function GoodsList() {
     const load = async () => {
       setLoading(true);
 
+      if (page === 1) {
+        setGoods([]);
+      }
+
       try {
-
-        const uiPerPage = Number(
-          searchParams.get("perPage") || BACKEND_PER_PAGE
-        );
-
-
-        const page = 1; 
-
-
-
-        const minPriceStr = searchParams.get("minPrice");
-        const maxPriceStr = searchParams.get("maxPrice");
-        const genderStr = searchParams.get("gender");
-        const categoryIdStr = searchParams.get("categoryId");
-        const sizeStr = searchParams.get("size");
-
         const params: Record<string, unknown> = {
           page,
-
-          perPage: BACKEND_PER_PAGE, 
-
-
+          perPage,
         };
 
-        if (minPriceStr) params.minPrice = Number(minPriceStr);
-        if (maxPriceStr) params.maxPrice = Number(maxPriceStr);
-        if (genderStr && genderStr !== "all") params.gender = genderStr;
-        if (categoryIdStr && categoryIdStr !== "null") {
-          params.categoryId = categoryIdStr;
-        }
-        if (sizeStr) {
-
-          params.size = sizeStr;
-        }
-
-        console.log("Fetching goods with params:", params);
+        if (filters.minPrice) params.minPrice = filters.minPrice;
+        if (filters.maxPrice) params.maxPrice = filters.maxPrice;
+        if (filters.gender !== "all") params.gender = filters.gender;
+        if (filters.categoryId) params.categoryId = filters.categoryId;
+        if (filters.sizes.length) params.size = filters.sizes.join(",");
 
         const res = await api.get("/goods", { params });
-
-        console.log("Fetched goods response:", res.data);
         const data = res.data;
 
-        const list: Good[] = data.goods || [];
-        setGoods(list);
-        setError(null);
+        console.log(data.goods);
 
+        const pageGoods: Good[] = data.goods || [];
 
-        const visibleCount = Math.min(uiPerPage, list.length);
-        const hasMore = visibleCount < list.length;
+        setGoods((prev) => {
+          const merged = page === 1 ? pageGoods : [...prev, ...pageGoods];
+          const shownCount = merged.length;
 
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(
-            new CustomEvent("goods-meta", { detail: { hasMore } })
+          let totalCount = Number(
+            data.totalGoods ??
+              data.total ??
+              data.totalCount ??
+              data.totalItems ??
+              0
           );
-        }
+
+          if (!Number.isFinite(totalCount) || totalCount <= 0) {
+            const totalPages = Number(data.totalPages);
+
+            if (Number.isFinite(totalPages) && totalPages > 0) {
+              totalCount = totalPages * perPage;
+
+              if (page === totalPages) {
+                const before = (totalPages - 1) * perPage;
+                totalCount = before + pageGoods.length;
+              }
+            } else {
+              totalCount = shownCount;
+            }
+          }
+
+          const totalPages = Number(data.totalPages);
+          let hasMore = false;
+
+          if (Number.isFinite(totalPages) && totalPages > 0) {
+            hasMore = page < totalPages;
+          } else {
+            hasMore = pageGoods.length === perPage;
+          }
+
+          onMetaChange?.({ hasMore, shownCount, totalCount });
+
+          return merged;
+        });
+
+        setError(null);
       } catch (e) {
         console.error("Fetch goods error:", e);
         setError("Не вдалося завантажити товари");
-
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(
-            new CustomEvent("goods-meta", { detail: { hasMore: false } })
-          );
-        }
+        onMetaChange?.({ hasMore: false, shownCount: 0, totalCount: 0 });
       } finally {
         setLoading(false);
       }
     };
 
     load();
+  }, [page, perPage, filters, onMetaChange]);
 
-  }, [paramsString]);
+  if (!loading && goods.length === 0) {
+    return (
+      <MessageNoInfo
+        text="За вашим запитом не знайдено жодних товарів, спробуйте змінити фільтри, або скинути їх"
+        buttonText="Скинути фільтри"
+        route="/goods"
+      />
+    );
+  }
 
-  if (loading) return <p>Завантаження...</p>;
-  if (error) return <p>{error}</p>;
-
-
-  const searchParamsObj = new URLSearchParams(paramsString);
-  const uiPerPage = Number(searchParamsObj.get("perPage") || BACKEND_PER_PAGE);
-  const visibleGoods = goods.slice(0, uiPerPage);
+  if (loading && goods.length === 0) return <p>Завантаження...</p>;
+  if (error && goods.length === 0) return <p>{error}</p>;
 
   return (
     <div className={styles.list}>
-      {visibleGoods.map((good) => (
+      {goods.map((good) => (
         <GoodCard key={good._id} good={good} />
       ))}
+
+      {loading && goods.length > 0 && <p>Завантаження...</p>}
     </div>
   );
 }
