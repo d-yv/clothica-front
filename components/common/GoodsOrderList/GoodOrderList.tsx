@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCart } from "@/lib/store/cart";
-import s from "./GoodsOrderList.module.css";
+import s from "./GoodOrderList.module.css";
 
 function formatMoney(v:number,c="грн"){ return `${v.toLocaleString("uk-UA")} ${c}` }
 
