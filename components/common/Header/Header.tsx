@@ -1,26 +1,34 @@
 "use client";
 
+
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import styles from "./Header.module.css";
-import { useAuth } from "@/hooks/useAuth"; 
+import { useCart } from "@/lib/store/cart";
+
 
 export default function Header() {
-  const { isAuth, checkAuthStatus } = useAuth(); 
+
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const [isAuth, setIsAuth] = useState(false);
+    const cartCount = useCart((s) => s.items.reduce((sum, it) => sum + it.quantity, 0));
+      const hasHydrated = useCart((s) => s._hasHydrated);
+
 
   useEffect(() => {
-    checkAuthStatus();
-    
     Promise.resolve().then(() => {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      setCartCount(cart.length);
+      const token = localStorage.getItem("token");
+      setIsAuth(Boolean(token));
     });
-  }, [checkAuthStatus]);
+
+
+  }, []);
+
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
 
   return (
     <header className={styles.siteHeader}>
@@ -31,11 +39,13 @@ export default function Header() {
           </svg>
         </Link>
 
+
         <nav className={styles.mainNav}>
           <Link href="/" className={styles.btnEntrance}>Головна</Link>
           <Link href="/goods" className={styles.btnEntrance}>Товари</Link>
           <Link href="/categories" className={styles.btnRegistration}>Категорії</Link>
         </nav>
+
 
         <div className={styles.headerActions}>
           <div className={styles.headerActionsDiv}>
@@ -46,10 +56,12 @@ export default function Header() {
               </>
             )}
 
+
             {isAuth && (
               <Link href="/profile" className={styles.headerButtonCabinet}>Кабінет</Link>
             )}
           </div>
+
 
           <button className={styles.menuBtn} onClick={toggleMenu}>
             <svg className={styles.headericon} width="20" height="20">
@@ -57,16 +69,12 @@ export default function Header() {
             </svg>
           </button>
 
-          <Link href="/order">
-            <button className={`${styles.headercart} ${styles.specialBtn}`}>
-              <svg className={styles.headeri} width="24" height="24">
-                <use href="/styles.icon.svg#icon-shopping_cart" />
-              </svg>
 
-              {cartCount > 0 && (
-                <span className={styles.dot}>{cartCount}</span>
-              )}
-            </button>
+         <Link href="/forms/CreateOrderForm" className={`${styles.headercart} ${styles.specialBtn}`}>
+            <svg className={styles.headeri} width="24" height="24" aria-hidden="true">
+              <use href="/styles.icon.svg#icon-shopping_cart" />
+            </svg>
+           {hasHydrated && cartCount > 0 && <span className={styles.dot}>{cartCount}</span>}
           </Link>
         </div>
       </div>
@@ -76,3 +84,5 @@ export default function Header() {
     </header>
   );
 }
+
+

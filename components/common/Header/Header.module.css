@@ -102,20 +102,20 @@
 
 .dot {
     position: absolute;
-  top: -8px;    
-  right: -8px;      
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;  
-  height: 20px;
-  border-radius: 9999px;
-  background-color: #B70000;
-  color: #fff;      
-  font-size: 12px;  
-  font-weight: 600;
+    top: -8px;    
+    right: -8px;      
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;  
+    height: 20px;
+    border-radius: 9999px;
+    background-color: #B70000;
+    color: #fff;      
+    font-size: 12px;  
+    font-weight: 600;
+  }
 
-}
 
 .badge {
     position: absolute;
@@ -173,14 +173,14 @@
     color: white;
     border-radius: 100%;
     padding: 1px 3px;
-    width: 11px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
     gap: 12px;
-    background: #b70000;
+    background: #B70000;
 }
 
 @media (min-width: 768px) {
