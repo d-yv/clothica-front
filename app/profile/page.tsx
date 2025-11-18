@@ -1,3 +1,4 @@
+
 'use client'; 
 
 import React, { useEffect, useState, useCallback } from 'react';
@@ -5,6 +6,7 @@ import styles from './page.module.css';
 import UserInfoForm from '@/components/forms/UserInfoForm/UserInfoForm';
 import { OrderList, Order } from '@/components/common/OrderList/OrderList'; 
 import MessageNoInfo from "@/components/common/MessageNoInfo/MessageNoInfo"; 
+import { useAuth } from '@/hooks/useAuth'; 
 
 interface UserProfileData {
   firstName: string;
@@ -24,6 +26,7 @@ const fetchCurrentUser = async (): Promise<UserProfileData> => {
         
         if (!res.ok) {
             if (res.status === 401) {
+              
                 throw new Error('Необхідна авторизація: Cookie відсутній або недійсний.');
             }
             const errorData = await res.json();
@@ -34,13 +37,12 @@ const fetchCurrentUser = async (): Promise<UserProfileData> => {
         
     } catch (error) {
         console.error('Error in fetchCurrentUser:', error);
-        throw new Error((error as Error).message.includes('Авторизація') ? (error as Error).message : 'Невідома помилка при отриманні даних користувача.');
+        const errorMessage = (error as Error).message;
+        throw new Error(errorMessage.includes('Авторизація') ? errorMessage : 'Невідома помилка при отриманні даних користувача.');
     }
 }
 
 const fetchUserOrders = async (): Promise<Order[]> => {
-    console.log('Fetching user orders (using Next.js API Route)...');
-    
     try {
         const response = await fetch('/api/orders', {
             method: 'GET',
@@ -65,12 +67,14 @@ const fetchUserOrders = async (): Promise<Order[]> => {
 };
 
 
-export default function Cabinet(){
+export default function Cabinet(): JSX.Element{
   const [orders, setOrders] = useState<Order[] | null>(null);
   const [currentUser, setCurrentUser] = useState<UserProfileData | undefined>(undefined); 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [isLoggingOut, setIsLoggingOut] = useState(false); 
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false); 
+  
+  const { handleLogout } = useAuth();
 
   const loadUserData = useCallback(async () => {
     setAuthError(null); 
@@ -79,10 +83,19 @@ export default function Cabinet(){
         setCurrentUser(userData);
     } catch (error) {
       console.error('Failed to load user data:', error);
+      const errorMessage = (error as Error).message;
+
+      if (errorMessage.includes('Авторизація')) {
+          setAuthError(errorMessage);
+          handleLogout('/auth/login'); 
+          return; 
+      }
+      
       setCurrentUser(undefined);
-      setAuthError((error as Error).message.includes('Авторизація') ? (error as Error).message : 'Не вдалося завантажити дані профілю.');
+      setAuthError(errorMessage.includes('Авторизація') ? errorMessage : 'Не вдалося завантажити дані профілю.');
+      
     }
-  }, []);
+  }, [handleLogout]);
   
   const loadOrdersData = useCallback(async () => {
     try {
@@ -103,24 +116,10 @@ export default function Cabinet(){
     fetchData();
   }, [loadUserData, loadOrdersData]);
 
-  const handleLogout = async () => {
+  const handleCabinetLogout = async () => {
     setIsLoggingOut(true);
-    try {
-        const response = await fetch('/api/logout', {
-            method: 'POST',
-            credentials: 'include',
-        });
-        
-        if (typeof window !== 'undefined') {
-            window.location.href = 'auth/login';
-        }
-
-    } catch (error) {
-        console.error('Logout failed:', error);
-        alert('Помилка при спробі вийти. Спробуйте пізніше.');
-    } finally {
-        setIsLoggingOut(false);
-    }
+    await handleLogout('/auth/login'); 
+    setIsLoggingOut(false);
   };
 
   if (isLoading) {
@@ -142,6 +141,7 @@ export default function Cabinet(){
       <h1 className={styles.title}>Кабінет</h1>
       <h3 className={styles.sectionTitle}>Особиста інформація</h3>
       <section>
+      
           {currentUser ? (
               <UserInfoForm currentUser={userFormInitialData} onProfileUpdate={loadUserData} /> 
           ) : (
@@ -165,7 +165,7 @@ export default function Cabinet(){
       </section>
       <div className={styles.logoutWrapper}>
           <button 
-              onClick={handleLogout} 
+              onClick={handleCabinetLogout} 
               disabled={isLoggingOut}
               className={styles.logoutButton}
           >
