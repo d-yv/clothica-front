@@ -1,0 +1,303 @@
+ /* components/forms/CreateOrderForm/CreateOrderForm.module.css */
+
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.nameRow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.subtitle {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.4;
+  text-align: center;
+  color: #000;
+}
+
+.label {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: inherit;
+  box-sizing: border-box;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: all 0.2s ease;
+}
+
+/* Исправление для автозаполнения */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(255, 255, 255, 0) !important;
+  box-shadow: inset 0 0 20px 20px rgba(255, 255, 255, 0);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.input:focus {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  outline: none;
+}
+
+.input:hover,
+.textarea:hover {
+  border: 1px solid #c5e1a5;
+}
+
+.inputError {
+  border: 1px solid #9d0000;
+  color: #9d0000;
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: "Inter", sans-serif;
+  resize: vertical;
+  min-height: 80px;
+  box-sizing: border-box;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0);
+  height: 180px;
+}
+
+.errorText {
+  color: #9d0000;
+  font-size: 12px;
+}
+
+.button {
+  width: 100%;
+  background-color: #c5e1a5;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-sizing: border-box;
+  border: 1px solid #c5e1a5;
+  border-radius: 100px;
+  padding: 6px 12px;
+  height: 36px;
+  transition: all 0.2s ease;
+}
+
+.button:not(:disabled):hover {
+  background-color: #9db484;
+  border: 1px solid #4e5a42;
+  color: #fff;
+}
+
+.button:not(:disabled):active {
+  background-color: #3b4331;
+  border: 1px solid #c5e1a5;
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  border: 1px solid #c5e1a5;
+  cursor: not-allowed;
+  background-color: #c5e1a5;
+  opacity: 0.4;
+}
+
+.emptyCart {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  margin: 0 16px;
+}
+
+.emptyCart p {
+  margin: 8px 0;
+}
+
+/* Mobile: 375px+ - адаптивная верстка начинается с 375px */
+@media (min-width: 375px) {
+  .container {
+    width: 100%;
+    max-width: 335px;
+    margin: 0 auto;
+  }
+
+  .form {
+    max-width: 335px;
+  }
+
+  .field {
+    max-width: 335px;
+  }
+
+  .input {
+    max-width: 335px;
+  }
+
+  .textarea {
+    max-width: 335px;
+  }
+
+  .button {
+    max-width: 335px;
+  }
+}
+
+/* Tablet: 768px+ */
+@media (min-width: 768px) {
+  .container {  
+    max-width: 704px; 
+    margin: 0 auto;
+  }
+
+  .form {
+    width: 100%;
+    max-width: 704px;
+  }
+  
+  .subtitle {
+    width: 100%;
+  }
+
+  .nameRow {
+    width: 100%;
+    flex-direction: row;
+    gap: 40px;
+  }
+  
+  .field {
+    width: 100%;
+  }
+
+  /* Поля телефона и комментария остаются на всю ширину */
+  .field:has(input[name="phone"]),
+  .field:has(textarea[name="comment"]) {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .input,
+  .textarea {
+    max-width: 100%;
+  }
+
+  .button {
+    width: auto;
+    max-width: 212px;
+    align-self: center; 
+    margin: 0 auto; 
+    display: block;
+  }
+}
+
+/* Desktop: 1440px+ */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .form {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .nameRow {
+    width: 100%;
+    gap: 32px;
+  }
+  
+  .field {
+    width: 100%;
+  }
+
+  /* Поля телефона и комментария остаются на всю ширину */
+  .field:has(input[name="phone"]),
+  .field:has(textarea[name="comment"]) {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .subtitle {
+    width: 100%;
+  }
+
+  .label {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.6);
+    font-family: inherit;
+    box-sizing: border-box;
+    min-width: 0;
+    background: rgba(255, 255, 255, 0);
+    transition: all 0.2s ease;
+  }
+
+  .textarea {
+    width: 100%;
+  }
+
+  .button {
+    width: auto;
+    max-width: 212px;
+    align-self: center; 
+    margin: 0 auto; 
+    display: block;
+  }
+}

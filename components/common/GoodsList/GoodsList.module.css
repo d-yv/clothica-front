@@ -1,25 +1,29 @@
 .list {
   display: grid;
+  width: 100%;
+  box-sizing: border-box;
+
+  /* mobile — 2 товара в ряд */
+  grid-template-columns: repeat(2, 1fr);
+
   gap: 20px;
-  grid-template-columns: 1fr;
+
+  /* никакого горизонтального скролла */
+  overflow-x: hidden;
 }
 
-@media (min-width: 375px) {
+/* планшеты — 3 карточки */
+@media (min-width: 768px) {
   .list {
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
   }
 }
 
-@media (min-width: 768px) {
-  .list {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-  }
-}
-
+/* десктоп — те же 3 карточки */
 @media (min-width: 1440px) {
   .list {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
   }
 }

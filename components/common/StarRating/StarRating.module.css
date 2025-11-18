@@ -1,0 +1,25 @@
+.starsRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.starBtn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.star {
+  width: 24px;
+  height: 24px;
+  stroke: var(--color-scheme-1-text);
+  fill: transparent;
+  transition: 0.2s ease;
+}
+
+.activeStar {
+  fill: var(--color-scheme-1-text);
+  stroke: var(--color-scheme-1-text);
+}

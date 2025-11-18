@@ -59,7 +59,7 @@ export default function PopularGoods() {
   if (!goods.length) return null;
 
   return (
-    <section className={styles.section} id="populargoods">
+    <section className={styles.section} id="PopularGoods">
       <div className="container">
         <div className={styles.header}>
           <h2 className={styles.title}>Популярні товари</h2>
@@ -74,7 +74,9 @@ export default function PopularGoods() {
             modules={[Keyboard, Pagination, Navigation]}
             onSwiper={(swiper) => (swiperRef.current = swiper)}
             slidesPerView={1}
+          slidesPerGroup={1}
             spaceBetween={32}
+            speed={1200}
             keyboard={{ enabled: true }}
             pagination={{
               clickable: true,
@@ -83,8 +85,8 @@ export default function PopularGoods() {
               bulletActiveClass: styles.bulletActive,
             }}
             breakpoints={{
-              768: { slidesPerView: 2 },
-              1440: { slidesPerView: 4 },
+              768: { slidesPerView: 2, slidesPerGroup: 2, spaceBetween: 32 },
+              1440: { slidesPerView: 4, slidesPerGroup: 3, spaceBetween: 32 },
             }}
             className={styles.swiper}
           >
@@ -105,7 +107,9 @@ export default function PopularGoods() {
                 className={`${styles.arrow} ${styles.prev}`}
                 onClick={handlePrevClick}
               >
-                ←
+                 <svg className={styles.icon}>
+      <use href="/sprite.svg#arrow_back"></use>
+    </svg>
               </button>
 
               <button
@@ -113,7 +117,9 @@ export default function PopularGoods() {
                 className={`${styles.arrow} ${styles.next}`}
                 onClick={handleNextClick}
               >
-                →
+                 <svg className={styles.icon}>
+      <use href="/sprite.svg#arrow_forward"></use>
+    </svg>
               </button>
             </div>
           </div>
