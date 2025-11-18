@@ -65,7 +65,9 @@ const SignIn = () => {
       localStorage.setItem('user', JSON.stringify(user));
       
       router.push('/');
-      
+      // ПОВНЕ ОНОВЛЕННЯ СТОРІНКИ
+      window.location.href = '/';
+
     } catch (error: unknown) {
       console.error('Login error:', error);
       
@@ -125,7 +127,7 @@ const SignIn = () => {
               />
               <ErrorMessage name="phone" component="div" className={styles.errorText} />
               <div className={styles.phoneHint}>
-                Формат: +38 (0XX) XXX-XX-XX
+                {/* Формат: +38 (0XX) XXX-XX-XX */}
               </div>
             </div>
 
