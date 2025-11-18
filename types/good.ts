@@ -15,3 +15,7 @@ export interface Good {
   gender: string;
   characteristics: string[];
 }
+
+
+
+export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL';
