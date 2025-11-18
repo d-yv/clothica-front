@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
+import Link from "next/link";
 import css from "./CategoriesFilter.module.css";
 
 import { Category, getCategories } from "@/utils/categories";
@@ -10,6 +11,8 @@ import { GoodsGender } from "@/types/goodsGender";
 type Props = {
   onFiltersChange?: (filters: GoodsFilters) => void;
   onCategoryChange?: (categoryName: string | null) => void;
+  shownCount?: number;
+  totalCount?: number;
 };
 
 const DEFAULT_MIN = 0;
@@ -18,6 +21,8 @@ const DEFAULT_MAX = 3000;
 export default function CategoriesFilter({
   onFiltersChange,
   onCategoryChange,
+  shownCount,
+  totalCount,
 }: Props) {
   const [minVal, setMinVal] = useState<number>(DEFAULT_MIN);
   const [maxVal, setMaxVal] = useState<number>(DEFAULT_MAX);
@@ -29,7 +34,6 @@ export default function CategoriesFilter({
   const [isMobile, setIsMobile] = useState(false);
   const [open, setOpen] = useState(false);
 
-  // категории
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -119,7 +123,7 @@ export default function CategoriesFilter({
   };
 
   const handleCategoryClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
+    e: React.MouseEvent<HTMLAnchorElement | HTMLAnchorElement>,
     category: Category | null
   ) => {
     e.preventDefault();
@@ -133,6 +137,13 @@ export default function CategoriesFilter({
     }
   };
 
+  const countText =
+    typeof shownCount === "number" &&
+    typeof totalCount === "number" &&
+    totalCount > 0
+      ? `Показано ${shownCount} з ${totalCount}`
+      : "Показано 0 з 0";
+
   const renderBody = () => (
     <>
       <div className={css.box}>
@@ -142,27 +153,27 @@ export default function CategoriesFilter({
         </button>
       </div>
 
-      <p className={css.numberOfGoods}>Показано 15 з 100</p>
+      <p className={css.numberOfGoods}>{countText}</p>
 
       <ul>
         <li className={css.categoryListItem}>
-          <a
+          <Link
             href="/goods"
             className={css.category}
             onClick={(e) => handleCategoryClick(e, null)}
           >
             Усі
-          </a>
+          </Link>
         </li>
         {categories.map((category) => (
           <li className={css.categoryListItem} key={category.id}>
-            <a
+            <Link
               href={`/goods?categoryId=${category.id}`}
               className={css.category}
               onClick={(e) => handleCategoryClick(e, category)}
             >
               {category.name}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
@@ -282,7 +293,9 @@ export default function CategoriesFilter({
               Очистити всі
             </button>
           </div>
-          <p className={css.numberOfGoods}>Показано 15 з 100</p>
+          <p className={css.numberOfGoods}>
+            Показано {shownCount ?? 0} з {totalCount ?? 0}
+          </p>
           <button className={css.dropdownButton} onClick={toggleDropdown}>
             Фільтри
             <svg
