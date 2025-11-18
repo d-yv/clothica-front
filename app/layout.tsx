@@ -4,7 +4,8 @@ import "modern-normalize/modern-normalize.css";
 import "./globals.css";
 import Header from "../components/common/Header/Header";
 import Footer from "../components/common/Footer/Footer";
-import GoodOrderList from "@/components/common/GoodsOrderList/GoodOrderList";
+import GoodOrderList from '../components/common/GoodsOrderList/GoodsOrderList';
+
 
 const inter = Inter({
   subsets: ["cyrillic"],

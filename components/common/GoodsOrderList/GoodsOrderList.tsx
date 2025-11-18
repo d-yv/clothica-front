@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import s from "./GoodOrderList.module.css";
+import s from "./GoodsOrderList.module.css";
 import { useShopStore } from "@/lib/store/cartStore";
 
 function formatMoney(v: number, c = "грн") {
