@@ -36,7 +36,7 @@ export default function Header() {
         <nav className={styles.mainNav}>
           <Link href="/" className={styles.btnEntrance}>Головна</Link>
           <Link href="/goods" className={styles.btnEntrance}>Товари</Link>
-          <Link href="/common/CategoriesList" className={styles.btnRegistration}>Категорії</Link>
+          <Link href="/categories" className={styles.btnRegistration}>Категорії</Link>
         </nav>
 
         <div className={styles.headerActions}>
@@ -49,7 +49,7 @@ export default function Header() {
             )}
 
             {isAuth && (
-              <Link href="/cabinet" className={styles.headerButtonCabinet}>Кабінет</Link>
+              <Link href="/profile" className={styles.headerButtonCabinet}>Кабінет</Link>
             )}
           </div>
 
@@ -59,7 +59,7 @@ export default function Header() {
             </svg>
           </button>
 
-          <Link href="/forms/CreateOrderForm">
+          <Link href="/order">
             <button className={`${styles.headercart} ${styles.specialBtn}`}>
               <svg className={styles.headeri} width="24" height="24">
                 <use href="/styles.icon.svg#icon-shopping_cart" />

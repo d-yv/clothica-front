@@ -42,14 +42,14 @@ export default function MobileMenu({ isAuth, onClose }: MobileMenuProps) {
                     Головна
                 </Link>
                 <Link
-                    href="/common/PopularGoods"
+                    href="/goods"
                     onClick={onClose}
                     className={styles.mobileMenuA}
                 >
                     Товари
                 </Link>
                 <Link
-                    href="/common/PopularCategories"
+                    href="/categories"
                     onClick={onClose}
                     className={styles.mobileMenuA}
                 >
