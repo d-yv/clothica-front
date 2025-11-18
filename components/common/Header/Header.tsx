@@ -5,20 +5,25 @@ import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import styles from "./Header.module.css";
 import { useAuth } from "@/hooks/useAuth"; 
+import { useCart } from "@/lib/store/cart";
 
 export default function Header() {
-  const { isAuth, checkAuthStatus } = useAuth(); 
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const [isAuth, setIsAuth] = useState(false);
+    const cartCount = useCart((s) => s.items.reduce((sum, it) => sum + it.quantity, 0));
+      const hasHydrated = useCart((s) => s._hasHydrated);
+
 
   useEffect(() => {
-    checkAuthStatus();
-    
     Promise.resolve().then(() => {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      setCartCount(cart.length);
+      const token = localStorage.getItem("token");
+      setIsAuth(Boolean(token));
     });
-  }, [checkAuthStatus]);
+
+
+  }, []);
+
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -63,7 +68,7 @@ export default function Header() {
                 <use href="/styles.icon.svg#icon-shopping_cart" />
               </svg>
 
-              {cartCount > 0 && (
+              {hasHydrated && cartCount > 0 && (
                 <span className={styles.dot}>{cartCount}</span>
               )}
             </button>

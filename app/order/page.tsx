@@ -1,5 +1,5 @@
 import CreateOrderForm from '@/components/forms/CreateOrderForm/CreateOrderForm';
-import GoodOrderList from '@/components/common/GoodsOrderList/GoodOrderList';
+import GoodOrderList from '@/components/common/GoodsOrderList/GoodsOrderList';
 import styles from './CreateOrderPage.module.css';
 
 export default function CreateOrderPage() {
