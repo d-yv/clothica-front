@@ -1,0 +1,94 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  display: block;
+}
+.modal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #f9fcf6;
+  border-radius: 16px;
+  width: 589px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  padding-top: 40px;
+  padding-right: 64px;
+  padding-bottom: 16px;
+  padding-left: 32px;
+}
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.title {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  font-weight: 400;
+  cursor: pointer;
+  line-height: 1;
+  color: #000;
+  transition: 0.2s ease;
+}
+
+.closeBtn:hover {
+  opacity: 0.6;
+}
+.btnSecondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+  border-radius: 100px;
+
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  font-size: 14px;
+  color: #000;
+  cursor: pointer;
+}
+.btnPrimary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+  border-radius: 100px;
+
+  background: #c5e1a5;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  font-size: 14px;
+  color: #000;
+  cursor: pointer;
+}
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
