@@ -9,39 +9,45 @@ import { useSearchParams } from "next/navigation";
 
 export default function GoodsList() {
   const searchParams = useSearchParams();
+  const paramsString = searchParams.toString(); // фикс лишних ререндеров
 
   const [goods, setGoods] = useState<Good[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGoods = async () => {
-    try {
-      const params = {
-        page: Number(searchParams.get("page") || 1),
-        perPage: Number(searchParams.get("perPage") || 12),
-        minPrice: Number(searchParams.get("minPrice") || 0),
-        maxPrice: Number(searchParams.get("maxPrice") || 3000),
-        sizes: searchParams.get("sizes")
-          ? searchParams.get("sizes")!.split(",")
-          : [],
-        gender: searchParams.get("gender") || "all",
-        categoryId: searchParams.get("categoryId") || "",
-      };
-
-      const res = await api.get("/goods", { params });
-      setGoods(res.data.goods || []);
-    } catch (e) {
-      console.error("Fetch goods error:", e);
-      setError("Не вдалося завантажити товари");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    setLoading(true);
-    fetchGoods();
-  }, [searchParams]);
+    const load = async () => {
+      setLoading(true);
+
+      try {
+        const params = {
+          page: Number(searchParams.get("page") || 1),
+          perPage: Number(searchParams.get("perPage") || 12),
+          minPrice: Number(searchParams.get("minPrice") || 0),
+          maxPrice: Number(searchParams.get("maxPrice") || 3000),
+          sizes: searchParams.get("sizes")
+            ? searchParams.get("sizes")!.split(",")
+            : [],
+          gender: searchParams.get("gender") || "all",
+          categoryId: searchParams.get("categoryId") || "",
+        };
+
+        console.log("Fetching goods with params:", params);
+
+        const res = await api.get("/goods", { params });
+        console.log("Fetched goods response:", res.data);
+        setGoods(res.data.goods || []);
+        setError(null);
+      } catch (e) {
+        console.error("Fetch goods error:", e);
+        setError("Не вдалося завантажити товари");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, [paramsString]);
 
   if (loading) return <p>Завантаження...</p>;
   if (error) return <p>{error}</p>;

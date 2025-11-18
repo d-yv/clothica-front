@@ -1,3 +1,5 @@
+import { GoodsGender } from "./goodsGender";
+
 export interface Good {
   _id: string;
   name: string;
@@ -12,7 +14,7 @@ export interface Good {
   size: string[];
   description: string;
   prevDescription: string;
-  gender: string;
+  gender: GoodsGender;
   characteristics: string[];
 }
 
