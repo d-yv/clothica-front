@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import css from "./StarsIcon.module.css";
 
@@ -15,7 +15,7 @@ export default function StarsIcon({ rating }: Props) {
     if (diff >= 1) {
       return (
         <svg key={i} className={css.starFull} aria-hidden="true">
-          <use href="/sprite.svg#star filled" />
+          <use href="/sprite.svg#star_filled" />
         </svg>
       );
     }
@@ -26,10 +26,7 @@ export default function StarsIcon({ rating }: Props) {
           <svg className={css.starEmpty} aria-hidden="true">
             <use href="/sprite.svg#star" />
           </svg>
-          <span
-            className={css.partialFill}
-            style={{ width: `${diff * 100}%` }}
-          >
+          <span className={css.partialFill} style={{ width: `${diff * 100}%` }}>
             <svg className={css.starFull} aria-hidden="true">
               <use href="/sprite.svg#star" />
             </svg>
