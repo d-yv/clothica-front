@@ -1,0 +1,110 @@
+/* Mobile First - резиновая верстка от 320px до 375px */
+.pageContainer {
+  width: 100%;
+  margin: 0 auto;
+  padding: 64px 20px;
+}
+
+.pageTitle {
+font-weight: 400;
+font-size: 36px;
+line-height: 1.2;
+letter-spacing: -0.01em;
+text-align: center;
+color: #000;
+  width: 100%;
+  height: 86 px;
+
+  margin-bottom: 48px;
+}
+
+.orderContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.goodsSection {
+  width: 100%;
+  /* max-width: 600px; */
+}
+
+.formSection {
+  width: 100%;
+  /* max-width: 600px; */
+}
+
+/* Адаптивная верстка с 375px */
+@media (min-width: 375px) {
+  .pageContainer {
+    
+    max-width: 375px;
+  }
+ 
+}
+
+/* Планшетная версия с 768px */
+@media (min-width: 768px) {
+  .pageContainer {
+    max-width: 768px;
+    padding: 64px 32px;
+  }
+  
+  .pageTitle {  
+    max-width: 704px;  
+    margin-bottom: 32px;
+    height: 43px;
+  
+  }
+  
+  .orderContent {
+    maxwidth: 704px;
+  }
+  
+  .goodsSection {
+    max-width: 704px;
+  }
+  
+  .formSection {
+    max-width: 704px;
+  }
+}
+
+/* Десктопная версия с 1440px - ФОРМА СПРАВА */
+@media (min-width: 1440px) {
+  .pageContainer {
+    max-width: 1440px;
+    padding: 112px 64px;
+  }
+  
+    .pageTitle {
+    width: 100%;        
+    max-width: none;     
+    font-size: 48px;
+    margin: 0 auto 48px; 
+    height: 58px;
+    text-align: center;
+    }
+
+
+  .orderContent {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 32px;
+    max-width: 1312px;
+    margin: 0 auto;
+  }
+  
+  .goodsSection {
+    flex: 1;
+    max-width: 640px;
+    height: 632px
+  }
+  
+  .formSection {
+    /* flex: 0 0 400px; */
+    max-width: 640px;
+    height: 632px;
+  }
+}
