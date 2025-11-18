@@ -44,7 +44,7 @@ export default function GoodsOrderList() {
       <span>{item.feedbackCount ?? 2}</span>
     </div>
 
-    {/* рядок: ціна зліва, праворуч — кількість + смітник */}
+    {}
     <div className={s.priceRow}>
       <div className={s.price}>{formatMoney(item.price.value, currency)}</div>
 

@@ -8,11 +8,11 @@ import { Good } from "@/types/good";
 import GoodCard from "../GoodCard/GoodCard";
 import styles from "./GoodsList.module.css";
 
-const BACKEND_PER_PAGE = 12; // безопасный лимит для бека
+const BACKEND_PER_PAGE = 12; 
 
 export default function GoodsList() {
   const searchParams = useSearchParams();
-  const paramsString = searchParams.toString(); // чтобы эффект зависел от строки
+  const paramsString = searchParams.toString(); 
 
   const [goods, setGoods] = useState<Good[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,12 +23,11 @@ export default function GoodsList() {
       setLoading(true);
 
       try {
-        // сколько товаров хотим показать на фронте
         const uiPerPage = Number(
           searchParams.get("perPage") || BACKEND_PER_PAGE
         );
 
-        const page = 1; // "Показати більше" у нас только раскрывает, а не листает страницы
+        const page = 1; 
 
         const minPriceStr = searchParams.get("minPrice");
         const maxPriceStr = searchParams.get("maxPrice");
@@ -38,7 +37,7 @@ export default function GoodsList() {
 
         const params: Record<string, unknown> = {
           page,
-          perPage: BACKEND_PER_PAGE, // всегда 12 — бек не ругается
+          perPage: BACKEND_PER_PAGE, 
         };
 
         if (minPriceStr) params.minPrice = Number(minPriceStr);
@@ -48,7 +47,6 @@ export default function GoodsList() {
           params.categoryId = categoryIdStr;
         }
         if (sizeStr) {
-          // бек принимает size
           params.size = sizeStr;
         }
 
@@ -63,7 +61,6 @@ export default function GoodsList() {
         setGoods(list);
         setError(null);
 
-        // сколько реально отрисуем
         const visibleCount = Math.min(uiPerPage, list.length);
         const hasMore = visibleCount < list.length;
 
@@ -87,13 +84,13 @@ export default function GoodsList() {
     };
 
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [paramsString]);
 
   if (loading) return <p>Завантаження...</p>;
   if (error) return <p>{error}</p>;
 
-  // сколько показывать исходя из текущего perPage в query
+
   const searchParamsObj = new URLSearchParams(paramsString);
   const uiPerPage = Number(searchParamsObj.get("perPage") || BACKEND_PER_PAGE);
   const visibleGoods = goods.slice(0, uiPerPage);

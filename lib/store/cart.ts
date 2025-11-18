@@ -1,4 +1,4 @@
-// "@/lib/store/cart.ts"
+
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { Good } from "@/types/good";
@@ -13,7 +13,6 @@ type CartState = {
   clear: () => void;
   subtotal: () => number;
 
-  /** прапорець, що сторадж відновлено з localStorage */
   _hasHydrated: boolean;
 };
 
@@ -57,13 +56,13 @@ export const useCart = create<CartState>()(
         get().items.reduce((sum, i) => sum + i.price.value * i.quantity, 0),
     }),
     {
-      name: "cart", // ключ у localStorage
+      name: "cart", 
       storage: createJSONStorage(() => localStorage),
-      // коли дані з localStorage зчитані — позначаємо гідратацію
+
       onRehydrateStorage: () => (state) => {
         state && (state._hasHydrated = true);
       },
-      // зберігаємо тільки items (не обов’язково, але охайно)
+    
       partialize: (state) => ({ items: state.items, _hasHydrated: state._hasHydrated }),
     }
   )
