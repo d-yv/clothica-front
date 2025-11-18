@@ -1,0 +1,67 @@
+.section {
+    padding: 40px 0;
+}
+
+.headerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+/* Заголовок */
+.title {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Кнопка */
+.leaveReviewBtn {
+    width: 156px;
+    height: 36px;
+    border-radius: 100px;
+    background: var(--nav-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    color: #111;
+    transition: 0.2s ease;
+}
+
+/* Hover / active такі ж, як у стрілок */
+.leaveReviewBtn:hover {
+    background: #9db484;
+    transform: translateY(-1px);
+    border: 1px solid #4e5a42;
+}
+
+.leaveReviewBtn:active {
+    background: var(--nav-bg-active);
+    color: var(--nav-fg-active);
+    transform: translateY(0);
+}
+
+/* 🔥 АДАПТАЦІЯ ДЛЯ МОБІЛЬНИХ */
+@media (max-width: 767px) {
+    .headerRow {
+        flex-direction: column;
+        align-items: flex-start;
+        /* кнопка під заголовком зліва */
+        gap: 16px;
+        /* відступ між заголовком і кнопкою */
+        margin-bottom: 32px;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .leaveReviewBtn {
+        width: auto;
+        padding: 8px 20px;
+        height: 40px;
+        font-size: 16px;
+    }
+}
