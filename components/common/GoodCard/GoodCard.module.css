@@ -3,6 +3,8 @@
   flex-direction: column;
   border-radius: 16px;
   max-width: 100%;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .info {
@@ -22,6 +24,7 @@ height: 412px;
   height: 100%;
   object-fit: cover;
   border-radius: 16px;
+  transition: scale 0.3s ease;
 }
 .text {
   display: flex;
@@ -58,7 +61,15 @@ gap: 12px;
 max-width: 200px;
 padding-bottom: 16px;
 }
+.spansvg {
+display: flex;
+align-items: center;
+justify-content: flex-start;
+flex-direction: row;
+gap: 4px;
+}
 .icon {
+  display: block;
   width: 16px;
   height: 16px;
 }
@@ -81,6 +92,12 @@ color: #000;
 text-align: center;
 }
 
+.detailsBtn:hover {
+  background-color: rgba(0, 0, 0, 0.15);;
+}
+.detailsBtn:active {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
 @media (min-width: 375px) {
   .imageWrapper {
@@ -106,6 +123,12 @@ text-align: center;
   .card {
 width: 304px;
   }
+  .card:hover {
+  transform: translateY(-5px);
+}
+.card:hover .image {
+  transform: scale(1.05);
+}
 
   .imageWrapper {
    height: 374px;

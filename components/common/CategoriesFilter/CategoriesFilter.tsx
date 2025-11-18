@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import css from "./CategoriesFilter.module.css";
+
 import { Category, getCategories } from "@/utils/categories";
 import { GoodsFilters } from "@/types/goodsFilters";
 import { GoodsGender } from "@/types/goodsGender";
@@ -11,23 +12,24 @@ type Props = {
   onCategoryChange?: (categoryName: string | null) => void;
 };
 
-const DEFAULT_FILTERS: GoodsFilters = {
-  categoryId: null,
-  sizes: [],
-  minPrice: 0,
-  maxPrice: 3000,
-  gender: "all",
-};
+const DEFAULT_MIN = 0;
+const DEFAULT_MAX = 3000;
 
 export default function CategoriesFilter({
   onFiltersChange,
   onCategoryChange,
 }: Props) {
-  const [filters, setFilters] = useState<GoodsFilters>(DEFAULT_FILTERS);
+  const [minVal, setMinVal] = useState<number>(DEFAULT_MIN);
+  const [maxVal, setMaxVal] = useState<number>(DEFAULT_MAX);
+  const [gender, setGender] = useState<GoodsGender>("all" as GoodsGender);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
+
   const [isMobile, setIsMobile] = useState(false);
   const [open, setOpen] = useState(false);
 
+  // категории
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -43,62 +45,31 @@ export default function CategoriesFilter({
     };
   }, []);
 
+  // mobile / desktop
   useEffect(() => {
-    const update = () => setIsMobile(window.innerWidth < 768);
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
-  const updateFilters = useCallback(
-    (patch: Partial<GoodsFilters>) => {
-      setFilters((prev) => {
-        const next = { ...prev, ...patch };
-
-        if (!Array.isArray(next.sizes)) {
-          next.sizes = next.sizes ? [String(next.sizes)] : [];
-        }
-
-        onFiltersChange?.(next);
-        return next;
-      });
-    },
-    [onFiltersChange]
-  );
-
-  const clearAll = () => {
-    setFilters(DEFAULT_FILTERS);
-    onFiltersChange?.(DEFAULT_FILTERS);
-    onCategoryChange?.(null);
-  };
-
-  const handleCategoryClick = (e: React.MouseEvent, cat: Category | null) => {
-    e.preventDefault();
-    updateFilters({ categoryId: cat ? cat.id : null });
-    onCategoryChange?.(cat ? cat.name : null);
-  };
-
-  const handleSizeToggle = (size: string, checked: boolean) => {
-    const clean = size.toLowerCase();
-    updateFilters({
-      sizes: checked
-        ? [...filters.sizes, clean]
-        : filters.sizes.filter((s) => s !== clean),
-    });
-  };
-
-  const handleMinChange = (v: number) => {
-    updateFilters({ minPrice: Math.max(0, Math.min(v, filters.maxPrice - 1)) });
-  };
-
-  const handleMaxChange = (v: number) => {
-    updateFilters({
-      maxPrice: Math.min(15000, Math.max(v, filters.minPrice + 1)),
-    });
-  };
-
-  const showSizeChecked = (s: string) =>
-    filters.sizes.includes(s.toLowerCase());
+  useEffect(() => {
+    const filters: GoodsFilters = {
+      categoryId: activeCategoryId,
+      sizes: selectedSizes,
+      minPrice: minVal,
+      maxPrice: maxVal,
+      gender,
+    };
+    onFiltersChange?.(filters);
+  }, [
+    activeCategoryId,
+    selectedSizes,
+    minVal,
+    maxVal,
+    gender,
+    onFiltersChange,
+  ]);
 
   const genderOptions = useMemo(
     () => [
@@ -110,16 +81,68 @@ export default function CategoriesFilter({
     []
   );
 
+  const min = 0;
+  const max = 15000;
+
+  const toggleDropdown = () => setOpen((prev) => !prev);
+
+  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    const size = name.toUpperCase();
+
+    setSelectedSizes((prev) =>
+      checked ? [...prev, size] : prev.filter((s) => s !== size)
+    );
+  };
+
+  const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Math.min(Number(e.target.value), maxVal - 1);
+    setMinVal(value);
+  };
+
+  const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Math.max(Number(e.target.value), minVal + 1);
+    setMaxVal(value);
+  };
+
+  const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGender(e.target.value as GoodsGender);
+  };
+
+  const handleClearAll = () => {
+    setActiveCategoryId(null);
+    setSelectedSizes([]);
+    setMinVal(DEFAULT_MIN);
+    setMaxVal(DEFAULT_MAX);
+    setGender("all" as GoodsGender);
+    onCategoryChange?.(null);
+  };
+
+  const handleCategoryClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    category: Category | null
+  ) => {
+    e.preventDefault();
+
+    if (category) {
+      setActiveCategoryId(category.id);
+      onCategoryChange?.(category.name);
+    } else {
+      setActiveCategoryId(null);
+      onCategoryChange?.(null);
+    }
+  };
+
   const renderBody = () => (
     <>
       <div className={css.box}>
         <p>Фільтри</p>
-        <button type="button" onClick={clearAll}>
+        <button type="button" onClick={handleClearAll}>
           Очистити всі
         </button>
       </div>
 
-      <p className={css.numberOfGoods}>Показано</p>
+      <p className={css.numberOfGoods}>Показано 15 з 100</p>
 
       <ul>
         <li className={css.categoryListItem}>
@@ -131,122 +154,117 @@ export default function CategoriesFilter({
             Усі
           </a>
         </li>
-
-        {categories.map((cat) => (
-          <li key={cat.id} className={css.categoryListItem}>
+        {categories.map((category) => (
+          <li className={css.categoryListItem} key={category.id}>
             <a
-              href={`/goods?categoryId=${cat.id}`}
+              href={`/goods?categoryId=${category.id}`}
               className={css.category}
-              onClick={(e) => handleCategoryClick(e, cat)}
+              onClick={(e) => handleCategoryClick(e, category)}
             >
-              {cat.name}
+              {category.name}
             </a>
           </li>
         ))}
       </ul>
 
-      {/* Sizes */}
+      {/* Розмір */}
       <div className={css.sizesContainer}>
         <div className={css.box}>
           <p className={css.containerTitle}>Розмір</p>
-          <button type="button" onClick={() => updateFilters({ sizes: [] })}>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedSizes([]);
+            }}
+          >
             Очистити
           </button>
         </div>
-
         <div className={css.sizesBox}>
           {["XXS", "XS", "S", "M", "L", "XL", "XXL"].map((size) => (
             <label key={size}>
               <input
                 type="checkbox"
-                checked={showSizeChecked(size)}
-                onChange={(e) => handleSizeToggle(size, e.target.checked)}
+                name={size}
+                checked={selectedSizes.includes(size)}
+                onChange={handleSizeChange}
               />
-              {size}
+              {size.toUpperCase()}
             </label>
           ))}
         </div>
       </div>
 
-      {/* Price */}
+      {/* Ціна */}
       <div className={css.sliderContainer}>
         <div className={css.box}>
           <p className={css.containerTitle}>Ціна</p>
           <button
             type="button"
-            onClick={() =>
-              updateFilters({
-                minPrice: DEFAULT_FILTERS.minPrice,
-                maxPrice: DEFAULT_FILTERS.maxPrice,
-              })
-            }
+            onClick={() => {
+              setMinVal(DEFAULT_MIN);
+              setMaxVal(DEFAULT_MAX);
+            }}
           >
             Очистити
           </button>
         </div>
-
         <div className={css.priceWrapper}>
           <div className={css.slider}>
             <div
               className={css.sliderTrack}
               style={{
-                background: `linear-gradient(to right,
-                  #ddd ${(filters.minPrice / 15000) * 100}%,
-                  #000 ${(filters.minPrice / 15000) * 100}%,
-                  #000 ${(filters.maxPrice / 15000) * 100}%,
-                  #ddd ${(filters.maxPrice / 15000) * 100}%)`,
+                background: `linear-gradient(to right, 
+                  #ddd ${((minVal - min) / (max - min)) * 100}%, 
+                  #000 ${((minVal - min) / (max - min)) * 100}%, 
+                  #000 ${((maxVal - min) / (max - min)) * 100}%, 
+                  #ddd ${((maxVal - min) / (max - min)) * 100}%)`,
               }}
             />
             <input
               type="range"
-              min={0}
-              max={15000}
-              value={filters.minPrice}
-              onChange={(e) => handleMinChange(Number(e.target.value))}
+              min={min}
+              max={max}
+              value={minVal}
+              onChange={handleMinChange}
               className={`${css.thumb} ${css.thumbLeft}`}
             />
             <input
               type="range"
-              min={0}
-              max={15000}
-              value={filters.maxPrice}
-              onChange={(e) => handleMaxChange(Number(e.target.value))}
+              min={min}
+              max={max}
+              value={maxVal}
+              onChange={handleMaxChange}
               className={`${css.thumb} ${css.thumbRight}`}
             />
           </div>
-
           <div className={css.sliderValues}>
-            <span>{filters.minPrice}</span>
-            <span>{filters.maxPrice}</span>
+            <span>{minVal}</span>
+            <span>{maxVal}</span>
           </div>
         </div>
       </div>
 
-      {/* Gender */}
+      {/* Стать */}
       <div className={css.genderContainer}>
         <div className={css.box}>
           <p className={css.containerTitle}>Стать</p>
-          <button
-            type="button"
-            onClick={() => updateFilters({ gender: "all" })}
-          >
+          <button type="button" onClick={() => setGender("all" as GoodsGender)}>
             Очистити
           </button>
         </div>
 
         <div className={css.radiosBox}>
-          {genderOptions.map((opt) => (
-            <label key={opt.value} className={css.radio}>
+          {genderOptions.map((option) => (
+            <label key={option.value} className={css.radio}>
               <input
                 type="radio"
                 name="gender"
-                value={opt.value}
-                checked={filters.gender === opt.value}
-                onChange={(e) =>
-                  updateFilters({ gender: e.target.value as GoodsGender })
-                }
+                value={option.value}
+                checked={gender === option.value}
+                onChange={handleGenderChange}
               />
-              <span>{opt.label}</span>
+              <span>{option.label}</span>
             </label>
           ))}
         </div>
@@ -254,24 +272,18 @@ export default function CategoriesFilter({
     </>
   );
 
-  // -------------------------------
-  // Layout
-  // -------------------------------
   return (
     <div className={css.sideBar}>
       {isMobile ? (
         <div className={css.sideBarMobile}>
           <div className={css.box}>
             <p>Фільтри</p>
-            <button type="button" onClick={clearAll}>
+            <button type="button" onClick={handleClearAll}>
               Очистити всі
             </button>
           </div>
-
-          <button
-            className={css.dropdownButton}
-            onClick={() => setOpen((s) => !s)}
-          >
+          <p className={css.numberOfGoods}>Показано 15 з 100</p>
+          <button className={css.dropdownButton} onClick={toggleDropdown}>
             Фільтри
             <svg
               className={open ? css.arrowUp : css.arrowDown}
@@ -281,7 +293,6 @@ export default function CategoriesFilter({
               <use href="/symbol-defs.svg#icon-keyboard_arrow_down"></use>
             </svg>
           </button>
-
           {open && <div className={css.dropdownContent}>{renderBody()}</div>}
         </div>
       ) : (

@@ -140,7 +140,7 @@ export default function Cabinet(){
   return(
     <div className={styles.profilePageContainer}>
       <h1 className={styles.title}>Кабінет</h1>
-      <h3 className={styles.sectionTitle}>Мої дані</h3>
+      <h3 className={styles.sectionTitle}>Особиста інформація</h3>
       <section>
           {currentUser ? (
               <UserInfoForm currentUser={userFormInitialData} onProfileUpdate={loadUserData} /> 
@@ -169,7 +169,7 @@ export default function Cabinet(){
               disabled={isLoggingOut}
               className={styles.logoutButton}
           >
-              {isLoggingOut ? 'Вихід...' : 'Вийти'}
+              {isLoggingOut ? 'Вихід...' : 'Вийти з кабінету'}
           </button>
       </div>
     </div>
