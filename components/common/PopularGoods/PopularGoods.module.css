@@ -37,6 +37,12 @@ padding-bottom: 40px;
   color: #000;
   /* text-align: center; */
 }
+.allButton:hover {
+background-color: rgba(0, 0, 0, 0.15);
+}
+.allButton:active {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
 .sliderWrapper {
   position: relative;
@@ -90,6 +96,16 @@ padding-bottom: 40px;
   align-items: center;
   justify-content: center;
   transition: background-color 150ms ease, transform 150ms ease;
+}
+  .arrow:hover {
+  background-color: #9db484;
+     transform: translateY(-1px);
+    border: 1px solid #4e5a42;
+}
+
+.arrow:active {
+  background-color: #3b4331;
+  transform: translateY(0);
 }
 
 .icon {
@@ -170,16 +186,6 @@ padding-bottom: 40px;
     left: -30;
     right: -30;
   }
-
-  .arrow:hover {
-  background-color: #9db484;
-  transform: translateY(-1px);
-}
-
-.arrow:active {
-  background-color: #3b4331;
-  transform: translateY(0);
-}
 
   .pagination {
     bottom: 32px;

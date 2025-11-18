@@ -74,7 +74,9 @@ export default function PopularGoods() {
             modules={[Keyboard, Pagination, Navigation]}
             onSwiper={(swiper) => (swiperRef.current = swiper)}
             slidesPerView={1}
+          slidesPerGroup={1}
             spaceBetween={32}
+            speed={1200}
             keyboard={{ enabled: true }}
             pagination={{
               clickable: true,
@@ -83,8 +85,8 @@ export default function PopularGoods() {
               bulletActiveClass: styles.bulletActive,
             }}
             breakpoints={{
-              768: { slidesPerView: 2 },
-              1440: { slidesPerView: 4 },
+              768: { slidesPerView: 2, slidesPerGroup: 2, spaceBetween: 32 },
+              1440: { slidesPerView: 4, slidesPerGroup: 3, spaceBetween: 32 },
             }}
             className={styles.swiper}
           >
