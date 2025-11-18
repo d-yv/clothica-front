@@ -1,9 +1,12 @@
 
+
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { Good } from "@/types/good";
 
+
 export type CartItem = Good & { quantity: number };
+
 
 type CartState = {
   items: CartItem[];
@@ -13,14 +16,19 @@ type CartState = {
   clear: () => void;
   subtotal: () => number;
 
+
+
+
   _hasHydrated: boolean;
 };
+
 
 export const useCart = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
       _hasHydrated: false,
+
 
       add: (good) =>
         set((state) => {
@@ -34,6 +42,7 @@ export const useCart = create<CartState>()(
           }
           return { items: [...state.items, { ...good, quantity: 1 }] };
         }),
+
 
       decrement: (id) =>
         set((state) => {
@@ -49,8 +58,10 @@ export const useCart = create<CartState>()(
           return { items: state.items.filter((i) => i._id !== id) };
         }),
 
+
       remove: (id) => set((s) => ({ items: s.items.filter((i) => i._id !== id) })),
       clear: () => set({ items: [] }),
+
 
       subtotal: () =>
         get().items.reduce((sum, i) => sum + i.price.value * i.quantity, 0),
@@ -58,12 +69,14 @@ export const useCart = create<CartState>()(
     {
       name: "cart", 
       storage: createJSONStorage(() => localStorage),
-
+      
       onRehydrateStorage: () => (state) => {
         state && (state._hasHydrated = true);
       },
-    
+      
       partialize: (state) => ({ items: state.items, _hasHydrated: state._hasHydrated }),
     }
   )
 );
+
+
