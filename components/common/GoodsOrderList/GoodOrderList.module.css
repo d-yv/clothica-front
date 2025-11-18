@@ -1,6 +1,113 @@
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* Контейнер/заголовок */
+.wrapper { 
+padding: 12px 8px; 
+
+ }
+
+.title { 
+    font-size: 20px; 
+    font-weight: 700; 
+    margin: 0 0 12px; 
+}
+
+
+
+.item {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  padding: 6px 4px;
+}
+
+/* Фото з м’яким фоном */
+.thumbWrap {
+  width: 82px;
+  height: 101px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #eef1f3;
+}
+
+
+/* Контент справа */
+.info { display: grid; gap: 6px; }
+.name { margin: 0; font-size: 16px; font-weight: 700; color: #111; }
+
+/* Рейтинг/відгуки */
+.metaRow { display: inline-flex; align-items: center; gap: 6px; color: #5f6770; font-size: 13px; }
+.icon { fill: currentColor; }
+
+/* Рядок ціни і контролів (як на макеті) */
+.priceRow {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+  margin-top: 4px;
+}
+.price { font-weight: 700; font-size: 15px; color: #111; white-space: nowrap; }
+
+/* Правий блок: інпут-«пігулка» та круглий смітник */
+.controls {
+display: flex;
+  justify-content: space-between;
+
+  
+}
+
+.qtyInput {
+  width: 64px;
+  height: 40px;
+  text-align: start;
+  border: 1px solid #cfd3d8;
   border-radius: 16px;
+  padding: 8px 8px;     /* пігулка */
+  background: transparent;
+  font-weight: 600;
+  font-size: 14px;
+  color: #111;
+  appearance: textfield;
+}
+.qtyInput::-webkit-outer-spin-button,
+.qtyInput::-webkit-inner-spin-button { appearance: none; margin: 0; }
+
+.trash {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #eff1f3;
+  border: none;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.trash:hover { background: #e8eaed; }
+
+/* Підсумок з лінією, як на скріні */
+.summary {
+
+  border-top: 1px solid #e1e4e8;
+  display: grid;
+  gap: 8px;
+}
+.row { display: flex; 
+    justify-content: space-between; 
+    font-size: 15px; 
+    color: #111; 
+    padding: 12px 0px 4px;
+}
+.total { 
+font-weight: 800; 
+font-size: 17px;
+}
+
+
+
+@media (min-width: 768px) {
+ 
+}
+
+
+@media (min-width: 1440px) {
+
 }
