@@ -9,7 +9,6 @@ import cssSection from "./GoodReviews.module.css";
 import cssSlider from "./ReviewsList.module.css";
 import MessageNoStories from "./MessageNoStories";
 
-
 type Review = {
   _id: string;
   author: string;
@@ -70,7 +69,7 @@ export default function GoodReviews({ goodId }: { goodId: string }) {
   };
 
   return (
-    <section className={cssSection.section}>
+    <section id="GoodReviews" className={cssSection.section}>
       {/* HEADER */}
       <div className={cssSection.headerRow}>
         <h2 className={cssSection.title}>Відгуки клієнтів</h2>
