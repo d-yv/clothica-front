@@ -1,14 +1,15 @@
-/* ============================
-   DESKTOP (default)
-   ============================ */
-
 .wrap {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 64px;
-  padding-bottom: 64px;
+
+  width: 760px;
+  background: var(--color-scheme-1-bg);
+  border-radius: var(--radius-xl);
+  padding: var(--space-16) 48px;
+
+  box-shadow: var(--shadow-modal);
 }
 
 /* Хрестик */
@@ -42,14 +43,14 @@
   letter-spacing: -0.01em;
   text-align: center;
   color: var(--color-scheme-1-text);
-  margin-bottom: 64px;
+  margin-bottom: var(--space-16);
 }
 
 /* Форма */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 .label {
@@ -64,12 +65,16 @@
 /* Поле "Ваше ім’я" */
 .inputName {
   margin-top: 8px;
+
   width: 640px;
   height: 40px;
-  border-radius: 16px;
+
+  border-radius: var(--radius-lg);
   border: 1px solid var(--opacity-neutral-darkest-15);
-  padding: 8px;
-  background: var(--opacity-transparent);
+
+  padding: 8px 14px;
+  background: var(--color-scheme-1-bg); /* FIX: замість transparent */
+  color: var(--color-scheme-1-text);
 }
 
 /* Поле "Відгук" */
@@ -77,40 +82,55 @@
   margin-top: 8px;
   width: 640px;
   height: 180px;
-  border-radius: 16px;
-  padding: 12px;
+
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+
   border: 1px solid var(--opacity-neutral-darkest-15);
-  background: var(--opacity-transparent);
+  background: var(--color-scheme-1-bg); /* FIX: видимий фон */
+  color: var(--color-scheme-1-text);
+
   resize: none;
+}
+
+/* Зірочки */
+.starsWrap {
+  margin-top: 8px;
+  margin-bottom: 16px;
 }
 
 /* Кнопка Надіслати */
 .submitBtn {
-  width: 105px;
-  height: 36px;
-  padding: 6px 12px;
+  width: 120px;
+  height: 40px;
+
+  padding: 8px 16px;
   background: var(--color-deco);
   border: 1px solid var(--color-deco);
-  border-radius: 100px;
+  border-radius: var(--radius-round);
 
   font-family: var(--font-family);
   font-weight: 500;
   font-size: 16px;
   color: var(--color-neutral-darkest);
 
-  margin-top: 72px;
+  margin-top: 24px;
   align-self: center;
   cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.submitBtn:hover {
+  background: var(--color-deco-hover);
 }
 
 /* ============================
    TABLET (768px – 1023px)
    ============================ */
-
 @media (max-width: 1023px) and (min-width: 768px) {
   .wrap {
-    padding-top: 40px;
-    padding-bottom: 40px;
+    width: 90%;
+    padding: 40px 32px;
   }
 
   .title {
@@ -120,7 +140,7 @@
 
   .inputName,
   .textarea {
-    width: 640px;
+    width: 100%;
   }
 
   .closeBtn {
@@ -132,22 +152,21 @@
 /* ============================
    MOBILE (до 767px)
    ============================ */
-
 @media (max-width: 767px) {
   .wrap {
-    padding-top: 40px;
-    padding-bottom: 40px;
+    width: 92%;
+    padding: 40px 24px;
   }
 
   .title {
-    font-size: 36px; /* 🔥 ТАК САМО, ЯК НА ПЛАНШЕТІ */
-    margin-bottom: 40px; /* 🔥 40px як у Figma */
+    font-size: 36px;
+    margin-bottom: 32px;
   }
 
   .form {
     width: 100%;
-    padding-inline: 20px; /* 🔥 по 20px як на твоєму скріні */
-    align-items: center;
+    padding-inline: 8px;
+    gap: var(--space-5);
   }
 
   .label {
@@ -159,12 +178,8 @@
     width: 100%;
   }
 
-  .textarea {
-    height: 180px;
-  }
-
   .submitBtn {
-    margin-top: 40px;
+    margin-top: 32px;
   }
 
   .closeBtn {
