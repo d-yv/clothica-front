@@ -81,6 +81,9 @@ const SignUp = () => {
       
      
       router.push('/');
+      // ПОВНЕ ОНОВЛЕННЯ СТОРІНКИ
+      window.location.href = '/';
+
       
     } catch (error: unknown) {
       console.error('Registration error:', error);
@@ -157,7 +160,7 @@ const SignUp = () => {
               />
               <ErrorMessage name="phone" component="div" className={styles.errorText} />
               <div className={styles.phoneHint}>
-                Формат: +38 (0XX) XXX-XX-XX
+                {/* Формат: +38 (0XX) XXX-XX-XX */}
               </div>
             </div>
 
