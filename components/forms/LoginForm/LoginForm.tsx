@@ -126,9 +126,9 @@ const SignIn = () => {
                 value={values.phone}
               />
               <ErrorMessage name="phone" component="div" className={styles.errorText} />
-              <div className={styles.phoneHint}>
-                {/* Формат: +38 (0XX) XXX-XX-XX */}
-              </div>
+              {/* <div className={styles.phoneHint}>
+                Формат: +38 (0XX) XXX-XX-XX
+              </div> */}
             </div>
 
             <div className={styles.field}>
