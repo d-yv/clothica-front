@@ -4,23 +4,21 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import styles from "./Header.module.css";
+import { useAuth } from "@/hooks/useAuth"; 
 
 export default function Header() {
+  const { isAuth, checkAuthStatus } = useAuth(); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
   useEffect(() => {
-    Promise.resolve().then(() => {
-      const token = localStorage.getItem("token");
-      setIsAuth(Boolean(token));
-    });
-
+    checkAuthStatus();
+    
     Promise.resolve().then(() => {
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       setCartCount(cart.length);
     });
-  }, []);
+  }, [checkAuthStatus]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -72,7 +70,6 @@ export default function Header() {
           </Link>
         </div>
       </div>
-
       {isMenuOpen && (
         <MobileMenu isAuth={isAuth} onClose={() => setIsMenuOpen(false)} />
       )}
