@@ -7,7 +7,7 @@ import styles from "./Header.module.css";
 import { useCart } from "@/lib/store/cart";
 
 export default function Header() {
-  const { isAuth, checkAuthStatus } = useAuth(); 
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
     const cartCount = useCart((s) => s.items.reduce((sum, it) => sum + it.quantity, 0));
