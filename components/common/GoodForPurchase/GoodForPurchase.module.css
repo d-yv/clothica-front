@@ -1,16 +1,18 @@
 .container {
     display: flex;
-    gap: 4rem;
-    padding: 2rem 0;
+    flex-direction: column;
+    gap: 24px;
+    padding: 64px 0;
 }
 
 .col {
     flex: 1;
+    max-width: 100%;
 }
 
 .imageWrap {
     width: 100%;
-    height: 680px;
+    height: 357px;
     position: relative;
     background: #EEEDE7;
     overflow: hidden;
@@ -21,16 +23,16 @@
     object-fit: cover;
 }
 
-
 .menuList {
     list-style: none;
     padding: 0;
     margin: 0 0 16px 0;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     font-size: 14px;
     line-height: 150%;
+    flex-wrap: wrap;
 }
 
 .menuLink {
@@ -39,6 +41,7 @@
     line-height: 150%;
     color: #000;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .menuLink:hover {
@@ -50,53 +53,59 @@
     font-size: 14px;
     line-height: 150%;
     color: #000;
+    white-space: nowrap;
 }
 
-.right   {
+.right {
     color: #000;
     stroke-width: 0.67px;
-    
+    flex-shrink: 0;
 }
 
 .header {
     font-weight: 400;
-    font-size: 40px;
+    font-size: 24px;
     line-height: 120%;
     letter-spacing: -0.01em;
-    margin: 0 0 24px 0;
+    margin: 0 0 16px 0;
 }
 
 .priceContent {
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
 }
 
 .price {
     font-weight: 400;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 140%;
     letter-spacing: -0.01em;
     margin: 0;
+    white-space: nowrap;
 }
+
 .divider {
-    width:1px; 
+    width: 1px;
     height: 28px;
-    stroke-width: 1px;
     background-color: rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
 }
 
 .rating {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
+    flex-wrap: nowrap;
 }
 
 .stars {
+    width: 16px;
+    height: 16px;
     color: #000;
-    font-size: 14px;
-    letter-spacing: 2px;
+    flex-shrink: 0;
 }
 
 .feedback {
@@ -104,17 +113,20 @@
     font-size: 14px;
     line-height: 150%;
     color: #000;
+    white-space: nowrap;
 }
 
 .about {
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 150%;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .sizeSelector {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .sizeLabel {
@@ -125,19 +137,36 @@
     margin-bottom: 8px;
 }
 
+.selectWrapper {
+    position: relative;
+    width: 100%;
+}
+
 .sizeSelect {
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 16px;
-    padding: 8px;
-    width: 640px;
+    padding: 10px 40px 10px 12px;
+    width: 100%;
     height: 40px;
     cursor: pointer;
-    background:none;
+    background: none;
     appearance: none;
-
+    font-size: 14px;
+    transition: all 0.2s;
 }
-.selectIcon{
-    background: rgba(0, 0, 0, 0.6);
+
+.sizeSelect:hover {
+    border-color: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.selectIcon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: rgba(0, 0, 0, 0.6);
 }
 
 .buttonGroup {
@@ -151,16 +180,18 @@
     background: #C5E1A5;
     border: 1px solid #C5E1A5;
     border-radius: 100px;
-    padding: 6px 12px;
-    height: 36px;
+    padding: 10px 16px;
+    height: 40px;
     font-size: 14px;
+    font-weight: 400;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
 }
 
 .btn1:hover {
-    background: #9DB484;
-    border-color: #4E5A42;
+    background: #B5D195;
+    border-color: #9DB484;
 }
 
 .btn1:focus {
@@ -170,29 +201,37 @@
 
 .btn1:active {
     background-color: #3b4331;
+    border-color: #3b4331;
     color: #fff;
 }
-
 
 .btn2 {
     width: 100%;
     background: rgba(0, 0, 0, 0.05);
     border: 1px solid transparent;
     border-radius: 100px;
-    padding: 6px 12px;
-    height: 36px;
+    padding: 10px 16px;
+    height: 40px;
     font-size: 14px;
+    font-weight: 400;
     cursor: pointer;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+    white-space: nowrap;
 }
+
 .btn2:hover {
-    background-color: rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.btn2:focus {
+    outline: none;
 }
 
 .btn2:active {
     background-color: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0);
+    border: 1px solid rgba(0, 0, 0, 0.5);
     color: #fff;
 }
 
@@ -202,60 +241,199 @@
     font-size: 14px;
     display: flex;
     align-items: center;
-    background:none;
-    cursor: pointer;
+    justify-content: center;
+    background: none;
+    cursor: default;
+    border-radius: 16px;
+    padding: 10px 16px;
+    min-width: 56px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.quantityInput {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    text-align: center;
+    font-size: 14px;
+    background: none;
     border-radius: 16px;
     padding: 8px;
     width: 64px;
     height: 40px;
+    flex-shrink: 0;
+}
+.quantityInput:hover {
+    border-color: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.02);
+}
+.quantityInput:focus {
+    outline: none;
+    border-color: rgba(0, 0, 0, 0.3);
 }
 
-.quantityBtn {
-    width: 28px;
-    height: 28px;
-    border: none;
-    background: transparent;
-    font-size: 18px;
+.quantityInput::-webkit-inner-spin-button,
+.quantityInput::-webkit-outer-spin-button {
+    opacity: 0;
+    width: 16px;
+    height: 16px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
+    position: relative;
 }
 
+.quantityInput:hover::-webkit-inner-spin-button,
+.quantityInput:hover::-webkit-outer-spin-button {
+    opacity: 1;
+}
 
 .deliveryText {
     font-weight: 400;
-    font-size: 16px;
+    font-size: 13px;
     line-height: 150%;
     text-align: center;
-    margin: 0 0 32px 0;
+    margin: 0 0 24px 0;
+    color: #000;
 }
+
 .characteristics {
-    margin-top: 32px;
+    margin-top: 24px;
 }
-.charList {
-    font-family: var(--font-inter), sans-serif;
-    list-style: disc;
-    font-weight: 370;
-    padding-left: 24px;
+
+.text:first-child {
     font-weight: 400;
-    font-size: 16px;
-    line-height: 150%;
+    font-size: 18px;
+    line-height: 140%;
+    margin: 0 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #C5E1A5;
+    display: inline-block;
 }
 
 .text {
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 150%;
-    margin: 0 0 16px 0;
+    margin: 0 0 12px 0;
+    color: #000;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
-.text:first-child {
-    font-size: 20px;
-    line-height: 140%;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #C5E1A5;
-    display: inline-block;
+.charList {
+    list-style: disc;
+    padding-left: 24px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    margin: 12px 0 0 0;
+}
+
+.charList li {
+    margin-bottom: 8px;
+}
+
+/* ========== TABLET (768px+) ========== */
+
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+        gap: 32px;
+    }
+
+    .imageWrap {
+        height: 358px;
+    }
+
+    .header {
+        font-size: 32px;
+        margin: 0 0 20px 0;
+    }
+
+    .priceContent {
+        margin-bottom: 20px;
+    }
+
+    .about {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+
+    .sizeSelector {
+        margin-bottom: 20px;
+    }
+
+    .deliveryText {
+        font-size: 13px;
+        margin: 0 0 28px 0;
+    }
+
+    .characteristics {
+        margin-top: 28px;
+    }
+
+    .text {
+        font-size: 15px;
+        margin: 0 0 14px 0;
+    }
+
+    .charList {
+        font-size: 15px;
+    }
+}
+
+/* ========== DESKTOP (1440px+) ========== */
+
+@media (min-width: 1440px) {
+    .container {
+        gap: 32px;
+        padding: 112px 0;
+    }
+
+    .imageWrap {
+        height: 682px;
+    }
+
+    .header {
+        font-size: 40px;
+        margin: 0 0 24px 0;
+    }
+
+    .priceContent {
+        margin-bottom: 24px;
+    }
+
+    .price {
+        font-size: 20px;
+    }
+
+    .about {
+        font-size: 16px;
+        margin-bottom: 24px;
+    }
+
+    .sizeSelector {
+        margin-bottom: 24px;
+    }
+
+    .deliveryText {
+        font-size: 14px;
+        margin: 0 0 32px 0;
+    }
+
+    .characteristics {
+        margin-top: 32px;
+    }
+
+    .menuList {
+        gap: 8px;
+    }
+
+    .text {
+        font-size: 16px;
+        margin: 0 0 16px 0;
+    }
+
+    .charList {
+        font-size: 16px;
+        margin: 16px 0 0 0;
+    }
 }
