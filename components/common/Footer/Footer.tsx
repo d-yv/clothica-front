@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react";
+import React, { useEffect } from "react";
 import styles from  "./Footer.module.css";
 import Link from "next/link";
 
@@ -39,6 +39,8 @@ const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     console.error("Network error while subscribing", error);
   }
 };
+
+
 
 
   return (
@@ -127,7 +129,10 @@ const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
         </div>
       </div>
     </footer>
+  
   );
+
+  
 };
 
 export default Footer;
