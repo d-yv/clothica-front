@@ -8,11 +8,13 @@ import { Good } from "@/types/good";
 import GoodCard from "../GoodCard/GoodCard";
 import styles from "./GoodsList.module.css";
 
+
 const BACKEND_PER_PAGE = 12; 
 
 export default function GoodsList() {
   const searchParams = useSearchParams();
   const paramsString = searchParams.toString(); 
+
 
   const [goods, setGoods] = useState<Good[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,11 +25,15 @@ export default function GoodsList() {
       setLoading(true);
 
       try {
+
         const uiPerPage = Number(
           searchParams.get("perPage") || BACKEND_PER_PAGE
         );
 
+
         const page = 1; 
+
+
 
         const minPriceStr = searchParams.get("minPrice");
         const maxPriceStr = searchParams.get("maxPrice");
@@ -37,7 +43,10 @@ export default function GoodsList() {
 
         const params: Record<string, unknown> = {
           page,
+
           perPage: BACKEND_PER_PAGE, 
+
+
         };
 
         if (minPriceStr) params.minPrice = Number(minPriceStr);
@@ -47,6 +56,7 @@ export default function GoodsList() {
           params.categoryId = categoryIdStr;
         }
         if (sizeStr) {
+
           params.size = sizeStr;
         }
 
@@ -60,6 +70,7 @@ export default function GoodsList() {
         const list: Good[] = data.goods || [];
         setGoods(list);
         setError(null);
+
 
         const visibleCount = Math.min(uiPerPage, list.length);
         const hasMore = visibleCount < list.length;
@@ -84,7 +95,7 @@ export default function GoodsList() {
     };
 
     load();
-   
+
   }, [paramsString]);
 
   if (loading) return <p>Завантаження...</p>;
