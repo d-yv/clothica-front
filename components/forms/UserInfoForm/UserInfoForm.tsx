@@ -107,26 +107,26 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({ currentUser, onProfileUpdat
                 </div>
                 
                 <div className={styles.formWrapper}>
-                  <label htmlFor="lastName">Прізвище</label>
+                  <label htmlFor="lastName">Прізвище*</label>
                   <Field type="text" id="lastName" name="lastName" className={styles.formInput} />
                   <ErrorMessage name="lastName" component="div" className={styles.errorMessage} />
                 </div>
                 </div>
                 
                 <div className={styles.formWrapper}>
-                  <label htmlFor="phone">Телефон (+380XXXXXXXXX)</label>
+                  <label htmlFor="phone">Телефон*</label>
                   <Field type="text" id="phone" name="phone" className={styles.formInput} />
                   <ErrorMessage name="phone" component="div" className={styles.errorMessage} />
                 </div>
                 
                 <div className={styles.formWrap}>
                 <div className={styles.formWrapper}>
-                  <label htmlFor="city">Місто</label>
+                  <label htmlFor="city">Місто доставки*</label>
                   <Field type="text" id="city" name="city" className={styles.formInput} />
                   <ErrorMessage name="city" component="div" className={styles.errorMessage} />
                 </div>
                 <div className={styles.formWrapper}>
-                  <label htmlFor="postOfficeNum">Відділення Нової Пошти</label>
+                  <label htmlFor="postOfficeNum">Відділення Нової Пошти*</label>
                   <Field type="text" id="postOfficeNum" name="postOfficeNum" className={styles.formInput} />
                   <ErrorMessage name="postOfficeNum" component="div" className={styles.errorMessage} />
                 </div>
