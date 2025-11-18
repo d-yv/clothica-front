@@ -1,4 +1,4 @@
-.profilePageContainer{
+.profilePageContainer {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -6,24 +6,24 @@
   gap: 48px;
   background: #f3f9ed;
 
-.submitButton:hover {
-  border: 1px solid #4e5a42;
-  background-color: #9db484;
-  transform: translateY(-1px);
-}
+  .submitButton:hover {
+    border: 1px solid #4e5a42;
+    background-color: #9db484;
+    transform: translateY(-1px);
+  }
 
-.submitButton:active {
-  transform: translateY(0);
-}
+  .submitButton:active {
+    transform: translateY(0);
+  }
 
-.submitButton:disabled {
-  border: 1px solid #c5e1a5;
-  background-color: #c5e1a5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-  opacity: 0.4;
-}
+  .submitButton:disabled {
+    border: 1px solid #c5e1a5;
+    background-color: #c5e1a5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.4;
+  }
   padding-block: 64px 48px;
   padding-inline: 20px;
   width: 100%;
@@ -38,7 +38,7 @@
   text-align: center;
   color: #000;
 }
-.sectionTitle{
+.sectionTitle {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 400;
   font-size: 20px;
@@ -46,16 +46,16 @@
   letter-spacing: -0.01em;
   text-align: center;
   color: #000;
+  margin: 0 auto;
 }
-.logoutWrapper{
+.logoutWrapper {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-.logoutButton{
-  width: 335px;
+.logoutButton {
+  width: 100%;
   height: 36px;
-  box-sizing: border-box;
   padding-block: 6px;
   padding-inline: 12px;
   border: 1px solid #5e5e5e;
@@ -86,11 +86,65 @@
   box-shadow: none;
   opacity: 0.4;
 }
-@media screen and (min-width: 768px){
-  .logoutButton{
-    width: 156px;
+@media screen and (min-width: 768px) {
+  .logoutButton {
+    width: 200px;
+    height: 36px;
+    margin: 0 auto;
   }
 }
-@media screen and (min-width: 1440px){
-  
+@media screen and (min-width: 1440px) {
+  .profilePageContainer {
+    width: 1312px;
+    max-width: 1312px;
+    margin: 0 auto;
+    padding-block: 64px 48px;
+    background: #f3f9ed;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "title title"
+      "ordersTitle infoTitle"
+      "orders info"
+      "logout logout";
+    gap: 24px;
+    justify-items: center;
+    align-items: start;
+  }
+
+  .title {
+    grid-area: title;
+  }
+
+  .sectionTitle:nth-of-type(2) {
+    grid-area: ordersTitle;
+    justify-self: start;
+  }
+
+  .sectionTitle:nth-of-type(1) {
+    grid-area: infoTitle;
+    justify-self: start;
+  }
+
+  .profilePageContainer > div:nth-of-type(1) {
+    grid-area: info;
+    width: 100%;
+    max-width: 620px;
+  }
+
+  .profilePageContainer > div:nth-of-type(2) {
+    grid-area: orders;
+    width: 100%;
+    max-width: 620px;
+  }
+
+  .logoutWrapper {
+    grid-area: logout;
+    justify-content: center;
+    width: 100%;
+  }
+  .logoutButton {
+    margin: 0 auto;
+  }
 }

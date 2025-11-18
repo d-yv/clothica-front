@@ -138,7 +138,7 @@ export default function Cabinet() {
   return(
     <section className={styles.profilePageContainer}>
       <h1 className={styles.title}>Кабінет</h1>
-      <h3 className={styles.sectionTitle}>Особиста інформація</h3>
+      <h2 className={styles.sectionTitle}>Особиста інформація</h2>
       <div>
       
           {currentUser ? (
@@ -150,8 +150,8 @@ export default function Cabinet() {
           )}
           
       </div>
+      <h2 className={styles.sectionTitle}>Мої замовлення</h2>
       <div>
-          <h2 className={styles.sectionTitle}>Мої замовлення</h2>
           {currentOrders.length === 0 ? (
               <MessageNoInfo 
                   text="У вас ще немає жодного замовлення." 

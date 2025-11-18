@@ -5,7 +5,7 @@
   display: flex;
  flex-direction: column;
   gap: 24px;
-  /*width: 100%;*/
+  width: 100%;
 }
 .formWrap{
   display: flex;
@@ -20,7 +20,7 @@
   gap: 8px;
 }
 .formInput {
-  background: white;
+  background: transparent;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 16px;
   padding: 8px;
@@ -76,7 +76,7 @@
     width: 704px;
   }
   .formWrapper{
-    flex: 1;
+    width: 100%;
   }
   
   .formWrap{
@@ -92,5 +92,8 @@
 }
 
 @media screen and (min-width: 1440px){
-  
+  .form {
+width: 640px;
+height: 376px;
+  }
 }
