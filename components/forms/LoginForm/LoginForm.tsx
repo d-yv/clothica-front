@@ -65,7 +65,9 @@ const SignIn = () => {
       localStorage.setItem('user', JSON.stringify(user));
       
       router.push('/');
-      
+      // ПОВНЕ ОНОВЛЕННЯ СТОРІНКИ
+      window.location.href = '/';
+
     } catch (error: unknown) {
       console.error('Login error:', error);
       

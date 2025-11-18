@@ -81,6 +81,9 @@ const SignUp = () => {
       
      
       router.push('/');
+      // ПОВНЕ ОНОВЛЕННЯ СТОРІНКИ
+      window.location.href = '/';
+
       
     } catch (error: unknown) {
       console.error('Registration error:', error);
