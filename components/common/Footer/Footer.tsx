@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react";
+// import React, { useEffect } from "react";
 import styles from  "./Footer.module.css";
 import Link from "next/link";
 
@@ -41,6 +41,8 @@ const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
 };
 
 
+
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -54,9 +56,9 @@ const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
          <nav className={styles.menu} aria-label="Меню сайту">
         <h3 className={styles.menuTitle}>Меню</h3>
         <ul className={styles.menuList}>
-          <li><a className={styles.menuLink} href="/">Головна</a></li>
-          <li><a className={styles.menuLink} href="/products">Товари</a></li>
-          <li><a className={styles.menuLink} href="/categories">Категорії</a></li>
+          <li><Link className={styles.menuLink} href="/">Головна</Link></li>
+          <li><Link className={styles.menuLink} href="/goods">Товари</Link></li>
+          <li><Link className={styles.menuLink} href="/categories">Категорії</Link></li>
         </ul>
       </nav>
 </div>
@@ -127,7 +129,10 @@ const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
         </div>
       </div>
     </footer>
+  
   );
+
+  
 };
 
 export default Footer;

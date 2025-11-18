@@ -7,6 +7,7 @@ import styles from "./Header.module.css";
 import { useCart } from "@/lib/store/cart";
 
 export default function Header() {
+  const { isAuth, checkAuthStatus } = useAuth(); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
     const cartCount = useCart((s) => s.items.reduce((sum, it) => sum + it.quantity, 0));
@@ -34,7 +35,7 @@ export default function Header() {
         <nav className={styles.mainNav}>
           <Link href="/" className={styles.btnEntrance}>Головна</Link>
           <Link href="/goods" className={styles.btnEntrance}>Товари</Link>
-          <Link href="/common/CategoriesList" className={styles.btnRegistration}>Категорії</Link>
+          <Link href="/categories" className={styles.btnRegistration}>Категорії</Link>
         </nav>
 
         <div className={styles.headerActions}>
@@ -47,7 +48,7 @@ export default function Header() {
             )}
 
             {isAuth && (
-              <Link href="/cabinet" className={styles.headerButtonCabinet}>Кабінет</Link>
+              <Link href="/profile" className={styles.headerButtonCabinet}>Кабінет</Link>
             )}
           </div>
 
@@ -65,7 +66,6 @@ export default function Header() {
           </Link>
         </div>
       </div>
-
       {isMenuOpen && (
         <MobileMenu isAuth={isAuth} onClose={() => setIsMenuOpen(false)} />
       )}

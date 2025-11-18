@@ -1,4 +1,4 @@
-// "@/lib/store/cart.ts"
+
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { Good } from "@/types/good";
@@ -13,7 +13,7 @@ type CartState = {
   clear: () => void;
   subtotal: () => number;
 
-  /** прапорець, що сторадж відновлено з localStorage */
+
   _hasHydrated: boolean;
 };
 
