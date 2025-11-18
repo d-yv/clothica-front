@@ -1,26 +1,44 @@
 .stars {
-    display: flex;
-    gap: 4px;
+  display: flex;
+  gap: 4px;
 }
 
 .star,
 .starEmpty,
 .starFull {
-    width: 20px;
-    height: 20px;
-    display: block;
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 .partialWrap {
-    position: relative;
-    width: 20px;
-    height: 20px;
+  position: relative;
+  width: 20px;
+  height: 20px;
 }
 
 .partialFill {
-    position: absolute;
-    height: 100%;
-    left: 0;
-    top: 0;
-    overflow: hidden;
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0;
+  overflow: hidden;
 }
+
+/* 🔥 Чорні повні зірки */
+/* .starFull {
+  fill: black;
+  stroke: black;
+} */
+
+/* 🔥 Чорні порожні зірки */
+/* .starEmpty {
+  fill: none;
+  stroke: black;
+} */
+
+/* 🔥 Заповнення часткової зірки */
+/* .partialFill svg {
+  fill: black;
+  stroke: black;
+} */

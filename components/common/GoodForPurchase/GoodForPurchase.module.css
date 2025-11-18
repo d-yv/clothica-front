@@ -1,4 +1,4 @@
-
+/* 
 .container{
     display: flex;
     gap: 3rem;
@@ -51,4 +51,273 @@
     font-size: 12px;
     line-height: 150%;
     text-align: center;
+} */
+
+/* .section {
+  padding-top: 64px;
+  padding-bottom: 64px;
+} */
+/* .container {
+} */
+
+.content {
+  margin-bottom: 60px;
+}
+
+.image {
+  border-radius: 16px;
+  margin-bottom: 48px;
+  width: 100%;
+}
+.ratingText {
+  font-size: 14px;
+  color: black;
+  padding-left: 10px;
+  text-align: center;
+  font-weight: 400;
+  line-height: 21px;
+}
+.price {
+  color: black;
+  font-size: 20px;
+  font-family: Nunito Sans;
+  font-weight: 400;
+  line-height: 28px;
+  word-wrap: break-word;
+}
+
+.productDescription {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.navCrumbs {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: #000;
+}
+
+.title {
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 120%;
+  letter-spacing: -0.01em;
+  color: v#000;
+}
+
+.details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.verticalLine {
+  height: 2em;
+  width: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin-right: 16px;
+  margin-left: 16px;
+}
+
+.reviews {
+  display: flex;
+}
+
+.text {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #000;
+}
+
+.label {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.size {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  padding: 8px 36px 8px 12px;
+  width: 100%;
+  height: 40px;
+  background: rgba(255, 255, 255, 0);
+  background-position: right 20px center;
+  color: #000;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.addToBucket {
+  background: #c5e1a5;
+  border: 1px solid #c5e1a5;
+  border-radius: 100px;
+  padding: 6px 12px;
+  width: 100%;
+  height: 36px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: #000;
+  margin-bottom: 16px;
+}
+
+.addToBucket:hover,
+.addToBucket:focus {
+  border: 1px solid #4e5a42;
+
+  background: #9db484;
+}
+
+.addToBucket:active {
+  border: 1px solid #c5e1a5;
+  background: #3b4331;
+}
+
+.quantityInput {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  padding: 8px;
+  width: 64px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0);
+  color: #000;
+}
+
+.buyNow {
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 100px;
+  padding: 6px 12px;
+  width: 100%;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.05);
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: #000;
+  margin-bottom: 16px;
+}
+
+.buyNow:hover,
+.buyNow:focus {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.buyNow:active {
+  border: 1px solid rgba(255, 255, 255, 0);
+}
+
+.freeDelivery {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  text-align: center;
+  color: #000;
+  margin-bottom: 34px;
+}
+
+.descTitle {
+  font-family: v "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #000;
+  margin-bottom: 24px;
+}
+
+.descTitle::after {
+  content: "";
+  display: block;
+  left: 0;
+  margin-top: 12px;
+  width: 40px;
+  height: 1px;
+  background-color: #c5e1a5;
+}
+
+.descSubtitle {
+  margin-top: 16px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: v#000;
+}
+
+.descText {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #000;
+}
+
+.listDisc {
+  padding-left: 26px;
+}
+
+.listDisc li {
+  list-style-type: disc;
+}
+.wrapper {
+  position: relative;
+}
+
+.successToast {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: #00c853;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  animation: fadeInOut 2.2s ease-in-out forwards;
+}
+@media screen and (min-width: 768px) {
+  .content {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+  }
+
+  .image {
+    min-width: 336px;
+    min-height: 374px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  /* .section {
+    padding-top: 112px;
+    padding-bottom: 112px;
+  } */
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+  }
 }
