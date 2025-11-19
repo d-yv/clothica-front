@@ -69,6 +69,7 @@
   margin-bottom: 48px;
   width: 100%;
 }
+
 .ratingText {
   font-size: 14px;
   color: black;
@@ -77,6 +78,7 @@
   font-weight: 400;
   line-height: 21px;
 }
+
 .price {
   color: black;
   font-size: 20px;
@@ -275,6 +277,7 @@
 .listDisc li {
   list-style-type: disc;
 }
+
 .wrapper {
   position: relative;
 }
@@ -296,6 +299,7 @@
 
   animation: fadeInOut 2.2s ease-in-out forwards;
 }
+
 @media screen and (min-width: 768px) {
   .content {
     display: flex;
@@ -305,19 +309,20 @@
 
   .image {
     min-width: 336px;
-    min-height: 374px;
+    min-height: 375px;
   }
 }
 
 @media screen and (min-width: 1440px) {
-  /* .section {
-    padding-top: 112px;
-    padding-bottom: 112px;
-  } */
 
   .content {
     display: flex;
     flex-direction: row;
     gap: 32px;
+  }
+
+  .image {
+    min-width: 640px;
+    min-height: 698px;
   }
 }
