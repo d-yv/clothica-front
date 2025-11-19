@@ -4,15 +4,68 @@ import { useState } from "react";
 import StarRating from "../StarRating/StarRating";
 import styles from "./LeaveReviewForm.module.css";
 
-export default function LeaveReviewForm({ onClose }: { onClose?: () => void }) {
+
+type LeaveReviewFormProps = {
+  goodId: string;
+  onClose?: () => void;
+  onSuccess?: () => void | Promise<void>;
+};
+
+export default function LeaveReviewForm({
+  goodId,
+  onClose,
+  onSuccess,
+}: LeaveReviewFormProps) {
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [rate, setRate] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Відправлено:", { name, text, rate });
-    if (onClose) onClose();
+    setError(null);
+
+    if (!rate) {
+      setError("Оцініть, будь ласка, товар");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/feedbacks/${goodId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            author: name,
+            description: text,
+            rate,
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Не вдалося надіслати відгук");
+      }
+
+      if (onSuccess) {
+        await onSuccess();
+      }
+
+      if (onClose) {
+        onClose();
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Сталася помилка. Спробуйте ще раз.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -23,17 +76,18 @@ export default function LeaveReviewForm({ onClose }: { onClose?: () => void }) {
           className={styles.closeBtn}
           aria-label="Закрити"
           onClick={onClose}
+          type="button"
         >
           <svg className={styles.closeIcon}>
-            <use href="/images/sprite.svg#close" />
+            <use href="/styles.icon.svg#icon-close" />
           </svg>
         </button>
 
-        {/* Заголовок */}
+
         <h2 className={styles.title}>Залишити відгук</h2>
 
         <form onSubmit={handleSubmit} className={styles.form}>
-          {/* Ім’я */}
+
           <label className={styles.label}>
             Ваше імʼя
             <input
@@ -45,7 +99,7 @@ export default function LeaveReviewForm({ onClose }: { onClose?: () => void }) {
             />
           </label>
 
-          {/* Відгук */}
+
           <label className={styles.label}>
             Відгук
             <textarea
@@ -62,12 +116,15 @@ export default function LeaveReviewForm({ onClose }: { onClose?: () => void }) {
             <StarRating value={rate} onChange={setRate} />
           </div>
 
+          {error && <p className={styles.error}>{error}</p>}
+
           {/* Кнопка */}
-          <button type="submit" className={styles.submitBtn}>
-            Надіслати
+          <button type="submit" className={styles.submitBtn} disabled={submitting}>
+            {submitting ? "Надсилаємо..." : "Надіслати"}
           </button>
         </form>
       </div>
     </div>
   );
 }
+
