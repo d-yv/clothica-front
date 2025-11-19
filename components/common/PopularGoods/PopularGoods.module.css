@@ -50,6 +50,7 @@ background-color: rgba(0, 0, 0, 0.15);
 
 .swiper {
   width: 100%;
+    position: relative;
 }
 
 .controls {
@@ -107,6 +108,15 @@ background-color: rgba(0, 0, 0, 0.15);
   background-color: #3b4331;
   transform: translateY(0);
 }
+
+.disabled {
+  opacity: 0.3;
+  border-color: rgba(0, 0, 0, .12);
+  pointer-events: none;
+  box-shadow: none;
+    transform: none;
+}
+
 
 .icon {
   display: flex;

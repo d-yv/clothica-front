@@ -21,6 +21,8 @@ export default function PopularGoods() {
   const [error, setError] = useState<string | null>(null);
 
   const swiperRef = useRef<SwiperType | null>(null);
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
 
   const MAX_ITEMS = 10;
 
@@ -28,7 +30,10 @@ export default function PopularGoods() {
     const loadGoods = async () => {
       try {
         const res = await api.get("/goods");
-        const list: Good[] = (res.data.goods || res.data || []).slice(0, MAX_ITEMS);
+        const list: Good[] = (res.data.goods || res.data || []).slice(
+          0,
+          MAX_ITEMS
+        );
         setGoods(list);
       } catch {
         setError("Не вдалося завантажити популярні товари");
@@ -45,14 +50,18 @@ export default function PopularGoods() {
   if (loading)
     return (
       <section className={styles.section}>
-        <div className="container"><p className={styles.loading}>Завантаження...</p></div>
+        <div className="container">
+          <p className={styles.loading}>Завантаження...</p>
+        </div>
       </section>
     );
 
   if (error)
     return (
       <section className={styles.section}>
-        <div className="container"><p className={styles.error}>{error}</p></div>
+        <div className="container">
+          <p className={styles.error}>{error}</p>
+        </div>
       </section>
     );
 
@@ -71,10 +80,29 @@ export default function PopularGoods() {
 
         <div className={styles.sliderWrapper}>
           <Swiper
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+              setIsBeginning(swiper.isBeginning);
+              setIsEnd(swiper.isEnd);
+              
+            }}
+            onSlideChange={(swiper) => {
+              setIsBeginning(swiper.isBeginning);
+              setIsEnd(swiper.isEnd);
+            }}
+            onResize={(swiper) => {
+              swiper.update();
+              swiper.pagination.update();
+            }}
+            onReachBeginning={() => setIsBeginning(true)}
+            onReachEnd={() => setIsEnd(true)}
+            onFromEdge={(swiper) => {
+              setIsBeginning(swiper.isBeginning);
+              setIsEnd(swiper.isEnd);
+            }}
             modules={[Keyboard, Pagination, Navigation]}
-            onSwiper={(swiper) => (swiperRef.current = swiper)}
             slidesPerView={1}
-          slidesPerGroup={1}
+            slidesPerGroup={1}
             spaceBetween={32}
             speed={1200}
             keyboard={{ enabled: true }}
@@ -104,22 +132,28 @@ export default function PopularGoods() {
             <div className={styles.arrows}>
               <button
                 type="button"
-                className={`${styles.arrow} ${styles.prev}`}
+                disabled={isBeginning}
+                className={`${styles.arrow} ${styles.prev} ${
+                  isBeginning ? styles.disabled : ""
+                }`}
                 onClick={handlePrevClick}
               >
-                 <svg className={styles.icon}>
-      <use href="/sprite.svg#arrow_back"></use>
-    </svg>
+                <svg className={styles.icon}>
+                  <use href="/sprite.svg#arrow_back"></use>
+                </svg>
               </button>
 
               <button
                 type="button"
-                className={`${styles.arrow} ${styles.next}`}
+                disabled={isEnd}
+                className={`${styles.arrow} ${styles.next} ${
+                  isEnd ? styles.disabled : ""
+                }`}
                 onClick={handleNextClick}
               >
-                 <svg className={styles.icon}>
-      <use href="/sprite.svg#arrow_forward"></use>
-    </svg>
+                <svg className={styles.icon}>
+                  <use href="/sprite.svg#arrow_forward"></use>
+                </svg>
               </button>
             </div>
           </div>
