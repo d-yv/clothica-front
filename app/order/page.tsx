@@ -1,5 +1,5 @@
 import CreateOrderForm from '@/components/forms/CreateOrderForm/CreateOrderForm';
-import GoodOrderList from '@/components/common/GoodsOrderList/GoodOrderList';
+import GoodsOrderList from '@/components/common/GoodsOrderList/GoodsOrderList';
 import styles from './CreateOrderPage.module.css';
 
 export default function CreateOrderPage() {
@@ -10,7 +10,7 @@ export default function CreateOrderPage() {
       {/* Добавляем обертку orderContent для десктопной версии */}
       <div className={styles.orderContent}>
         <section className={styles.goodsSection}>
-          <GoodOrderList />
+          <GoodsOrderList />
         </section>
 
         <section className={styles.formSection}>

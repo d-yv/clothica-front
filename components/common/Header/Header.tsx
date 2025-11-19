@@ -5,22 +5,24 @@ import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import styles from "./Header.module.css";
 import { useAuth } from "@/hooks/useAuth"; 
+import { useShopStore } from "@/lib/store/cartStore";
 
-export default function Header() {
-  const { isAuth, checkAuthStatus } = useAuth(); 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
 
-  useEffect(() => {
-    checkAuthStatus();
-    
-    Promise.resolve().then(() => {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      setCartCount(cart.length);
-    });
-  }, [checkAuthStatus]);
+  export default function Header() {
+    const { isAuth, checkAuthStatus } = useAuth(); 
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+    const cartItems = useShopStore((s) => s.cartItems);
+  
+
+    const cartCount = cartItems.reduce((sum, item) => sum + item.amount, 0);
+  
+    useEffect(() => {
+      checkAuthStatus();
+    }, [checkAuthStatus]);
+  
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <header className={styles.siteHeader}>
