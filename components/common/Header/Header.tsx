@@ -1,27 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import styles from "./Header.module.css";
 import { useShopStore } from "@/lib/store/cartStore";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
-  // const [cartCount, setCartCount] = useState(0);
 
-  // useEffect(() => {
-  //   Promise.resolve().then(() => {
-  //     const token = localStorage.getItem("token");
-  //     setIsAuth(Boolean(token));
-  //   });
+  const { isAuth } = useAuth(); //hook
 
-  //   Promise.resolve().then(() => {
-  //     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  //     setCartCount(cart.length);
-  //   });
-  // }, []);
   const cartItems = useShopStore((state) => state.cartItems);
 
   const cartCount = cartItems.reduce((total, item) => total + item.amount, 0);
