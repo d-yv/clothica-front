@@ -1,39 +1,3 @@
-// import { Good } from "@/types/good";
-// import css from "./GoodForPurchase.module.css";
-// import Image from "next/image";
-
-// export default function GoodForPurchase ({good}:{good:Good}) {
-
-//   return (
-//       <div className="container">
-//           <div className={css.container}>
-//               <div className={css.col}>
-//                   <div className={css.imageWrap}>
-//                       <Image
-//                     src={good.image}
-//                     alt={good.name}
-//                     fill
-//                     className={css.image}
-//                   />
-//                   </div>
-//               </div>
-//               <div className={css.col}>
-//                   <h1 className={css.header}>{good.name}</h1>
-//                   <p className={css.price}> {good.price.value} {good.price.currency} </p>
-//                   <p className={css.about}>{good.prevDescription }</p>
-//                   <button className={css.btn1}>Додати в кошик</button>
-//                   <button className={css.btn2}>Купити зараз</button>
-//                   <p className={css.text}>Безкоштовна доставка для замовлень від 1000 грн</p>
-//                   <p>Опис</p>
-//                   <p>{good.description}</p>
-//                   <p>Основні характеристики</p>
-//                   <p>{ good.characteristics}</p>
-//               </div>
-
-//       </div>
-//     </div>
-//   );
-// }
 "use client";
 
 import { useState } from "react";
@@ -48,24 +12,34 @@ import { useRouter } from "next/navigation";
 interface ProductProps {
   good: Good;
 }
+const roundToHalf = (rating: number): number => {
+  return Math.round(rating * 2) / 2;
+};
 
 export default function GoodForPurchase({ good }: ProductProps) {
   const [value, setValue] = useState<number>(1);
   const [selectedSize, setSelectedSize] = useState<Size>(good.size[0] as Size);
   const [isToastVisible, setIsToastVisible] = useState(false);
 
+<<<<<<< Updated upstream
   // store
+=======
+>>>>>>> Stashed changes
   const addToCart = useShopStore((state) => state.addToCart);
 
   const router = useRouter();
 
+  const displayedRating = good.averageRate ? roundToHalf(good.averageRate) : 0;
+
   const handleAddToCart = () => {
     if (!good) return;
     const reviewsCount = good.feedbacks?.length ?? 0;
+    const roundedRate = good.averageRate ? roundToHalf(good.averageRate) : 0;
+
     addToCart({
       goodId: good._id,
       name: good.name,
-      rate: good.averageRate,
+      rate: roundedRate,
       reviewsNumber: reviewsCount,
       price: good.price.value,
       amount: value,
@@ -98,15 +72,14 @@ export default function GoodForPurchase({ good }: ProductProps) {
           />
           <div className={css.column}>
             <div className={css.productDescription}>
-              {/* <p className={css.breadcrumbs}> Всі товари > Категорія >
-                <span>{good.name}</span>
-              </p> */}
               <nav className={css.navCrumbs}>
-                <Link href="/goods">Всі товари</Link>
+                <Link href="/goods" className={css.navLink}>
+                  Всі товари
+                </Link>
                 <span>›</span>
                 <span>Категорія</span>
                 <span>›</span>
-                <span>{good.name}</span>
+                <span className={css.navName}>{good.name}</span>
               </nav>
               <h1 className={css.title}>{good.name}</h1>
               <div className={css.details}>
@@ -117,11 +90,10 @@ export default function GoodForPurchase({ good }: ProductProps) {
                 <div className={css.reviews}>
                   {good.feedbacks && good.feedbacks.length > 0 ? (
                     <>
-                      <StarsIcon rating={good.averageRate} />
+                      <StarsIcon rating={displayedRating} />
                       <Link href={`/goods/${good._id}#GoodReviews`}>
                         <span className={css.ratingText}>
-                          ({good.averageRate}) • {good.feedbacks.length}{" "}
-                          відгуків
+                          ({displayedRating}) • {good.feedbacks.length} відгуків
                         </span>
                       </Link>
                     </>

@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { getCategories, Category } from "@/utils/categories";
 import CategoriesList from "@/components/common/CategoriesList/CategoriesList";
-import css from "./page.module.css";
+import css from "./CategoriesPage.module.css";
 
 const LOAD_MORE_AMOUNT = 3;
 

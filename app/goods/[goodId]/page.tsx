@@ -46,11 +46,6 @@ function GoodPage() {
       : 0;
 
   const feedbackCount = feedbacks?.length ?? 0;
-
-  // console.log("GOOD:", good);
-  // console.log("FEEDBACKS:", feedbacks);
-  // console.log("AVERAGE RATE:", averageRate);
-
   if (!goodId) return <div>Помилка: goodId не отримано</div>;
   if (isLoading) return <Loading />;
   if (isError || !good) return <div>Товар не знайдено</div>;
@@ -58,7 +53,7 @@ function GoodPage() {
     ...good,
     averageRate,
     feedbackCount,
-    feedbacks, // якщо треба
+    feedbacks,
   };
 
   return (

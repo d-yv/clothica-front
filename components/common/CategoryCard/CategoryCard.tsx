@@ -1,5 +1,3 @@
-// "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { Category } from "@/utils/categories";
@@ -11,22 +9,16 @@ interface Props {
 }
 
 export default function CategoryCard({ category }: Props) {
-  // const handleClick = () => {
-  //   console.log("Clicked category id:", category.id);
-  // };
-
   return (
     <Link
-      //   href={{
-      //     pathname: "/goods",
-      //     query: { categoryId: category.id },
-      //   }}
-      //   onClick={handleClick}
-      //   className={css.card}
-      // >
-      href={`/goods?categoryId=${category.id}`}
-      // onClick={handleClick}
+      href={{
+        pathname: "/goods",
+        query: { categoryId: category.id },
+      }}
       className={css.card}
+
+      // href={`/goods?categoryId=${category.id}`}
+      // className={css.card}
     >
       <div className={css.imageWrapper}>
         <Image
