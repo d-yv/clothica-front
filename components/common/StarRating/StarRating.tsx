@@ -10,9 +10,9 @@ interface StarRatingProps {
 export default function StarRating({ value, onChange }: StarRatingProps) {
   return (
     <div className={styles.starsRow}>
-           {" "}
+      {" "}
       {[1, 2, 3, 4, 5].map((n) => {
-        const icon = n <= value ? "star-filled" : "star";
+        const icon = n <= value ? "star filled" : "star";
 
         return (
           <button
@@ -22,24 +22,24 @@ export default function StarRating({ value, onChange }: StarRatingProps) {
             className={styles.starBtn}
             aria-label={`Оцінка ${n} зірок`}
           >
-                       {" "}
+           {" "}
             <svg
               className={`${styles.star} ${
                 n <= value ? styles.activeStar : ""
               }`}
             >
-                           {" "}
+              {" "}
               <use
                 href={`/sprite.svg#${icon}`}
                 xlinkHref={`/sprite.svg#${icon}`}
               />
-                         {" "}
+             {" "}
             </svg>
-                     {" "}
+           {" "}
           </button>
         );
       })}
-         {" "}
+      {" "}
     </div>
   );
 }
