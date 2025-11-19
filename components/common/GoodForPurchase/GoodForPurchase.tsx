@@ -54,7 +54,7 @@ export default function GoodForPurchase({ good }: ProductProps) {
   const [selectedSize, setSelectedSize] = useState<Size>(good.size[0] as Size);
   const [isToastVisible, setIsToastVisible] = useState(false);
 
-  // store
+
   const addToCart = useShopStore((state) => state.addToCart);
 
   const router = useRouter();
@@ -71,6 +71,7 @@ export default function GoodForPurchase({ good }: ProductProps) {
       amount: value,
       size: selectedSize,
       image: good.image,
+      quantity: value,
     });
 
     setIsToastVisible(true);

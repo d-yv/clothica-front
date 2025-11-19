@@ -38,7 +38,7 @@ export default function GoodsOrderList() {
           </li>
         ) : (
           cartItems.map((item) => (
-            <li key={item.id} className={css.goodsOrderItem}>
+            <li key={item.goodId} className={css.goodsOrderItem}>
               {item.image && (
                 <Image
                   src={item.image}
@@ -57,13 +57,13 @@ export default function GoodsOrderList() {
                       <svg className={css.goodsOrderStarsIcon} width="16" height="16">
                         <use xlinkHref="symbol-defs.svg#icon-star-filled" />
                       </svg>
-                      {item.rating}
+                      {item.rate}
                     </span>
                     <span className={css.goodsOrderReviews}>
                       <svg className={css.goodsOrderReviewsIcon} width="16" height="16">
                         <use xlinkHref="symbol-defs.svg#icon-comment" />
                       </svg>
-                      ({item.reviewsCount})
+                      ({item.reviewsNumber})
                     </span>
                   </div>
                 </div>
@@ -76,11 +76,11 @@ export default function GoodsOrderList() {
                       min={1}
                       value={item.quantity}
                       className={css.goodsOrderQuantity}
-                      onChange={(e) => updateQuantity(item.id, Number(e.target.value))}
+                      onChange={(e) => updateQuantity(item.goodId, Number(e.target.value))}
                     />
                     <button
                       className={css.goodsOrderDeleteBtn}
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item.goodId)}
                     >
                       <svg width="24" height="24">
                         <use xlinkHref="symbol-defs.svg#icon-delete" />
