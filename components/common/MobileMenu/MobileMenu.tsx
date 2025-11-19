@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styles from "./MobileMenu.module.css";
+import { useShopStore } from "@/lib/store/cartStore";
 
 interface MobileMenuProps {
     isAuth: boolean;
@@ -9,6 +10,9 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ isAuth, onClose }: MobileMenuProps) {
+    const cartItems = useShopStore((state) => state.cartItems);
+    const cartCount = cartItems.reduce((total, item) => total + item.amount, 0);
+
     return (
         <div className={`${styles.modal} ${styles.open}`}>
             <header className={styles.modalHeader}>
@@ -25,14 +29,17 @@ export default function MobileMenu({ isAuth, onClose }: MobileMenuProps) {
 
                     {/* Исправлено: убран <button> внутри <Link> */}
                     <Link
-                        href="/forms/CreateOrderForm"
+                        href="/basket"
                         onClick={onClose}
                         className={`${styles.cartBtn} ${styles.specialBtn}`}
                     >
                         <svg className={styles.headericon} width="24" height="24">
                             <use href="/styles.icon.svg#icon-shopping_cart" />
                         </svg>
-                        <span className={styles.dot}></span>
+
+                        {cartCount > 0 && (
+                            <span className={styles.dot}>{cartCount}</span>
+                        )}
                     </Link>
                 </div>
             </header>
@@ -77,7 +84,7 @@ export default function MobileMenu({ isAuth, onClose }: MobileMenuProps) {
                     </>
                 ) : (
                     <Link
-                        href="/cabinet"
+                        href="/profile"
                         onClick={onClose}
                         className={styles.btnOfice}
                     >
