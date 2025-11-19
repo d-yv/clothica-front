@@ -1,113 +1,239 @@
-/* Контейнер/заголовок */
-.wrapper { 
-padding: 12px 8px; 
-
- }
-
-.title { 
-    font-size: 20px; 
-    font-weight: 700; 
-    margin: 0 0 12px; 
+.goodsOrderContainer {
+  min-width: 280px;
+  width: 100%;
 }
 
-
-
-.item {
-  display: grid;
-  grid-template-columns: 92px 1fr;
-  gap: 12px;
-  padding: 6px 4px;
-}
-
-/* Фото з м’яким фоном */
-.thumbWrap {
-  width: 82px;
-  height: 101px;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #eef1f3;
-}
-
-
-/* Контент справа */
-.info { display: grid; gap: 6px; }
-.name { margin: 0; font-size: 16px; font-weight: 700; color: #111; }
-
-/* Рейтинг/відгуки */
-.metaRow { display: inline-flex; align-items: center; gap: 6px; color: #5f6770; font-size: 13px; }
-.icon { fill: currentColor; }
-
-/* Рядок ціни і контролів (як на макеті) */
-.priceRow {
+.goodsOrderList {
   display: flex;
   flex-direction: column;
-
   gap: 12px;
-  margin-top: 4px;
+  margin-bottom: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  padding-right: 8px;
 }
-.price { font-weight: 700; font-size: 15px; color: #111; white-space: nowrap; }
 
-/* Правий блок: інпут-«пігулка» та круглий смітник */
-.controls {
-display: flex;
+.goodsOrderList::-webkit-scrollbar {
+  width: 14px;
+  height: 64px;
+}
+
+.goodsOrderList::-webkit-scrollbar-track {
+  border: 5px solid;
+  border-radius: 8px;
+  background-clip: content-box;
+}
+
+.goodsOrderList::-webkit-scrollbar-thumb {
+  background: #00000040;
+  border-radius: 8px;
+}
+
+.goodsOrderContainer {
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
-
-  
 }
 
-.qtyInput {
-  width: 64px;
-  height: 40px;
-  text-align: start;
-  border: 1px solid #cfd3d8;
+.goodsOrderQuantity,
+.goodsOrderPrice {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  white-space: nowrap;
+}
+
+.goodsOrderRaiting {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+}
+
+.goodsOrderItem {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.goodsOrderImg {
   border-radius: 16px;
-  padding: 8px 8px;     /* пігулка */
-  background: transparent;
+  width: 82px;
+  height: 101px;
+}
+
+.goodsOrderGoodName {
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 14px;
-  color: #111;
-  appearance: textfield;
+  font-size: 18px;
+  line-height: 150%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
-.qtyInput::-webkit-outer-spin-button,
-.qtyInput::-webkit-inner-spin-button { appearance: none; margin: 0; }
 
-.trash {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  background: #eff1f3;
-  border: none;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
+.goodsOrderGoodInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
 }
-.trash:hover { background: #e8eaed; }
 
-/* Підсумок з лінією, як на скріні */
-.summary {
+.goodsOrderStars {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
 
-  border-top: 1px solid #e1e4e8;
-  display: grid;
+.goodsOrderReviews {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.goodsOrderGoodWrapper {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-width: 150px;
+}
+
+.goodsOrderRaiting {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.goodsOrderGoodRigth {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
-.row { display: flex; 
-    justify-content: space-between; 
-    font-size: 15px; 
-    color: #111; 
-    padding: 12px 0px 4px;
-}
-.total { 
-font-weight: 800; 
-font-size: 17px;
+
+.goodsOrderGoodRigthActions {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
 }
 
-
-
-@media (min-width: 768px) {
- 
+.goodsOrderQuantity {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  padding: 8px;
+  text-align: start;
+  width: 64px;
+  height: 40px;
+  background: transparent;
+  color: #000000;
 }
 
+.goodsOrderDeleteBtn {
+  border-radius: 100px;
+  width: 40px;
+  height: 40px;
+  background-color: #0000000d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-@media (min-width: 1440px) {
+.goodsOrderDeleteBtn:hover,
+.goodsOrderDeleteBtn:focus {
+  background-color: #00000026;
+  border: 1px solid #00000080;
+}
 
+.goodsOrderDeleteBtn:active {
+  background-color: #3b4331;
+  color: #ffffff;
+}
+
+.goodsOrderDeleteBtn:disabled {
+  background-color: #f9fcf6;
+}
+
+.goodsOrderTotalPriceWrapper {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.goodsOrderProvisionalPrice,
+.goodsOrderDeliveryPrice {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.goodsOrderProvisionalPrice,
+.goodsOrderProvisionalPriceValue {
+  margin-top: 13.5px;
+  margin-bottom: 5.5px;
+}
+
+.goodsOrderDeliveryPrice,
+.goodsOrderDeliveryProvisionalPriceValue {
+  margin: 4px 0;
+}
+
+.goodsOrderTotalPrice,
+.goodsOrderTotalPriceValue {
+  margin: 12px 0;
+  font-size: 20px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  line-height: 150%;
+}
+
+.goodsOrderTotalPriceValue,
+.goodsOrderDeliveryPriceValue,
+.goodsOrderProvisionalPriceValue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.goodsOrderPriceItem {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media only screen and (min-width: 768px) {
+  .goodsOrderGoodInfo {
+    gap: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .goodsOrderInfoWrapper {
+    flex: 0 0 auto;
+  }
+
+  .goodsOrderGoodRigth,
+  .goodsOrderGoodRigthActions {
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .goodrOrderTotalPriceWrapper {
+    min-height: 503px;
+  }
+
+  .goodsOorderList {
+    max-height: 452px;
+  }
 }
