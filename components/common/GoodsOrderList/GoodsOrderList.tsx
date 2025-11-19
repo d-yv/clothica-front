@@ -55,15 +55,15 @@ export default function GoodsOrderList() {
                   <div className={css.goodsOrderRaiting}>
                     <span className={css.goodsOrderStars}>
                       <svg className={css.goodsOrderStarsIcon} width="16" height="16">
-                        <use xlinkHref="symbol-defs.svg#icon-star-filled" />
+                        <use xlinkHref="styles.icon.svg#icon-Star-Filled-2" />
                       </svg>
                       {item.rate}
                     </span>
                     <span className={css.goodsOrderReviews}>
                       <svg className={css.goodsOrderReviewsIcon} width="16" height="16">
-                        <use xlinkHref="symbol-defs.svg#icon-comment" />
+                        <use xlinkHref="sprite.svg#comment" />
                       </svg>
-                      ({item.reviewsNumber})
+                      {item.reviewsNumber}
                     </span>
                   </div>
                 </div>
@@ -83,7 +83,7 @@ export default function GoodsOrderList() {
                       onClick={() => removeFromCart(item.goodId)}
                     >
                       <svg width="24" height="24">
-                        <use xlinkHref="symbol-defs.svg#icon-delete" />
+                        <use xlinkHref="sprite.svg#delete" />
                       </svg>
                     </button>
                   </div>
