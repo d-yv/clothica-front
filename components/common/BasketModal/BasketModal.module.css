@@ -1,94 +1,208 @@
-.backdrop {
+.basketModalBackdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  display: block;
+  justify-content: flex-end;
+  z-index: 9999;
 }
-.modal {
-  position: absolute;
-  top: 0;
-  right: 0;
+
+.basketModal {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
   background: #f9fcf6;
-  border-radius: 16px;
-  width: 589px;
-  max-height: 90vh;
-  overflow-y: auto;
-
-  padding-top: 40px;
-  padding-right: 64px;
-  padding-bottom: 16px;
-  padding-left: 32px;
-}
-.closeBtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  font-size: 26px;
-  cursor: pointer;
+  max-width: 552px;
+  width: 100%;
+  padding: 40px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  animation: showModal 0.3s ease;
+  max-height: 100vh;
+  height: auto;
+  overflow: auto;
 }
 
-.title {
-  text-align: center;
-  font-size: 28px;
-  margin-bottom: 20px;
-  font-weight: 600;
+@keyframes showModal {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
-.closeBtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+
+.basketModalCloseBtnContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.basketModalCloseButton {
+  top: 16px;
+  right: 16px;
   border: none;
   background: transparent;
-  font-size: 28px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s;
+}
+
+.basketMenuCloseBtnIcon:hover,
+.basketMenuCloseBtnIcon:focus {
+  fill: #9db484;
+}
+
+.basketModalTitle {
+  font-family: 'Nunito Sans', sans-serif;
   font-weight: 400;
-  cursor: pointer;
-  line-height: 1;
-  color: #000;
-  transition: 0.2s ease;
+  font-size: 32px;
+  letter-spacing: -0.01em;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: #000000;
 }
 
-.closeBtn:hover {
-  opacity: 0.6;
-}
-.btnSecondary {
+.basketModalActions {
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 6px 12px;
-  border-radius: 100px;
-
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-
-  font-size: 14px;
-  color: #000;
-  cursor: pointer;
-}
-.btnPrimary {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 6px 12px;
-  border-radius: 100px;
-
-  background: #c5e1a5;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-
-  font-size: 14px;
-  color: #000;
-  cursor: pointer;
-}
-.footer {
-  display: flex;
+  flex-direction: column;
   justify-content: center;
   gap: 16px;
   margin-top: 24px;
+}
+
+.basketModalPrimaryButton {
+  background-color: #c5e1a5;
+}
+
+.basketModalSecondaryButton {
+  background-color: #0000000d;
+}
+
+.basketModalPrimaryButton:hover,
+.basketModalPrimaryButton:focus {
+  background-color: #9db484;
+  color: black;
+  border: 1px solid #4e5a42;
+}
+
+.basketModalPrimaryButton:active {
+  background-color: #3b4331;
+  color: #ffffff;
+  border: 1px solid #c5e1a5;
+}
+
+.basketModalPrimaryButton:disabled {
+  background-color: #f9fcf6;
+}
+
+.basketModalSecondaryButton:hover,
+.basketModalSecondaryButton:focus {
+  background-color: #00000026;
+  border: 1px solid #00000080;
+}
+
+.basketModalSecondaryButton:active {
+  background-color: #00000080;
+  color: #ffffff;
+}
+
+.basketModalSecondaryButton,
+.basketModalPrimaryButton {
+  width: 100%;
+  border-radius: 100px;
+  padding: 6px 12px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+.fadeIn {
+  animation: backdropFadeIn 0.3s ease forwards;
+}
+
+.fadeOut {
+  animation: backdropFadeOut 0.3s ease forwards;
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backdropFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.slideIn {
+  animation: slideInRight 0.3s ease forwards;
+}
+
+.slideOut {
+  animation: slideOutRight 0.3s ease forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .basketModalActions {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    flex-shrink: 0;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 232px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+
+  .basketModalPrimaryButton,
+  .basketModalSecondaryButton {
+    width: 234.5px;
+  }
 }

@@ -1,125 +1,115 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useCart } from "@/lib/store/cart";
-import s from "./GoodsOrderList.module.css";
-
-function formatMoney(v: number, c = "грн") {
-  return `${v.toLocaleString("uk-UA")} ${c}`;
-}
+import { useShopStore } from '@/lib/store/cartStore';
+import css from './GoodsOrderList.module.css';
+import Image from 'next/image';
+import MessageNoInfo from '../MessageNoInfo/MessageNoInfo';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function GoodsOrderList() {
-  const items = useCart((s) => s.items);
-  const add = useCart((s) => s.add);
-  const dec = useCart((s) => s.decrement);
-  const rm = useCart((s) => s.remove);
-  const subtotal = useCart((s) => s.subtotal);
+  const { cartItems, removeFromCart, updateQuantity } = useShopStore();
+  const router = useRouter();
 
-  if (!items.length)
-    return <p style={{ textAlign: "center" }}>Кошик порожній</p>;
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const delivery = subtotal > 0 ? 50 : 0;
+  const total = subtotal + delivery;
 
-  const currency = items[0]?.price.currency ?? "грн";
-  const sub = subtotal();
-  const delivery = 0;
-  const total = sub + delivery;
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('totalPrice', JSON.stringify(total));
+    }
+  }, [total]);
+
+  const handleGoToGoods = () => {
+    router.push('/goods');
+  };
 
   return (
-    <div className={s.wrapper}>
-      <h2 className={s.title}>Ваш кошик</h2>
-
-      <ul className={s.list}>
-        {items.map((item) => (
-          <li key={item._id} className={s.item}>
-            <div className={s.thumbWrap}>
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={82}
-                height={101}
-                className={s.thumb}
-              />
-            </div>
-
-            <div className={s.info}>
-              <h3 className={s.name}>{item.name}</h3>
-
-              <div className={s.metaRow}>
-                <svg
-                  className={s.icon}
-                  width="16"
-                  height="16"
-                  aria-hidden="true"
-                >
-                  <use href="/sprite.svg#star filled" />
-                </svg>
-                <span>{item.averageRate ?? 5}</span>
-                <svg
-                  className={s.icon}
-                  width="16"
-                  height="16"
-                  aria-hidden="true"
-                >
-                  <use href="/sprite.svg#comment" />
-                </svg>
-                <span>{item.feedbackCount ?? 2}</span>
-              </div>
-
-              {}
-              <div className={s.priceRow}>
-                <div className={s.price}>
-                  {formatMoney(item.price.value, currency)}
-                </div>
-
-                <div className={s.controls}>
-                  <input
-                    type="number"
-                    className={s.qtyInput}
-                    value={item.quantity}
-                    min={1}
-                    onChange={(e) => {
-                      const v = Number(e.target.value);
-                      if (Number.isNaN(v) || v < 1) return;
-                      if (v > item.quantity) add(item);
-                      if (v < item.quantity) dec(item._id);
-                    }}
-                    aria-label="Кількість"
-                  />
-                  <button
-                    className={s.trash}
-                    onClick={() => rm(item._id)}
-                    aria-label="Видалити товар"
-                    title="Видалити"
-                  >
-                    <svg
-                      className={s.icon}
-                      width="18"
-                      height="18"
-                      aria-hidden="true"
-                    >
-                      <use href="/styles.icon.svg#icon-trash" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
+    <div className={css.goodsOrderContainer}>
+      <ul className={css.goodsOrderList}>
+        {cartItems.length === 0 ? (
+          <li className={css.goodsOrderItem}>
+            <MessageNoInfo
+              text="Ваш кошик порожній, мерщій до покупок!"
+              buttonText="До покупок"
+              onClick={handleGoToGoods}
+            />
           </li>
-        ))}
+        ) : (
+          cartItems.map((item) => (
+            <li key={item.goodId} className={css.goodsOrderItem}>
+              {item.image && (
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={82}
+                  height={101}
+                  className={css.goodsOrderImg}
+                />
+              )}
+
+              <div className={css.goodsOrderGoodInfo}>
+                <div className={css.goodsOrderGoodWrapper}>
+                  <h3 className={css.goodsOrderGoodName}>{item.name}</h3>
+                  <div className={css.goodsOrderRaiting}>
+                    <span className={css.goodsOrderStars}>
+                      <svg className={css.goodsOrderStarsIcon} width="16" height="16">
+                        <use xlinkHref="symbol-defs.svg#icon-star-filled" />
+                      </svg>
+                      {item.rate}
+                    </span>
+                    <span className={css.goodsOrderReviews}>
+                      <svg className={css.goodsOrderReviewsIcon} width="16" height="16">
+                        <use xlinkHref="symbol-defs.svg#icon-comment" />
+                      </svg>
+                      ({item.reviewsNumber})
+                    </span>
+                  </div>
+                </div>
+
+                <div className={css.goodsOrderGoodRigth}>
+                  <div className={css.goodsOrderPrice}>{item.price * item.quantity} ₴</div>
+                  <div className={css.goodsOrderGoodRigthActions}>
+                    <input
+                      type="number"
+                      min={1}
+                      value={item.quantity}
+                      className={css.goodsOrderQuantity}
+                      onChange={(e) => updateQuantity(item.goodId, Number(e.target.value))}
+                    />
+                    <button
+                      className={css.goodsOrderDeleteBtn}
+                      onClick={() => removeFromCart(item.goodId)}
+                    >
+                      <svg width="24" height="24">
+                        <use xlinkHref="symbol-defs.svg#icon-delete" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))
+        )}
       </ul>
 
-      <div className={s.summary}>
-        <div className={s.row}>
-          <span>Проміжний підсумок</span>
-          <span>{formatMoney(sub, currency)}</span>
+      {cartItems.length > 0 && (
+        <div className={css.goodsOrderTotalPriceWrapper}>
+          <div className={css.goodsOrderPriceItem}>
+            <span className={css.goodsOrderProvisionalPrice}>Проміжний підсумок:</span>
+            <span className={css.orderProvisionalPriceValue}>{subtotal} ₴</span>
+          </div>
+          <div className={css.goodsOrderPriceItem}>
+            <span className={css.goodsOrderDeliveryPrice}>Доставка:</span>
+            <span className={css.goodsOrderDeliveryPriceValue}>{delivery} ₴</span>
+          </div>
+          <div className={css.goodsOrderPriceItem}>
+            <span className={css.goodsOrderTotalPrice}>Всього:</span>
+            <span className={css.goodsOrderTotalPriceValue}>{total} ₴</span>
+          </div>
         </div>
-        <div className={s.row}>
-          <span>Доставка</span>
-          <span>—</span>
-        </div>
-        <div className={`${s.row} ${s.total}`}>
-          <span>Всього</span>
-          <span>{formatMoney(total, currency)}</span>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
