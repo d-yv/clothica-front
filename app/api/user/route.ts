@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL +'/api'; 
 
 export async function GET(request: NextRequest) {
-  console.log('✅ API route /api/ausers/me called');
   const cookies = request.headers.get('cookie');
 
   if (!cookies) {
@@ -26,7 +25,6 @@ export async function GET(request: NextRequest) {
     }
 
     const userData = await response.json();
-    console.log('📦 Received data:', userData);
     return NextResponse.json(userData);
 
   } catch (error) {
@@ -35,13 +33,13 @@ export async function GET(request: NextRequest) {
   }
 }
 export async function PATCH(request: NextRequest) {
-  console.log('✅ API route /api/ausers/me called');
   const cookies = request.headers.get('cookie');
   let dataToUpdate;
   
   try {
     dataToUpdate = await request.json();
   } catch (error) {
+    console.error('Error updating user data via backend:', error);
     return NextResponse.json({ message: 'Невірний формат JSON у тілі запиту.' }, { status: 400 });
   }
 
@@ -66,7 +64,6 @@ export async function PATCH(request: NextRequest) {
     }
 
     const updatedUser = await response.json();
-    console.log('📦 Received data:', updatedUser);
     return NextResponse.json(updatedUser);
 
   } catch (error) {

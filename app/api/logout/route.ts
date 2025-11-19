@@ -3,7 +3,6 @@ import { api } from '@/app/api/api';
 const BACKEND_LOGOUT_URL = process.env.NEXT_PUBLIC_BACKEND_URL +'/api';
 
 export async function POST(request: NextRequest) {
-  console.log('✅ API route /api/auth/ called');
   const cookies = request.headers.get('cookie');
 
   if (!cookies) {
