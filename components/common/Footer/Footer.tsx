@@ -1,3 +1,4 @@
+// components/Footer/Footer.tsx
 'use client'; 
 
 import React from "react";
@@ -13,8 +14,22 @@ const Footer: React.FC = () => {
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.menusection}>
-        </div>
+          <Link href="/" className={styles.logo_link}>
+            <svg className={styles.logo} width="28" height="28">
+              <use href="/styles.icon.svg#icon-Clothica-1" />
+            </svg>
+          </Link>
 
+          <nav className={styles.menu} aria-label="Меню сайту">
+            <h3 className={styles.menuTitle}>Меню</h3>
+            <ul className={styles.menuList}>
+              <li><Link className={styles.menuLink} href="/">Головна</Link></li>
+              <li><Link className={styles.menuLink} href="/goods">Товари</Link></li>
+              <li><Link className={styles.menuLink} href="/categories">Категорії</Link></li>
+            </ul>
+          </nav>
+        </div>
+      
         <section className={styles.newsletter} aria-labelledby="footer-subscribe">
           <h3 id="footer-subscribe" className={styles.subtitle}>Підписатися</h3>
           <p className={styles.lead}>
@@ -55,6 +70,42 @@ const Footer: React.FC = () => {
         </section>
 
         <div className={styles.bottom}>
+          <p className={styles.copy}>© 2025 Clothica. Всі права захищені.</p>
+
+          <ul className={styles.socials}>
+            <li>
+              <a className={styles.linkicon} href="https://www.facebook.com/" target="_blank"  aria-label="Facebook">
+                <svg className={styles.icon} width="32" height="32">
+                  <use href="/styles.icon.svg#icon-facebook" />
+                </svg>
+              </a>
+            </li>
+
+            <li>
+              <a className={styles.linkicon} href="https://www.instagram.com/" target="_blank" aria-label="Instagram">
+                <svg className={styles.icon} viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+                  <use href="/styles.icon.svg#icon-instagram1" />
+                </svg>
+              </a>
+            </li>
+
+            <li>
+              <a className={styles.linkicon} href="https://x.com/" target="_blank" aria-label="X">
+                <svg className={styles.icon}width="32" height="32">
+                  <use href="/styles.icon.svg#icon-sm" />
+                </svg>
+              </a>
+            </li>
+
+            <li>
+              <a className={styles.linkicon} href="https://www.youtube.com/" target="_blank"  aria-label="YouTube">
+                <svg className={styles.icon} width="32" height="32" aria-hidden="true" focusable="false">
+                  <use  href="/styles.icon.svg#icon-youtube" />
+                </svg>
+              </a>
+            </li>
+          </ul>
+
         </div>
       </div>
     </footer>
