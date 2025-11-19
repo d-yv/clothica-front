@@ -4,25 +4,28 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import styles from "./Header.module.css";
-import { useAuth } from "@/hooks/useAuth"; 
 import { useShopStore } from "@/lib/store/cartStore";
 
+export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+  // const [cartCount, setCartCount] = useState(0);
 
-  export default function Header() {
-    const { isAuth, checkAuthStatus } = useAuth(); 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+  // useEffect(() => {
+  //   Promise.resolve().then(() => {
+  //     const token = localStorage.getItem("token");
+  //     setIsAuth(Boolean(token));
+  //   });
 
-    const cartItems = useShopStore((s) => s.cartItems);
-  
+  //   Promise.resolve().then(() => {
+  //     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  //     setCartCount(cart.length);
+  //   });
+  // }, []);
+  const cartItems = useShopStore((state) => state.cartItems);
 
-    const cartCount = cartItems.reduce((sum, item) => sum + item.amount, 0);
-  
-    useEffect(() => {
-      checkAuthStatus();
-    }, [checkAuthStatus]);
-  
-    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const cartCount = cartItems.reduce((total, item) => total + item.amount, 0);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <header className={styles.siteHeader}>
@@ -34,22 +37,37 @@ import { useShopStore } from "@/lib/store/cartStore";
         </Link>
 
         <nav className={styles.mainNav}>
-          <Link href="/" className={styles.btnEntrance}>Головна</Link>
-          <Link href="/goods" className={styles.btnEntrance}>Товари</Link>
-          <Link href="/categories" className={styles.btnRegistration}>Категорії</Link>
+          <Link href="/" className={styles.btnEntrance}>
+            Головна
+          </Link>
+          <Link href="/goods" className={styles.btnEntrance}>
+            Товари
+          </Link>
+          <Link href="/categories" className={styles.btnRegistration}>
+            Категорії
+          </Link>
         </nav>
 
         <div className={styles.headerActions}>
           <div className={styles.headerActionsDiv}>
             {!isAuth && (
               <>
-                <Link href="/auth/login" className={styles.headerButtonVhid}>Вхід</Link>
-                <Link href="/auth/register" className={styles.headerButtonRegistration}>Реєстрація</Link>
+                <Link href="/auth/login" className={styles.headerButtonVhid}>
+                  Вхід
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className={styles.headerButtonRegistration}
+                >
+                  Реєстрація
+                </Link>
               </>
             )}
 
             {isAuth && (
-              <Link href="/profile" className={styles.headerButtonCabinet}>Кабінет</Link>
+              <Link href="/profile" className={styles.headerButtonCabinet}>
+                Кабінет
+              </Link>
             )}
           </div>
 
@@ -59,15 +77,13 @@ import { useShopStore } from "@/lib/store/cartStore";
             </svg>
           </button>
 
-          <Link href="/order">
+          <Link href="/basket">
             <button className={`${styles.headercart} ${styles.specialBtn}`}>
               <svg className={styles.headeri} width="24" height="24">
                 <use href="/styles.icon.svg#icon-shopping_cart" />
               </svg>
 
-              {cartCount > 0 && (
-                <span className={styles.dot}>{cartCount}</span>
-              )}
+              {cartCount > 0 && <span className={styles.dot}>{cartCount}</span>}
             </button>
           </Link>
         </div>
