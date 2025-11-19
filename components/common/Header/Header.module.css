@@ -152,23 +152,26 @@
 
 .dot {
     position: absolute;
-    top: -8px;     
-    right: -8px;      
+    top: -8px;
+    right: -8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;   
+    width: 20px;
     height: 20px;
-    border-radius: 9999px; 
-    background-color: #B70000; 
-    color: #fff;      
-    font-size: 12px;  
+    border-radius: 9999px;
+    background-color: #B70000;
+    color: #fff;
+    font-size: 12px;
     font-weight: 600;
 }
 
 @media (min-width: 768px) {
+
     .headercontainer {
-        padding: 18px 64px;
+        padding: 18px 32px;
+        max-width: 768px;
+        margin: 0 auto;
     }
 
     .menuBtn {
@@ -182,10 +185,6 @@
         align-items: center;
         text-decoration: none;
         font-weight: 500;
-    }
-
-    .headercontainer {
-        padding: 18px 64px;
     }
 
     .headerButtonVhid {
@@ -258,5 +257,13 @@
         justify-content: center;
         flex-direction: row;
         gap: 16px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .headercontainer {
+        padding: 18px 62px;
+        max-width: 1440px;
+        margin: 0 auto;
     }
 }
