@@ -6,17 +6,12 @@ import { parse } from 'cookie';
 import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
-  console.log('✅ API route /api/auth/login called');
   
   try {
     const body = await req.json();
-    console.log('📦 Received data:', body);
-
-    // Проверяем базовый URL
-    console.log('🔗 Backend URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
-
+    
     const apiRes = await api.post('auth/login', body);
-    console.log('✅ Backend response status:', apiRes.status);
+    
 
     const cookieStore = await cookies();
     const setCookie = apiRes.headers['set-cookie'];
