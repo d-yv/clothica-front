@@ -26,6 +26,11 @@ interface OrderFormData {
   novaPoshtaBranch: string;
   comment: string;
 }
+export interface CreateOrderRequest {
+  userId?: string;
+  cart: CartItemData[];
+  status: 'У процесі'|'Виконано'|'Скасовано'; 
+  }
 
 const OrderSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -179,7 +184,7 @@ export default function CreateOrderForm() {
 
       
       const orderData: CreateOrderRequest = {
-        _id: isAuthenticated ? userData?._id : undefined,
+        userId: isAuthenticated ? userData?._id : undefined,
         cart: cartItems.map(item => ({
           goodId: item.goodId,
           size: item.size || 'M',
