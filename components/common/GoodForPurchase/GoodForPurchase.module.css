@@ -261,21 +261,16 @@
 }
 
 @media screen and (min-width: 1440px) {
-<<<<<<< Updated upstream
   /* .section {
     padding-top: 112px;
     padding-bottom: 112px;
   } */
 
-=======
->>>>>>> Stashed changes
   .content {
     display: flex;
     flex-direction: row;
     gap: 32px;
   }
-<<<<<<< Updated upstream
-=======
 
   .navCrumbs {
     font-size: 16px;
@@ -285,5 +280,4 @@
     min-width: 640px;
     min-height: 698px;
   }
->>>>>>> Stashed changes
 }
