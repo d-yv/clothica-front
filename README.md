@@ -18,8 +18,6 @@ Clothica-shop — це простий і зручний онлайн-магаз�
 
 Юлія Безсмертна, [@Bezsmertna24](https://github.com/Bezsmertna24), 
 
-, [@deiadaimon](https://github.com/deiadaimon),
-
 Віталій Клименко, [@Vitalii978](https://github.com/Vitalii978),
 
 Марія Антонюк, [@deiadaimon](https://github.com/deiadaimon),
