@@ -510,6 +510,7 @@
   cursor: not-allowed;
   opacity: 0.6;
 }
+
 /* .allLink {
   text-decoration: none;
   transition: all 0.25s ease;
@@ -554,13 +555,13 @@
   max-width: 100%;
 } */
 /* 🔹 Адаптивність */
-.header {
-  /* display: flex;
+/* .header { */
+/* display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
   padding: 0 20px; */
-}
+/* } */
 
 /* .allLink {
   text-decoration: none;
@@ -628,6 +629,7 @@
   align-items: flex-end;
   display: inline-flex;
 }
+
 .title {
   width: 100%;
   max-width: 768px;
@@ -643,6 +645,7 @@
   font-weight: 400;
   word-wrap: break-word;
 }
+
 .button {
   flex-direction: column;
   justify-content: flex-start;
@@ -650,6 +653,7 @@
   gap: 24px;
   display: flex;
 }
+
 .link {
   text-decoration: none;
   transition: all 0.25s ease;
@@ -670,10 +674,15 @@
   width: 122px;
   height: 36px;
 }
+
 .link:hover {
-  background-color: #000;
-  color: #fff;
+  background-color: rgba(0, 0, 0, 0.15);
 }
+
+.link:active {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .allButton {
   justify-content: flex-end;
   gap: 16px;
@@ -688,19 +697,31 @@
   cursor: pointer;
   z-index: 10;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   transition: background 0.3s;
 }
+
 .disabled {
   background: #e5e7eb;
   color: #9ca3af;
   cursor: not-allowed;
 }
+
 .navButton:hover {
-  background-color: #eff6ff;
+  background: #9db484;
+  transform: translateY(-1px);
+  border: 1px solid #4e5a42;
 }
+
+.navButton:active {
+  background: var(--nav-bg-active);
+  color: var(--nav-fg-active);
+  transform: translateY(0);
+  border-color: rgba(0, 0, 0, .3);
+}
+
 /* .wrapper {
   position: relative;
   display: flex;
@@ -718,6 +739,7 @@
   stroke: currentColor;
   transition: opacity 0.3s ease;
 }
+
 @media only screen and (min-width: 768px) {
   .section {
     padding: 48px 32px;
@@ -734,6 +756,7 @@
     justify-content: flex-start;
     align-items: flex-start;
   }
+
   .allButton {
     position: absolute;
     top: 35%;
@@ -742,6 +765,7 @@
     display: flex;
     justify-content: space-between;
   }
+
   .navButton {
     background: #c5e1a5;
     border: none;
@@ -749,8 +773,8 @@
     cursor: pointer;
     z-index: 10;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     transition: background 0.3s;
   }
@@ -760,6 +784,7 @@
   .section {
     padding: 64px 80px;
   }
+
   .container {
     max-width: 1312px;
     position: relative;
