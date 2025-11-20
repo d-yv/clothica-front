@@ -56,10 +56,12 @@
   background: #9db484;
 }
 
-/* ===========================
-   TABLET ≥ 768px
-=========================== */
+/* TABLET ≥ 768px */
 @media (min-width: 768px) {
+  .sidebar {
+    width: 30%;
+  }
+
   .goodsPageTitle {
     font-size: 28px;
     margin-top: 24px;
@@ -67,26 +69,28 @@
 
   .content {
     gap: 28px;
+    flex-direction: row;
   }
 }
 
-/* ===========================
-   DESKTOP ≥ 1440px
-=========================== */
-@media (min-width: 1440px) {
+/* TABLET LANDSCAPE / SMALL DESKTOP ≥ 1024px */
+@media (min-width: 1024px) {
   .content {
     flex-direction: row;
     gap: 32px;
   }
 
   .sidebar {
-    flex: 0 0 240px;
+    flex: 0 0 220px; /* было 240px, сузили фильтр */
   }
 
   .listArea {
     flex: 1;
   }
+}
 
+/* DESKTOP ≥ 1440px */
+@media (min-width: 1440px) {
   .goodsPageTitle {
     font-size: 32px;
     margin-top: 32px;
