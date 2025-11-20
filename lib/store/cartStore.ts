@@ -1,65 +1,109 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { Size} from '@/types/good';
+
+// lib/store/cartStore.ts
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+
 
 export interface CartItem {
+  _id: string;
   goodId: string;
   name: string;
-  image: string;
   price: number;
-  quantity: number;
-  rate: number;
-  reviewsNumber: number;
+  image: string; 
   amount: number;
-  size: Size;
+  size: string;
+  rate?: number;
+  reviewsNumber?: number;
 }
 
 interface CartState {
   cartItems: CartItem[];
-  addToCart: (item: CartItem) => void;
-  removeFromCart: (id: string) => void;
+  _hasHydrated: boolean;
+  
+  addToCart: (item: Omit<CartItem, 'amount'>) => void;
+  removeFromCart: (id: string, size: string) => void;
+  updateAmount: (id: string, size: string, amount: number) => void;
   clearCart: () => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  setHasHydrated: (state: boolean) => void;
+
+  getTotalPrice: () => number;
+  getTotalItems: () => number;
 }
 
 export const useShopStore = create<CartState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       cartItems: [],
+      _hasHydrated: false,
 
-
-        addToCart: (item) => set((state) => {
-          const existing = state.cartItems.find(
-                (i) => i.goodId === item.goodId && i.size === item.size
-            );
-
-            if (existing) {
+      addToCart: (item) =>
+        set((state) => {
+          const existingItem = state.cartItems.find(
+            (cartItem) => cartItem.goodId === item.goodId && cartItem.size === item.size
+          );
+          
+          if (existingItem) {
             return {
-            cartItems: state.cartItems.map((i) =>
-            
-             i.goodId === item.goodId && i.size === item.size
-                    ? { ...i, quantity: i.quantity + item.quantity } 
-                    : i
-     ),
-  };
- }
- 
-  return { cartItems: [...state.cartItems, item] };
-  }),
-      removeFromCart: (id) =>
+              cartItems: state.cartItems.map((cartItem) =>
+                cartItem.goodId === item.goodId && cartItem.size === item.size
+                  ? { ...cartItem, amount: cartItem.amount + 1 }
+                  : cartItem
+              ),
+            };
+          }
+
+          return {
+            cartItems: [...state.cartItems, { ...item, amount: 1 }],
+          };
+        }),
+
+      removeFromCart: (id, size) =>
         set((state) => ({
-          cartItems: state.cartItems.filter((item) => item.goodId !== id),
+          cartItems: state.cartItems.filter(
+            (item) => !(item.goodId === id && item.size === size)
+          ),
         })),
+
+      updateAmount: (id, size, amount) =>
+        set((state) => {
+          if (amount <= 0) {
+            return {
+              cartItems: state.cartItems.filter(
+                (item) => !(item.goodId === id && item.size === size)
+              ),
+            };
+          }
+          
+          return {
+            cartItems: state.cartItems.map((item) =>
+              item.goodId === id && item.size === size ? { ...item, amount } : item
+            ),
+          };
+        }),
 
       clearCart: () => set({ cartItems: [] }),
 
-      updateQuantity: (id, quantity) =>
-        set((state) => ({
-          cartItems: state.cartItems.map((item) => (item.goodId === id ? { ...item, quantity: Math.max(1, quantity) } : item)),
-        })),
+      setHasHydrated: (state) => set({ _hasHydrated: state }),
+
+      getTotalPrice: () => {
+        const state = get();
+        return state.cartItems.reduce((total, item) => total + item.price * item.amount, 0);
+      },
+
+      getTotalItems: () => {
+        const state = get();
+        return state.cartItems.reduce((total, item) => total + item.amount, 0);
+      },
     }),
     {
-      name: 'cart-storage',
+      name: "cart-storage",
+      storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
+      partialize: (state) => ({ 
+        cartItems: state.cartItems 
+      }),
     }
   )
 );

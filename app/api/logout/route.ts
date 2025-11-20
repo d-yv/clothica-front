@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { api } from '@/app/api/api';
+
 const BACKEND_LOGOUT_URL = process.env.NEXT_PUBLIC_BACKEND_URL +'/api';
 
 export async function POST(request: NextRequest) {
