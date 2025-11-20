@@ -8,6 +8,11 @@ body {
   color: #000;
 }
 
+.pageMain {
+  flex: 1;
+}
+
+
 p,
 h1,
 h2,
