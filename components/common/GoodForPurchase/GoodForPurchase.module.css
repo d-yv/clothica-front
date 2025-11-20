@@ -59,6 +59,10 @@
 } */
 /* .container {
 } */
+.linkBlack {
+  color: #000;
+  text-decoration: none;
+}
 
 .content {
   margin-bottom: 60px;
@@ -99,6 +103,8 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 150%;
+  display: flex;
+  gap: 6px;
   color: #000;
 }
 
@@ -127,6 +133,8 @@
 
 .reviews {
   display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .text {
