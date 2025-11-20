@@ -179,6 +179,7 @@ export default function CreateOrderForm() {
 
       
       const orderData: CreateOrderRequest = {
+        userId: isAuthenticated ? userData?._id : undefined,
         cart: cartItems.map(item => ({
           goodId: item.goodId,
           size: item.size || 'M',
