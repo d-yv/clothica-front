@@ -1,32 +1,97 @@
+
+// app/api/orders/route.ts
 import { NextRequest, NextResponse } from 'next/server';
+import { api } from '../../api/api';
 
-const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL + '/api';
+interface BackendError {
+  statusCode?: number;
+  error?: string;
+  message?: string;
+  validation?: {
+    body?: {
+      source?: string;
+      keys?: string[];
+      message?: string;
+    };
+  };
+}
 
-export async function POST(request: NextRequest) {
+interface CartItem {
+  goodId: string;
+  size: string;
+  amount: number;
+}
+
+interface UserData {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  city: string;
+  postOfficeNum: string;
+  comment?: string;
+}
+
+interface OrderRequestBody {
+  cart: CartItem[];
+  status: string;
+  userData: UserData;
+}
+
+export async function POST(req: NextRequest) {
   
   try {
-    const orderData = await request.json();
-
-    const response = await fetch(`${BACKEND_BASE_URL}/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(orderData),
-      cache: 'no-store',
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      return NextResponse.json(errorData, { status: response.status });
+    const body: OrderRequestBody = await req.json();
+      
+    const apiRes = await api.post('/orders', body);
+ 
+    return NextResponse.json(apiRes.data);
+    
+  } catch (error: unknown) {
+    console.error('❌ [NEXT-API] Ошибка в API route:', error);
+    
+    if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as { 
+        response?: {
+          data?: BackendError;
+          status?: number;
+          statusText?: string;
+        };
+      };
+      
+      const backendError: BackendError = axiosError.response?.data || {};
+      const statusCode = axiosError.response?.status || 500;
+      
+      console.error('🔍 [NEXT-API] Детали ошибки от бекенда:', {
+        status: statusCode,
+        statusText: axiosError.response?.statusText,
+        validation: backendError.validation?.body,
+        message: backendError.message
+      });
+      
+      return NextResponse.json(
+        backendError,
+        { status: statusCode }
+      );
     }
-
-    const orderResponse = await response.json();
-    return NextResponse.json(orderResponse);
-
-  } catch (error) {
+    
+    console.error('❌ [NEXT-API] Неизвестная ошибка:', error);
+    
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { 
+          error: 'Внутренняя помилка сервера',
+          message: error.message 
+        },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
-      { message: 'Помилка сервера при створенні замовлення.' },
+      { 
+        error: 'Внутренняя помилка сервера',
+        message: 'Невідома помилка'
+      },
       { status: 500 }
     );
   }

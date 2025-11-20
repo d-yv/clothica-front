@@ -10,7 +10,4 @@ export const api = axios.create({
   withCredentials: true, 
   paramsSerializer: (params) =>
     qs.stringify(params, { arrayFormat: "repeat" }), 
-
 });
-
-
