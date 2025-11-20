@@ -58,7 +58,7 @@ export default function GoodForPurchase({ good }: ProductProps) {
   const addToCart = useShopStore((state) => state.addToCart);
 
   const router = useRouter();
-
+const roundedRate = Math.round(good.averageRate * 10) / 10;
   const handleAddToCart = () => {
     if (!good) return;
     const reviewsCount = good.feedbacks?.length ?? 0;
@@ -103,7 +103,7 @@ export default function GoodForPurchase({ good }: ProductProps) {
                 <span>{good.name}</span>
               </p> */}
               <nav className={css.navCrumbs}>
-                <Link href="/goods">Всі товари</Link>
+                <Link href="/goods" className={css.linkBlack}>Всі товари</Link>
                 <span>›</span>
                 <span>Категорія</span>
                 <span>›</span>
@@ -118,10 +118,10 @@ export default function GoodForPurchase({ good }: ProductProps) {
                 <div className={css.reviews}>
                   {good.feedbacks && good.feedbacks.length > 0 ? (
                     <>
-                      <StarsIcon rating={good.averageRate} />
+                      <StarsIcon rating={roundedRate} />
                       <Link href={`/goods/${good._id}#GoodReviews`}>
                         <span className={css.ratingText}>
-                          ({good.averageRate}) • {good.feedbacks.length}{" "}
+                          {roundedRate} • {good.feedbacks.length}
                           відгуків
                         </span>
                       </Link>
