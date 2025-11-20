@@ -43,7 +43,7 @@ const fetchCurrentUser = async (): Promise<UserProfileData> => {
 
 const fetchUserOrders = async (): Promise<Order[]> => {
     try {
-        const response = await fetch('/api/orders', {
+        const response = await fetch('/api/profile/orders', {
             method: 'GET',
             credentials: 'include',
             cache: 'no-store',
