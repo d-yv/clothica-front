@@ -4,6 +4,8 @@ import "modern-normalize/modern-normalize.css";
 import "./globals.css";
 import Header from "../components/common/Header/Header";
 import Footer from "../components/common/Footer/Footer";
+import 'izitoast/dist/css/iziToast.min.css';
+
 
 const inter = Inter({
   subsets: ["cyrillic"],
@@ -62,7 +64,7 @@ Readonly<{
 
       <body className={`${inter.variable} ${nunito.variable} `}>
         <Header />
-        <main>
+        <main className="pageMain">
           {children}
           {modal}
         </main>

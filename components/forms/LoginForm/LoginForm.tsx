@@ -8,7 +8,7 @@ import { login, LoginRequest } from '@/lib/api';
 import styles from './LoginForm.module.css';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-
+import iziToast from 'izitoast';
 type LoginFormValues = LoginRequest;
 
 const LoginSchema = Yup.object().shape({
@@ -57,7 +57,7 @@ const SignIn = () => {
     { setSubmitting }: FormikHelpers<LoginFormValues>
   ) => {
     try {
-      setError('');
+      // setError('');
       
       const user = await login(values);
       
@@ -65,7 +65,7 @@ const SignIn = () => {
       localStorage.setItem('user', JSON.stringify(user));
       
       router.push('/');
-      
+      // ПОВНЕ ОНОВЛЕННЯ СТОРІНКИ
       window.location.href = '/';
 
     } catch (error: unknown) {
@@ -75,13 +75,29 @@ const SignIn = () => {
         const errorMessage = error.message;
         
         if (errorMessage.includes('401') || errorMessage.includes('Invalid credentials')) {
-          setError('401 Такий користувач не існує');
+          iziToast.error({
+          class: 'myErrorToast',
+          message: 'Такий користувач не існує',
+          position: 'topRight',
+        });
         } else if (errorMessage.includes('400') || errorMessage.includes('Validation error')) {
-          setError('400 Невірний формат даних');
+           iziToast.error({
+          class: 'myErrorToast',
+          message: 'Невірний формат даних',
+          position: 'topRight',
+        });
         } else if (errorMessage.includes('Network Error')) {
-          setError('Проблема з з\'єднанням');
+          iziToast.error({
+          class: 'myErrorToast',
+          message: "Проблема зі з'єднанням",
+          position: 'topRight',
+        });
         } else {
-          setError(errorMessage);
+          iziToast.error({
+          class: 'myErrorToast',
+          message: errorMessage,
+          position: 'topRight',
+        });
         }
       } else {
         setError('Помилка входу. Спробуйте ще раз.'); 
@@ -126,7 +142,9 @@ const SignIn = () => {
                 value={values.phone}
               />
               <ErrorMessage name="phone" component="div" className={styles.errorText} />
-              
+              {/* <div className={styles.phoneHint}>
+                Формат: +38 (0XX) XXX-XX-XX
+              </div> */}
             </div>
 
             <div className={styles.field}>

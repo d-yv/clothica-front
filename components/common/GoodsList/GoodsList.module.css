@@ -3,8 +3,9 @@
   width: 100%;
   box-sizing: border-box;
 
+
   /* mobile — 2 товара в ряд */
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
 
   gap: 20px;
 
@@ -15,10 +16,11 @@
 /* планшеты — 3 карточки */
 @media (min-width: 768px) {
   .list {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
 }
+
 
 /* десктоп — те же 3 карточки */
 @media (min-width: 1440px) {
