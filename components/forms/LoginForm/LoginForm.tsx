@@ -6,6 +6,7 @@ import styles from './LoginForm.module.css';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
+import { useAuthStore } from "@/lib/store/authStore";
 
 type LoginFormValues = LoginRequest;
 
@@ -50,6 +51,7 @@ const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
 
 const SignIn = () => {
   const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser); // 👈 БЕРЕМО ФУНКЦІЮ З STORE
 
   const initialValues: LoginFormValues = {
     phone: '',
@@ -63,12 +65,17 @@ const SignIn = () => {
     try {
       const user = await login(values);
 
+      // зберігаємо в localStorage, як і раніше
       localStorage.setItem('token', 'authenticated');
       localStorage.setItem('user', JSON.stringify(user));
 
-      toast.success('Ви успішно увійшли'); // ✅ toast успіху
+      // 👇 ОНОВЛЮЄМО ГЛОБАЛЬНИЙ СТАН
+      setUser(user);
 
-      router.push('/'); // цього достатньо, window.location.href не треба
+      toast.success('Ви успішно увійшли');
+
+      // 👇 достатньо цього
+      router.push('/');
     } catch (error: unknown) {
       console.error('Login error:', error);
 
@@ -88,7 +95,7 @@ const SignIn = () => {
         }
       }
 
-      toast.error(msg); // ✅ показуємо помилку toast'ом
+      toast.error(msg);
     } finally {
       setSubmitting(false);
     }
@@ -135,6 +142,7 @@ const SignIn = () => {
                 placeholder="Введіть ваш пароль"
               />
               <ErrorMessage name="password" component="div" className={styles.errorText} />
+
             </div>
 
             <button type="submit" disabled={isSubmitting} className={styles.button}>

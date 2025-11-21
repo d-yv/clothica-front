@@ -1,20 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import styles from "./Header.module.css";
 import { useShopStore } from "@/lib/store/cartStore";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const { isAuth } = useAuth(); //hook
+  // 👇 Беремо стан авторизації з Zustand
+  const { isAuthenticated, setUser } = useAuthStore();
+
+  // 🔄 При першому рендері відновлюємо юзера з localStorage
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const saved = localStorage.getItem("user");
+    if (saved) {
+      try {
+        const user = JSON.parse(saved);
+        setUser(user);
+      } catch (error) {
+        console.error("Помилка парсингу user з localStorage", error);
+      }
+    }
+  }, [setUser]);
 
   const cartItems = useShopStore((state) => state.cartItems);
-
   const cartCount = cartItems.reduce((total, item) => total + item.amount, 0);
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
@@ -40,7 +56,8 @@ export default function Header() {
 
         <div className={styles.headerActions}>
           <div className={styles.headerActionsDiv}>
-            {!isAuth && (
+            {/* 🔽 Авторизація через Zustand */}
+            {!isAuthenticated && (
               <>
                 <Link href="/auth/login" className={styles.headerButtonVhid}>
                   Вхід
@@ -54,7 +71,7 @@ export default function Header() {
               </>
             )}
 
-            {isAuth && (
+            {isAuthenticated && (
               <Link href="/profile" className={styles.headerButtonCabinet}>
                 Кабінет
               </Link>
@@ -78,8 +95,12 @@ export default function Header() {
           </Link>
         </div>
       </div>
+
       {isMenuOpen && (
-        <MobileMenu isAuth={isAuth} onClose={() => setIsMenuOpen(false)} />
+        <MobileMenu
+          isAuth={isAuthenticated}            // 👈 передаємо нове значення
+          onClose={() => setIsMenuOpen(false)}
+        />
       )}
     </header>
   );
