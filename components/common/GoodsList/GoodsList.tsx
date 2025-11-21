@@ -51,7 +51,7 @@ export default function GoodsList({
         if (filters.gender !== "all") params.gender = filters.gender;
         if (filters.categoryId) params.categoryId = filters.categoryId;
         if (filters.sizes.length) params.size = filters.sizes;
-       
+        console.log("params", params);
         const res = await api.get("/goods", { params });
         const data = res.data;
 
