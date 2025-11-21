@@ -5,7 +5,7 @@ import GoodsOrderList from "@/components/common/GoodsOrderList/GoodsOrderList";
 import MessageNoInfo from "../MessageNoInfo/MessageNoInfo";
 import { useShopStore } from "@/lib/store/cartStore";
 import css from "./BasketModal.module.css";
-import Container from "@/components/Container/Container";
+// import Container from "@/components/Container/Container";
 
 export default function BasketModal() {
   const router = useRouter();

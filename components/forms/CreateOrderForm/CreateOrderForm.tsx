@@ -209,14 +209,14 @@ export default function CreateOrderForm() {
         },
       };
 
-      console.log(
-        "📦 [ORDER PAYLOAD] JSON, що відправляється:",
-        JSON.stringify(orderData, null, 2)
-      );
+      // console.log(
+      //   "📦 [ORDER PAYLOAD] JSON, що відправляється:",
+      //   JSON.stringify(orderData, null, 2)
+      // );
 
-      const result = await createOrder(orderData);
+      // const result = await createOrder(orderData);
 
-      console.log("✅ [ORDER] Замовлення успішно створено:", result);
+      // console.log("✅ [ORDER] Замовлення успішно створено:", result);
 
       clearCart();
       router.push("/goods");
