@@ -1,36 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import styles from "./Header.module.css";
 import { useShopStore } from "@/lib/store/cartStore";
-import { useAuthStore } from "@/lib/store/authStore";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // 👇 Беремо стан авторизації з Zustand
-  const { isAuthenticated, setUser } = useAuthStore();
-
-  // 🔄 При першому рендері відновлюємо юзера з localStorage
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const saved = localStorage.getItem("user");
-    if (saved) {
-      try {
-        const user = JSON.parse(saved);
-        setUser(user);
-      } catch (error) {
-        console.error("Помилка парсингу user з localStorage", error);
-      }
-    }
-  }, [setUser]);
+  const { isAuth } = useAuth(); //hook
 
   const cartItems = useShopStore((state) => state.cartItems);
-  const cartCount = cartItems.reduce((total, item) => total + item.amount, 0);
 
+  const cartCount = cartItems.reduce((total, item) => total + item.amount, 0);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
@@ -56,8 +40,7 @@ export default function Header() {
 
         <div className={styles.headerActions}>
           <div className={styles.headerActionsDiv}>
-            {/* 🔽 Авторизація через Zustand */}
-            {!isAuthenticated && (
+            {!isAuth && (
               <>
                 <Link href="/auth/login" className={styles.headerButtonVhid}>
                   Вхід
@@ -71,7 +54,7 @@ export default function Header() {
               </>
             )}
 
-            {isAuthenticated && (
+            {isAuth && (
               <Link href="/profile" className={styles.headerButtonCabinet}>
                 Кабінет
               </Link>
@@ -95,12 +78,8 @@ export default function Header() {
           </Link>
         </div>
       </div>
-
       {isMenuOpen && (
-        <MobileMenu
-          isAuth={isAuthenticated}            // 👈 передаємо нове значення
-          onClose={() => setIsMenuOpen(false)}
-        />
+        <MobileMenu isAuth={isAuth} onClose={() => setIsMenuOpen(false)} />
       )}
     </header>
   );
