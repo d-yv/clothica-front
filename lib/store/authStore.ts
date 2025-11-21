@@ -1,13 +1,12 @@
-import { create } from "zustand";
-import type { User } from "@/lib/api";
+// src/lib/store/authStore.ts
 
-// type User = {
-//   id: string;
-//   email: string;
-//   name?: string;
-//   firstName?: string;
-//   lastName?: string;
-// };
+import { create } from 'zustand';
+
+type User = {
+  id: string;
+  email: string;
+  name?: string;
+};
 
 type AuthState = {
   user: User | null;
@@ -15,7 +14,7 @@ type AuthState = {
   isAuthenticated: boolean;
   login: (userData: User, token: string) => void;
   logout: () => void;
-  setUser: (userData: User | null) => void;
+  setUser: (userData: User) => void;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -23,47 +22,26 @@ export const useAuthStore = create<AuthState>((set) => ({
   token: null,
   isAuthenticated: false,
 
-  // 👇 використовується твоїм фронтом вже зараз
   login: (userData, token) => {
     set({
       user: userData,
       token,
       isAuthenticated: true,
     });
-
-    if (typeof window !== "undefined") {
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(userData));
-    }
+    // Сохраняем токен в localStorage для persist
+    localStorage.setItem('token', token);
   },
 
-  // 👇 однаковий logout тепер для хедера та кабінету
   logout: () => {
     set({
       user: null,
       token: null,
       isAuthenticated: false,
     });
-
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-    }
+    localStorage.removeItem('token');
   },
 
-  // 👇 з нового store — з'єднано зі старим
   setUser: (userData) => {
-    set({
-      user: userData,
-      isAuthenticated: !!userData,
-    });
-
-    if (typeof window !== "undefined") {
-      if (userData) {
-        localStorage.setItem("user", JSON.stringify(userData));
-      } else {
-        localStorage.removeItem("user");
-      }
-    }
+    set({ user: userData });
   },
 }));
