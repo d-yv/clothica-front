@@ -57,7 +57,7 @@ export default function GoodsOrderList() {
                       <svg className={css.goodsOrderStarsIcon} width="16" height="16">
                         <use xlinkHref="styles.icon.svg#icon-Star-Filled-2" />
                       </svg>
-                      {item.rate}
+                      {Number(item.rate.toFixed(1))}
                     </span>
                     <span className={css.goodsOrderReviews}>
                       <svg className={css.goodsOrderReviewsIcon} width="16" height="16">
