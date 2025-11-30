@@ -14,3 +14,5 @@ export default function MessageNoStories({ goodId }: { goodId: string }) {
     </div>
   );
 }
+
+//удалить и использовать вместо него MessageNoInfo
